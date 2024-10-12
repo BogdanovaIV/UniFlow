@@ -1,5 +1,27 @@
 /* General styles */
 /* Colors */
+
+:root {
+    --red-color: #D82A21;
+    --dark-color: rgba(0,0,0,0.65);
+    --light-bg: #f8f9fa;
+}
+
 .red-color {
-    color: #D82A21;
+    color: var(--red-color);
+}
+
+
+
+/* Customization of Bootstrap */
+
+.navbar .nav-link:hover {
+    background-color: var(--light-bg);
+    color: var(--red-color); 
+}
+
+.navbar .navbar-brand .red-color:hover,
+.footer-link:hover {
+    background-color: var(--light-bg);
+    color: var(--dark-color);  
 }
