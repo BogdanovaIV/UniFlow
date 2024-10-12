@@ -11,8 +11,6 @@
     color: var(--red-color);
 }
 
-
-
 /* Customization of Bootstrap */
 
 .navbar .nav-link:hover {
@@ -24,4 +22,11 @@
 .footer-link:hover {
     background-color: var(--light-bg);
     color: var(--dark-color);  
+}
+
+/* Home page */
+.bg-image-home {
+    background-image: url('https://c.pxhere.com/images/fd/75/25e0b91093d48d1f365fd43c7cc2-1571983.jpg!d');
+    background-size: cover;
+    background-position: center;
 }
