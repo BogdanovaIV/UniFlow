@@ -8,12 +8,18 @@ def home(request):
     """
     Renders the Home page
     """
-    
-    
-    
     return render(
         request,
         "main/home.html",
         { "current_year": current_year},
+    )
 
+
+def contact(request):
+    """
+    Renders the Contact page
+    """
+    return render(
+        request,
+        "main/contact.html"
     )

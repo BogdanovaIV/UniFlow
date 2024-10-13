@@ -29,4 +29,13 @@
     background-image: url('https://c.pxhere.com/images/fd/75/25e0b91093d48d1f365fd43c7cc2-1571983.jpg!d');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Contact page */
+.bg-image-contact {
+    background-image: url('https://c.pxhere.com/photos/b2/9f/sackcloth_sackcloth_textured_laptop_ipad_brown_fabric_organic_natural-1046485.jpg!d');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
