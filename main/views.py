@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from datetime import datetime
-
+import os
+if os.path.isfile('env.py'):
+    import env
 current_year = datetime.now().year
 
 # Create your views here.
@@ -21,5 +23,6 @@ def contact(request):
     """
     return render(
         request,
-        "main/contact.html"
+        "main/contact.html",
+        { "google_maps_api_key": os.environ.get("GOOGLE_MAPS_API_KEY") }
     )
