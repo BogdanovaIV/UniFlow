@@ -1,13 +1,12 @@
 let map;
 
 async function initMap() {
-    // The location of Uluru
+    // The location of the Medical University
     const position = { lat: 43.259116, lng: 76.933178};
-    // Request needed libraries.
-    //@ts-ignore
+    // Request needed libraries from Google Maps API
     const { Map } = await google.maps.importLibrary("maps");
-    
-    // The map, centered at Uluru
+
+    // Create a new map centered at the specified location (Medical University)
     map = new Map(document.getElementById("map"), {
         zoom: 12,
         center: position,
@@ -19,8 +18,7 @@ async function initMap() {
             map: map,
             title: "Medical University"
     });
-
-    locations.map(marker);
 }
 
+// Call the function to initialize the map
 initMap();
