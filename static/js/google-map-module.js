@@ -20,5 +20,11 @@ async function initMap() {
     });
 }
 
-// Call the function to initialize the map
-initMap();
+// Check if we are running in a browser environment and auto-call `initMap`
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    window.onload = initMap;
+}
+
+module.exports = {
+    initMap
+};
