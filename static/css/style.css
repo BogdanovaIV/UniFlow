@@ -47,3 +47,11 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+/* Sign up page */
+.bg-image-sign-up {
+    background-image: url('https://c.pxhere.com/images/23/8c/f2d0f23376af9e9237d32b6daa02-1430845.jpg!d');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
