@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-class HomePageTest(TestCase):
+class TestHomeView(TestCase):
     """
     Test cases for the Home page of the application.
     """
@@ -27,7 +27,7 @@ class HomePageTest(TestCase):
         self.assertIn('current_year', response.context) 
 
 
-class ContactPageTests(TestCase):
+class TestContactView(TestCase):
     """
     Test cases for the Contact page of the application.
     """
