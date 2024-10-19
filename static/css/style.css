@@ -39,3 +39,11 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+/* Sign in page */
+.bg-image-sign-in {
+    background-image: url('https://c.pxhere.com/photos/2a/0f/analysis_biochemistry_biologist_biology_biotechnology_chemistry_clinic_clinical-1192482.jpg!d');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
