@@ -2,7 +2,10 @@ from django.test import TestCase
 from django.urls import reverse
 
 class HomePageTest(TestCase):
-
+    """
+    Test cases for the Home page of the application.
+    """
+    
     def test_home_page_status_code(self):
         """Test if the home page returns a 200 status code."""
         response = self.client.get(reverse('home'))
@@ -25,6 +28,9 @@ class HomePageTest(TestCase):
 
 
 class ContactPageTests(TestCase):
+    """
+    Test cases for the Contact page of the application.
+    """
     
     def test_contact_page_status_code(self):
         """Test if the contact page returns a status code of 200"""
