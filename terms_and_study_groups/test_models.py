@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from datetime import date
 
 
-class StudyGroupModel(TestCase):
+class TestStudyGroupModel(TestCase):
     """
     Test cases for the StudyGroup model.
     """
@@ -37,7 +37,7 @@ class StudyGroupModel(TestCase):
         self.assertTrue(new_group.active)
 
 
-class TermModelTest(TestCase):
+class TestTermModelTest(TestCase):
     """
     Test cases for the Term model.
     """
