@@ -3,9 +3,18 @@ from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from .models import StudyGroup, Term
 
+
 @admin.register(StudyGroup)
 class StudyGroupAdmin(admin.ModelAdmin):
+    """
+    Admin interface for managing StudyGroup instances.
 
+    Attributes:
+        list_display (tuple): Fields to display in the list view of StudyGroup
+        instances.
+        list_filter (tuple): Fields that can be used to filter the list view.
+    """
+    
     # Display the name and active status
     list_display = ('name', 'active')
     # Add a filter for the active field
@@ -14,7 +23,16 @@ class StudyGroupAdmin(admin.ModelAdmin):
 
 @admin.register(Term)
 class TermAdmin(admin.ModelAdmin):
+    """
+    Admin interface for managing Term instances.
 
+    Attributes:
+        list_display (tuple): Fields to display in the list view of Term
+        instances.
+        search_fields (list): Fields that can be searched in the list view.
+        list_filter (tuple): Fields that can be used to filter the list view.
+    """
+    
     # Display the name, date_from, date_to, and active status
     list_display = ('name', 'date_from', 'date_to', 'active')
     # Add a serach for the date_from and date_to fields 
