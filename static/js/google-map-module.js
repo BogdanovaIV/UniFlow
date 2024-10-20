@@ -20,11 +20,12 @@ async function initMap() {
     });
 }
 
-// Check if we are running in a browser environment and auto-call `initMap`
-if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-    window.onload = initMap;
+// Check if running in a Node.js environment (for testing)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { initMap };
 }
 
-module.exports = {
-    initMap
-};
+// Check if running in a browser environment (for the contact page)
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    window.initMap  = initMap; // Export function for browser
+}
