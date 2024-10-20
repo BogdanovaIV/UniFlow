@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'main',
     'terms_and_study_groups',
     'users',
+    'student_dashboard',
 ]
 
 SITE_ID = 1
@@ -133,13 +134,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 ACCOUNT_FORMS = {
     'signup': 'users.forms.CustomSignupForm',
 }
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
