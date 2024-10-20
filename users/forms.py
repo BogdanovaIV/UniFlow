@@ -1,5 +1,6 @@
 from allauth.account.forms import SignupForm
 from django import forms
+from django.contrib.auth.models import Group
 
 class CustomSignupForm(SignupForm):
     first_name = forms.CharField(
@@ -8,11 +9,11 @@ class CustomSignupForm(SignupForm):
         required=True,
         widget=forms.TextInput(attrs={'placeholder': 'Your first name'})
     )
-    second_name = forms.CharField(
+    last_name = forms.CharField(
         max_length=30,
-        label='Second Name',
+        label='Lasr Name',
         required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'Your second name'})
+        widget=forms.TextInput(attrs={'placeholder': 'Your last name'})
         )
 
     def save(self, request):
@@ -22,7 +23,10 @@ class CustomSignupForm(SignupForm):
         # Assign email to the username field
         user.username = self.cleaned_data['email']
         user.first_name = self.cleaned_data['first_name']
-        user.second_name = self.cleaned_data['second_name']
+        user.last_name = self.cleaned_data['last_name']
+        student_group = Group.objects.get(name='Student')
+        user.groups.add(student_group)
+
         user.save()
 
         return user
