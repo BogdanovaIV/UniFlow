@@ -20,7 +20,7 @@ class CustomLoginView(LoginView, CustomAuthMixin):
     """
     def form_valid(self, form):
         """Logs in the user and redirects based on group."""
-        user = form.get_user()
+        user = form.user
         login(self.request, user)
 
         # Use the helper method to handle redirection

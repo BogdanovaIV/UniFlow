@@ -14,7 +14,7 @@ class TestCustomSignupForm(TestCase):
             'password1': 'Password123!',
             'password2': 'Password123!',
             'first_name': 'Test',
-            'second_name': 'User',
+            'last_name': 'User',
         }
 
         self.invalid_data_first_name = {
@@ -22,15 +22,15 @@ class TestCustomSignupForm(TestCase):
             'password1': 'Password123!',
             'password2': 'Password123!',
             'first_name': '',  # Invalid: empty
-            'second_name': 'User', 
+            'last_name': 'User', 
         }
 
-        self.invalid_data_second_name = {
+        self.invalid_data_last_name = {
             'email': 'testuser@example.com',
             'password1': 'Password123!',
             'password2': 'Password123!',
             'first_name': 'Test', 
-            'second_name': '',  # Invalid: empty
+            'last_name': '',  # Invalid: empty
         }
 
         self.factory = RequestFactory()
@@ -50,7 +50,7 @@ class TestCustomSignupForm(TestCase):
         user = form.save(request)  # Pass the request object
         self.assertEqual(user.username, self.valid_data['email'])
         self.assertEqual(user.first_name, self.valid_data['first_name'])
-        self.assertEqual(user.second_name, self.valid_data['second_name'])
+        self.assertEqual(user.last_name, self.valid_data['last_name'])
 
     def test_invalid_form_first_name(self):
         """Test that the form is invalid with missing first name."""
@@ -58,8 +58,8 @@ class TestCustomSignupForm(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('first_name', form.errors)
 
-    def test_invalid_form_second_name(self):
-        """Test that the form is invalid with missing second name."""
-        form = CustomSignupForm(data=self.invalid_data_second_name)
+    def test_invalid_form_last_name(self):
+        """Test that the form is invalid with missing last name."""
+        form = CustomSignupForm(data=self.invalid_data_last_name)
         self.assertFalse(form.is_valid())
-        self.assertIn('second_name', form.errors)
+        self.assertIn('last_name', form.errors)
