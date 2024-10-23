@@ -59,3 +59,12 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+/* Student dushboard*/
+
+.bg-image-student-dashboard-info{
+    background-image: url('https://c.pxhere.com/photos/c1/e2/black_board_chalk_traces_school_learn_education_smeared_writing_board-1057578.jpg!d');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;    
+}

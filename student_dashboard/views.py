@@ -7,5 +7,5 @@ def dashboard(request):
     """
     return render(
         request,
-        "student_dashboard/dashboard.html",
+        "student_dashboard/student-dashboard.html",
     )
