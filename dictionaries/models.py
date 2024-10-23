@@ -97,3 +97,32 @@ class Term(models.Model):
             and date range of the term.
         """
         return f"{self.name} - ({self.date_from}-{self.date_to})"
+
+
+class Subject(models.Model):
+    """
+    Represents a subject.
+
+    Attributes:
+        name (str): The name of the subject, unique within the database.
+        active (bool): Indicates whether the subject is currently active.
+        Defaults to True.
+
+    Meta:
+        ordering (list): The default ordering of Subject instances
+        is by name.
+    """
+    name = models.CharField(max_length=100, unique=True, null=False)
+    active = models.BooleanField(default=True)
+    
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        """
+        Returns the string representation of the Subject instance.
+
+        Returns:
+            str: The name of the subject.
+        """
+        return self.name

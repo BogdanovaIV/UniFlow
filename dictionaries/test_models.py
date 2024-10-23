@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import StudyGroup, Term
+from .models import StudyGroup, Term, Subject
 from django.core.exceptions import ValidationError
 from datetime import date
 
@@ -26,7 +26,10 @@ class TestStudyGroupModel(TestCase):
             study_group.full_clean()  # This will trigger validation
 
     def test_unique_name(self):
-        """Test that creating a StudyGroup with a duplicate name raises an IntegrityError."""
+        """
+        Test that creating a StudyGroup with a duplicate name raises
+        an IntegrityError.
+        """
         StudyGroup.objects.create(name="102", active=True)
         with self.assertRaises(Exception):
             StudyGroup.objects.create(name="102", active=False)
@@ -103,3 +106,39 @@ class TestTermModelTest(TestCase):
         with self.assertRaises(ValidationError):
             # This will invoke the clean method and validate
             term_overlapping.clean()
+
+
+class TestSubjectModel(TestCase):
+    """
+    Test cases for the Subject model.
+    """
+
+    def setUp(self):
+        # Create a Subject instance
+        self.subject = StudyGroup.objects.create(name="subject1", active=True)
+
+    def test_str_representation(self):
+        """Test the string representation of Subject."""
+        self.assertEqual(str(self.subject), "subject1")
+    
+    def subject_name_cannot_be_empty(self):
+        """
+        Test if a subject cannot be created with an empty name.
+        """
+        subject = Subject(name='', active=True)
+        with self.assertRaises(ValidationError):
+            subject.full_clean()  # This will trigger validation
+
+    def test_unique_name(self):
+        """
+        Test that creating a Subject with a duplicate name raises
+        an IntegrityError.
+        """
+        Subject.objects.create(name="subject2", active=True)
+        with self.assertRaises(Exception):
+            Subject.objects.create(name="subject2", active=False)
+
+    def test_active_default(self):
+        """Test that the active field defaults to True."""
+        new_subject = Subject.objects.create(name="subject3")
+        self.assertTrue(new_subject.active)

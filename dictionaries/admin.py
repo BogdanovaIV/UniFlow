@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
-from .models import StudyGroup, Term
+from .models import StudyGroup, Term, Subject
 
 
 @admin.register(StudyGroup)
@@ -37,5 +37,22 @@ class TermAdmin(admin.ModelAdmin):
     list_display = ('name', 'date_from', 'date_to', 'active')
     # Add a serach for the date_from and date_to fields 
     search_fields = ['date_from', 'date_to']
+    # Add a filter for the active field
+    list_filter = ('active',)
+
+
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    """
+    Admin interface for managing Subject instances.
+
+    Attributes:
+        list_display (tuple): Fields to display in the list view of Subject
+        instances.
+        list_filter (tuple): Fields that can be used to filter the list view.
+    """
+    
+    # Display the name and active status
+    list_display = ('name', 'active')
     # Add a filter for the active field
     list_filter = ('active',)

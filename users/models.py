@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from terms_and_study_groups.models import StudyGroup
+from dictionaries.models import StudyGroup
 
 # Create your models here.
 
