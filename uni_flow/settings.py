@@ -51,9 +51,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'main',
-    'terms_and_study_groups',
+    'dictionaries',
     'users',
     'student_dashboard',
+    'tutor_dashboard'
 ]
 
 SITE_ID = 1
