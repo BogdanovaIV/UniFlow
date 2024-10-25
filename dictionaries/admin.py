@@ -84,3 +84,12 @@ class ScheduleTemplateAdmin(admin.ModelAdmin):
 
     # Add a filter for the weekday field
     list_filter = ('weekday','term', 'study_group')
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "term":
+            kwargs["queryset"] = Term.active_objects()
+        elif db_field.name == "study_group":
+            kwargs["queryset"] = StudyGroup.active_objects()
+        elif db_field.name == "subject":
+            kwargs["queryset"] = Subject.active_objects()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)

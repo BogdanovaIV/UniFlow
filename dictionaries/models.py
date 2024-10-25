@@ -22,6 +22,12 @@ class StudyGroup(models.Model):
     class Meta:
         ordering = ["name"]
 
+    @classmethod
+    def active_objects(cls):
+        """Returns a queryset of active study groups."""
+        return cls.objects.filter(active=True)
+
+
     def __str__(self):
         """
         Returns the string representation of the StudyGroup instance.
@@ -63,6 +69,11 @@ class Term(models.Model):
                 fields=['date_from', 'date_to'], name='unique_term_dates'
             ),
         ]
+
+    @classmethod
+    def active_objects(cls):
+        """Returns a queryset of active terms."""
+        return cls.objects.filter(active=True)
 
     def clean(self):
         """
@@ -119,6 +130,10 @@ class Subject(models.Model):
     class Meta:
         ordering = ["name"]
 
+    @classmethod
+    def active_objects(cls):
+        """Returns a queryset of active subjects."""
+        return cls.objects.filter(active=True)
     def __str__(self):
         """
         Returns the string representation of the Subject instance.
@@ -156,6 +171,12 @@ class ScheduleTemplate(models.Model):
         order_number (PositiveIntegerField): The order of the class
         for the day (1-10).
         subject (ForeignKey): The subject associated with the schedule template.
+
+    Meta:
+        ordering (list): The default ordering of ScheduleTemplate instances
+        is by term, study_group, weekday, order_number.
+        constraints (list): Unique constraints for the model fields by term,
+        study_group, weekday, order_number.
     """
     term = models.ForeignKey(Term, on_delete=models.CASCADE, null=False) 
     study_group = models.ForeignKey(
@@ -174,13 +195,7 @@ class ScheduleTemplate(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=False)
 
     class Meta:
-        """
-        Metadata for ScheduleTemplate model.
 
-        Attributes:
-            ordering (list): Default ordering of the model instances.
-            constraints (list): Unique constraints for the model fields.
-        """
         ordering = ["term", "study_group", "weekday", "order_number"]
 
         constraints = [
