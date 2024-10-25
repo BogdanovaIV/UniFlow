@@ -17,6 +17,8 @@ class StudyGroupAdmin(admin.ModelAdmin):
 
     # Display the name and active status
     list_display = ('name', 'active')
+    # Add a serach for the name 
+    search_fields = ['name']
     # Add a filter for the active field
     list_filter = ('active',)
 
@@ -35,8 +37,8 @@ class TermAdmin(admin.ModelAdmin):
 
     # Display the name, date_from, date_to, and active status
     list_display = ('name', 'date_from', 'date_to', 'active')
-    # Add a serach for the date_from and date_to fields 
-    search_fields = ['date_from', 'date_to']
+    # Add a serach for the name 
+    search_fields = ['name']
     # Add a filter for the active field
     list_filter = ('active',)
 
@@ -54,6 +56,8 @@ class SubjectAdmin(admin.ModelAdmin):
 
     # Display the name and active status
     list_display = ('name', 'active')
+    # Add a serach for the name 
+    search_fields = ['name']
     # Add a filter for the active field
     list_filter = ('active',)
 
