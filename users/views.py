@@ -9,7 +9,7 @@ class CustomAuthMixin:
     def redirect_based_on_group(self, user):
         """Redirects user based on group membership."""
         if user.groups.filter(name='Student').exists():
-            return redirect('student_dashboard')
+            return redirect('student:dashboard')
         elif user.groups.filter(name='Tutor').exists():
             return redirect('tutor:schedules')
         
