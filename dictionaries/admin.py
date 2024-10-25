@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
-from .models import StudyGroup, Term, Subject
+from .models import StudyGroup, Term, Subject, ScheduleTemplate
 
 
 @admin.register(StudyGroup)
@@ -14,7 +14,7 @@ class StudyGroupAdmin(admin.ModelAdmin):
         instances.
         list_filter (tuple): Fields that can be used to filter the list view.
     """
-    
+
     # Display the name and active status
     list_display = ('name', 'active')
     # Add a filter for the active field
@@ -32,7 +32,7 @@ class TermAdmin(admin.ModelAdmin):
         search_fields (list): Fields that can be searched in the list view.
         list_filter (tuple): Fields that can be used to filter the list view.
     """
-    
+
     # Display the name, date_from, date_to, and active status
     list_display = ('name', 'date_from', 'date_to', 'active')
     # Add a serach for the date_from and date_to fields 
@@ -51,8 +51,32 @@ class SubjectAdmin(admin.ModelAdmin):
         instances.
         list_filter (tuple): Fields that can be used to filter the list view.
     """
-    
+
     # Display the name and active status
     list_display = ('name', 'active')
     # Add a filter for the active field
     list_filter = ('active',)
+
+
+@admin.register(ScheduleTemplate)
+class ScheduleTemplateAdmin(admin.ModelAdmin):
+    """
+    Admin interface for managing ScheduleTemplate instances.
+
+    Attributes:
+        list_display (tuple): Fields to display in the list view of 
+        ScheduleTemplate instances.
+        list_filter (tuple): Fields that can be used to filter the list view.
+    """
+    
+    # Display the term, study_group, weekday, order_number and subject
+    list_display = (
+        'term',
+        'study_group',
+        'weekday',
+        'order_number',
+        'subject'
+    )
+
+    # Add a filter for the weekday field
+    list_filter = ('weekday','term', 'study_group')

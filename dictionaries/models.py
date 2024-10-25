@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 # Create your models here.
@@ -126,3 +127,86 @@ class Subject(models.Model):
             str: The name of the subject.
         """
         return self.name
+
+class WeekdayChoices(models.IntegerChoices):
+    """
+    Enumeration for days of the week.
+
+    Each day is represented by an integer value corresponding to its order
+    in the week.
+    """
+    MONDAY = 0, 'Monday'
+    TUESDAY = 1, 'Tuesday'
+    WEDNESDAY = 2, 'Wednesday'
+    THURSDAY = 3, 'Thursday'
+    FRIDAY = 4, 'Friday'
+    SATURDAY = 5, 'Saturday'
+    SUNDAY = 6, 'Sunday'
+
+
+class ScheduleTemplate(models.Model):
+    """
+    Model representing a schedule template for a specific term and study group.
+
+    Attributes:
+        term (ForeignKey): The term associated with the schedule template.
+        study_group (ForeignKey): The study group associated with the schedule
+        template.
+        weekday (IntegerField): The day of the week for the schedule.
+        order_number (PositiveIntegerField): The order of the class
+        for the day (1-10).
+        subject (ForeignKey): The subject associated with the schedule template.
+    """
+    term = models.ForeignKey(Term, on_delete=models.CASCADE, null=False) 
+    study_group = models.ForeignKey(
+        StudyGroup,
+        on_delete=models.CASCADE,
+        null=False
+    )
+    weekday = models.IntegerField(choices=WeekdayChoices.choices, null=False)
+    order_number = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(1),      
+            MaxValueValidator(10)
+        ],
+        null=False
+    )
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=False)
+
+    class Meta:
+        """
+        Metadata for ScheduleTemplate model.
+
+        Attributes:
+            ordering (list): Default ordering of the model instances.
+            constraints (list): Unique constraints for the model fields.
+        """
+        ordering = ["term", "study_group", "weekday", "order_number"]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    'term',
+                    'study_group',
+                    'weekday',
+                    'order_number'
+                ], name='unique_schedule_template_row'
+            ),
+        ]
+
+    def __str__(self):
+        """
+        String representation of the ScheduleTemplate instance.
+
+        Returns:
+            str: A formatted string containing the term, study group, weekday,
+            order number, and subject.
+        """
+
+        return (
+            f"{self.term} - "
+            f"{self.study_group} - "
+            f"{self.weekday} - "
+            f"{self.order_number}. - "
+            f"{self.subject}"
+        )
