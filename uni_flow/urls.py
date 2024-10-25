@@ -23,7 +23,8 @@ urlpatterns = [
     path('accounts/logout/', LogoutView.as_view(), name='account_logout'), 
     path("accounts/", include("allauth.urls")),
     path('admin/', admin.site.urls),
-    path('student/', include('student_dashboard.urls')), 
+    path('student/', include('student_dashboard.urls')),
+    path('tutor/', include('tutor_dashboard.urls')), 
     path('', include("main.urls"), name="main-urls"), 
     path('', include("users.urls"), name="users-urls"), 
 ]
