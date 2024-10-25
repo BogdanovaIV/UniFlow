@@ -3,8 +3,8 @@
 
 :root {
     --red-color: #D82A21;
-    --dark-color: rgba(0,0,0,0.65);
-    --light-bg: #f8f9fa;
+    --dark-color: rgba(0, 0, 0, 0.65);
+    --light-color: #f8f9fa;
 }
 
 .red-color {
@@ -14,14 +14,26 @@
 /* Customization of Bootstrap */
 
 .navbar .nav-link:hover {
-    background-color: var(--light-bg);
-    color: var(--red-color); 
+    background-color: var(--light-color);
+    color: var(--red-color);
 }
 
 .navbar .navbar-brand .red-color:hover,
 .footer-link:hover {
-    background-color: var(--light-bg);
-    color: var(--dark-color);  
+    background-color: var(--light-color);
+    color: var(--dark-color);
+}
+
+.nav-tabs .nav-link.active {
+    opacity: 0.5;
+}
+
+.nav-tabs .nav-link:not(.active):hover {
+    color: var(--light-color);
+}
+
+.nav-tabs .nav-link.active:hover {
+    color: var(--dark-color);
 }
 
 /* Home page */
@@ -60,11 +72,16 @@
     background-repeat: no-repeat;
 }
 
+/* Tutor dushboard*/
+.nav-link-tutor {
+    color: var(--light-color);
+}
+
 /* Student dushboard*/
 
-.bg-image-student-dashboard-info{
+.bg-image-student-dashboard-info {
     background-image: url('https://c.pxhere.com/photos/c1/e2/black_board_chalk_traces_school_learn_education_smeared_writing_board-1057578.jpg!d');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;    
+    background-repeat: no-repeat;
 }

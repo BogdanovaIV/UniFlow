@@ -11,7 +11,7 @@ class CustomAuthMixin:
         if user.groups.filter(name='Student').exists():
             return redirect('student_dashboard')
         elif user.groups.filter(name='Tutor').exists():
-            return redirect('tutor_dashboard')
+            return redirect('tutor:schedules')
         
         return redirect('home')  # Default redirect
 

@@ -1,8 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
 {% block content %}
 
-Tutor dashboard
+{% url 'tutor:schedules' as schedules %}
+{% url 'tutor:schedule_templates' as schedule_templates %}
+
+<section class="masthead py-4 text-light bg-image-student-dashboard-info">
+    <div class="container">
+        <div class="row text-center">
+            <h3>Dashboard for tutors</h3>
+        </div>
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link nav-link-tutor {% if request.path == schedules %}active{% endif %}" href="{% url 'tutor:schedules' %}">
+                Schedule
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link nav-link-tutor {% if request.path == schedule_templates %}active{% endif %}" href="{% url 'tutor:schedule_templates' %}">
+                Schedule templates
+            </a>
+        </li>
+    </ul>
+
+    {% block table %}
+
+        <!-- dashboard Goes here -->
+    {% endblock table %}
+</section>
 
 {% endblock content %}
