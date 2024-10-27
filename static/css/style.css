@@ -11,6 +11,23 @@
     color: var(--red-color);
 }
 
+/* Button */
+.btn-custom {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    opacity: 75%;
+    border: 1px solid var(--light-color);
+    padding: 8px 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-custom:hover {
+    opacity: 60%;
+}
+
 /* Customization of Bootstrap */
 
 .navbar .nav-link:hover {
@@ -28,11 +45,13 @@
     opacity: 0.5;
 }
 
-.nav-tabs .nav-link:not(.active):hover {
+.nav-tabs .nav-link:not(.active):hover,
+.nav-tabs .nav-link:not(.active):focus {
     color: var(--light-color);
 }
 
-.nav-tabs .nav-link.active:hover {
+.nav-tabs .nav-link.active:hover,
+.nav-tabs .nav-link.active:focus {
     color: var(--dark-color);
 }
 

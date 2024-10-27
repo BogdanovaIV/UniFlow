@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block content %}
 
-{% url 'tutor:schedules' as schedules %}
-{% url 'tutor:schedule_templates' as schedule_templates %}
+{% url 'tutor:schedules' as url_schedules %}
+{% url 'tutor:schedule_templates' as url_schedule_templates %}
 
 <section class="masthead py-4 text-light bg-image-student-dashboard-info">
     <div class="container">
@@ -15,12 +14,12 @@
     </div>
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link nav-link-tutor {% if request.path == schedules %}active{% endif %}" href="{% url 'tutor:schedules' %}">
+            <a class="nav-link nav-link-tutor {% if request.path == url_schedules %}active{% endif %}" href="{% url 'tutor:schedules' %}">
                 Schedule
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-tutor {% if request.path == schedule_templates %}active{% endif %}" href="{% url 'tutor:schedule_templates' %}">
+            <a class="nav-link nav-link-tutor {% if request.path == url_schedule_templates %}active{% endif %}" href="{% url 'tutor:schedule_templates' %}">
                 Schedule templates
             </a>
         </li>
@@ -33,3 +32,7 @@
 </section>
 
 {% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/tutor.js' %}" defer></script>
+{% endblock scripts %}

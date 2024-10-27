@@ -105,10 +105,9 @@ class Term(models.Model):
         Returns the string representation of the Term instance.
 
         Returns:
-            str: A formatted string containing the name
-            and date range of the term.
+            str: A formatted string containing the name.
         """
-        return f"{self.name} - ({self.date_from}-{self.date_to})"
+        return self.name
 
 
 class Subject(models.Model):

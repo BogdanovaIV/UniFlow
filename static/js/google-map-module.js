@@ -1,3 +1,5 @@
+/* jshint esversion: 11, sub:true */
+
 let map;
 
 async function initMap() {

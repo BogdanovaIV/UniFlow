@@ -58,7 +58,7 @@ class TestTermModelTest(TestCase):
         """Test the string representation of Term."""
         self.assertEqual(
             str(self.term),
-            "2024-2025 Term 1 - (2024-01-01-2024-05-31)"
+            "2024-2025 Term 1"
         )
 
     def test_term_name_cannot_be_empty(self):
