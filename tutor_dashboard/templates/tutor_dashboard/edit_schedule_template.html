@@ -3,11 +3,58 @@
 {% block table_content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-8 mt-3 offset-md-3 text-white font-monospace fw-medium">
+        <div class="col-md-10 mt-3 offset-md-3 text-white font-monospace fw-medium">
             <h2>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Schedule Template</h2>
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+
+                <div class="row">
+                    <div class="col-2">
+                        <label for="id_term">Term:</label>
+                    </div>
+                    <div class="col-10">
+                        <p id="id_term">{{ form.term_name }}</p>
+                        <input type="hidden" name="term" value="{{ form.instance.term.id }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <label for="id_study_group">Study Group:</label>
+                    </div>
+                    <div class="col-10">
+                        <p id="id_study_group">{{ form.study_group_name }}</p>
+                        <input type="hidden" name="study_group" value="{{ form.instance.study_group.id }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <label for="id_weekday">Weekday:</label>
+                    </div>
+                    <div class="col-10">
+                        <p id="id_weekday">{{ form.weekday_name }}</p>
+                        <input type="hidden" name="weekday" value="{{ form.instance.weekday }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <label for="id_order_number">Order Number:</label>
+                    </div>
+                    <div class="col-10">
+                        <p id="id_order_number">{{ form.order_number.value }}</p>
+                        <input type="hidden" name="order_number" value="{{ form.order_number.value }}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label for="id_order_number">Subject:</label>
+                    </div>
+                    <div class="col-10">
+                        {{ form.subject }}
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-success">Save</button>
             </form>
         </div>

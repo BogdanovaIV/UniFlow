@@ -5,6 +5,7 @@ from dictionaries.models import ScheduleTemplate, WeekdayChoices
 from dictionaries.forms import ScheduleTemplateFilterForm
 from dictionaries.forms import ScheduleTemplateForm
 
+
 class ScheduleTemplateView(View):
     """
     View for displaying and filtering schedule templates based on user-selected
@@ -120,6 +121,48 @@ class EditScheduleTemplateView(View):
         """
         schedule_template = ScheduleTemplate.objects.get(pk=pk)
         form = ScheduleTemplateForm(request.POST, instance=schedule_template)
+        if form.is_valid():
+            form.save()
+            term = form.cleaned_data.get('term').id
+            study_group = form.cleaned_data.get('study_group').id
+            return redirect(
+                f"{reverse(
+                    'tutor:schedule_templates'
+                    )}?term={term}&study_group={study_group}"
+            )
+        return render(request, self.template_name, {'form': form})
+
+
+class AddScheduleTemplateView(View):
+    template_name = 'tutor_dashboard/edit_schedule_template.html'
+
+    def get(self, request):
+        term_id = request.GET.get('term')
+        study_group_id = request.GET.get('study_group')
+        weekday = request.GET.get('weekday')
+        order_number = request.GET.get('order_number')
+
+        form = ScheduleTemplateForm(initial={
+            'term': term_id,
+            'study_group': study_group_id,
+            'weekday': weekday,
+            'order_number': order_number,
+        })
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        
+        term_id = request.GET.get('term')
+        study_group_id = request.GET.get('study_group')
+        weekday = request.GET.get('weekday')
+        order_number = request.GET.get('order_number')
+        print(request)
+        form = ScheduleTemplateForm(request.POST, initial={
+            'term': term_id,
+            'study_group': study_group_id,
+            'weekday': weekday,
+            'order_number': order_number,
+        })
         if form.is_valid():
             form.save()
             term = form.cleaned_data.get('term').id

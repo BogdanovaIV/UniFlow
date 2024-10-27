@@ -64,14 +64,14 @@ class ScheduleTemplateViewTests(TestCase):
         the correct schedule templates.
         """
         response = self.client.post(self.url, {
-            'term': self.term.id,
-            'study_group': self.study_group.id,
+            'term': self.term.pk,
+            'study_group': self.study_group.pk,
         })
         
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, f"{reverse(
                 'tutor:schedule_templates'
-                )}?term={self.term.id}&study_group={self.study_group.id}")
+                )}?term={self.term.pk}&study_group={self.study_group.pk}")
         
 
     def test_post_request_with_invalid_data(self):
@@ -81,12 +81,12 @@ class ScheduleTemplateViewTests(TestCase):
         """
         response = self.client.post(
             self.url,
-            {'term': self.term.id, 'study_group': ''}
+            {'term': self.term.pk, 'study_group': ''}
         )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, f"{reverse(
                 'tutor:schedule_templates'
-                )}?term={self.term.id}&study_group=")
+                )}?term={self.term.pk}&study_group=")
 
     def test_get_full_week_schedule(self):
         """
@@ -99,7 +99,7 @@ class ScheduleTemplateViewTests(TestCase):
         # Check that Monday, order 1 contains the subject
         self.assertEqual(
             schedule[1][1][1],
-            {'subject': self.subject, 'id': self.subject.id}
+            {'subject': self.subject, 'id': self.subject.pk}
         )
         
         # Verify placeholders for other weekdays and orders
@@ -166,11 +166,12 @@ class EditScheduleTemplateViewTests(TestCase):
         
     def test_post_request_valid_data_redirects_to_schedule_template(self):
         """Test POST request with valid data saves form and redirects."""
-        updated_subject = Subject.objects.create(name="Physics", active=True)
+        updated_subject = Subject.objects.create(name="Subject2", active=True)
         response = self.client.post(self.url, {
             'term': self.term.pk,
             'study_group': self.study_group.pk,
             'weekday': 1,
+            'order_number': 1,
             'subject': updated_subject.pk
         })
         self.schedule_template.refresh_from_db()
@@ -199,3 +200,45 @@ class EditScheduleTemplateViewTests(TestCase):
         self.assertIsInstance(response.context['form'], ScheduleTemplateForm)
         self.assertFalse(response.context['form'].is_valid())
         self.assertIn('subject', response.context['form'].errors)
+
+
+class AddScheduleTemplateViewTests(TestCase):
+    """Test suite for AddScheduleTemplateView."""
+
+    def setUp(self):
+        """Create necessary objects for tests."""
+        self.term = Term.objects.create(
+            name="Term 1",
+            date_from='2024-01-01',
+            date_to='2024-05-31',
+            active=True
+        )
+        self.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
+        self.subject = Subject.objects.create(
+            name="Subject1",
+            active=True
+        )
+        self.url = reverse('tutor:add_schedule_template')
+
+    def test_get_add_schedule_template_view(self):
+        """
+        Test GET request returns the correct template and initializes the form.
+        """
+        response = self.client.get(
+            self.url, 
+            {
+                'term': self.term.pk,
+                'study_group': self.study_group.pk,
+                'weekday': 1,
+            })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'tutor_dashboard/edit_schedule_template.html')
+        
+        # Check if form is initialized correctly
+        form = response.context['form']
+        self.assertEqual(int(form.initial['term']), self.term.pk)
+        self.assertEqual(int(form.initial['study_group']), self.study_group.pk)

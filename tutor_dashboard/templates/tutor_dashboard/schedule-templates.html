@@ -46,12 +46,14 @@
                                     </li>
                                 </a>
                                 {% else %}
-                                <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
-                                    <div class="row px-3">
-                                        <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
-                                        <div class="col-10 px-1"></div>
-                                    </div>
-                                </li>
+                                <a href="{% url 'tutor:add_schedule_template' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}&weekday={{ weekday }}&order_number={{ order }}" class="text-decoration-none text-reset">
+                                    <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
+                                        <div class="row px-3">
+                                            <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
+                                            <div class="col-10 px-1"></div>
+                                        </div>
+                                    </li>
+                                </a>
                                 {% endif %}
                             {% endfor %}
                         {% endfor %}

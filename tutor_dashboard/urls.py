@@ -1,12 +1,18 @@
 from django.urls import path
 from .views import ScheduleTemplateView, tutor_schedules
-from .views import EditScheduleTemplateView
+from .views import EditScheduleTemplateView, AddScheduleTemplateView
 
 app_name = 'tutor'
 urlpatterns = [
-    path('schedule-templates/',
+    path(
+        'schedule-templates/',
         ScheduleTemplateView.as_view(),
         name='schedule_templates'
+    ),
+    path(
+        'schedule-templates/add/',
+        AddScheduleTemplateView.as_view(),
+        name='add_schedule_template'
     ),
     path(
         'schedule-templates/edit/<int:pk>/',
