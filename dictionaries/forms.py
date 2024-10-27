@@ -1,5 +1,5 @@
 from django import forms
-from .models import Term, StudyGroup
+from .models import Term, StudyGroup, ScheduleTemplate, Subject  
 
 class ScheduleTemplateFilterForm(forms.Form):
     """
@@ -19,3 +19,28 @@ class ScheduleTemplateFilterForm(forms.Form):
         queryset=StudyGroup.active_objects(),
         label="Study Group"
     )
+
+class ScheduleTemplateForm(forms.ModelForm):
+    """
+    A form for editing ScheduleTemplate instances with restricted field access.
+    
+    - Fields 'term', 'study_group', 'weekday', and 'order_number' are disabled,
+    leaving only 'subject' editable when an instance exists.
+    - Filters 'subject' to display only active subjects.
+    """
+    class Meta:
+        model = ScheduleTemplate
+        fields = ['term', 'study_group', 'weekday', 'order_number', 'subject']
+
+    def __init__(self, *args, **kwargs):
+        """
+        Initializes the form, setting specific fields to read-only and limiting
+        'subject' choices to active subjects.
+        """
+        super().__init__(*args, **kwargs)
+        
+        self.fields['term'].disabled = True
+        self.fields['study_group'].disabled = True
+        self.fields['weekday'].disabled = True
+        self.fields['order_number'].disabled = True
+        self.fields['subject'].queryset = Subject.active_objects()

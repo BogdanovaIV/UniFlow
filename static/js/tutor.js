@@ -2,14 +2,15 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('selection-shedule-templates');
-  
+    const sheduleTemplates = document.getElementById('schedule-templates');
     // Attach change event to all input and select elements in the form
     const inputElements = form.querySelectorAll('input, select');
     inputElements.forEach(input => {
         input.addEventListener('change', function () {
             updateSelectionDescription(form, selectionDescription);
-            if (areAllFieldsFilled(form)) {
-                // Submit the form when all required fields are filled
+
+            if (areAllFieldsFilled(form) ||
+                sheduleTemplates.getAttribute('data-empty') == "False") {
                 form.submit();
             }
         }  );

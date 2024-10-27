@@ -1,7 +1,9 @@
 from django.views.generic import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from dictionaries.models import ScheduleTemplate, WeekdayChoices
 from dictionaries.forms import ScheduleTemplateFilterForm
+from dictionaries.forms import ScheduleTemplateForm
 
 class ScheduleTemplateView(View):
     """
@@ -25,12 +27,32 @@ class ScheduleTemplateView(View):
             HttpResponse: Rendered template with an empty form and the full
             week's schedule.
         """
-        form = ScheduleTemplateFilterForm()
-        schedule_templates = self.get_full_week_schedule({})
+        term_id = request.GET.get('term')
+        study_group_id = request.GET.get('study_group')
+
+        form = ScheduleTemplateFilterForm(
+            initial={'term': term_id, 'study_group': study_group_id}
+        )
+        table_empty = True
+        schedule_templates = None
+        if term_id and study_group_id:
+            schedule_templates = self.get_full_week_schedule(
+                ScheduleTemplate.objects.filter(
+                    term=term_id, study_group=study_group_id
+                )
+            )
+            table_empty = False
+        else:
+            schedule_templates = self.get_full_week_schedule({})
+
         return render(
             request,
             self.template_name,
-            {'form': form, 'schedule_templates': schedule_templates}
+            {
+                'form': form,
+                'schedule_templates': schedule_templates,
+                'table_empty': table_empty
+            }
         )
 
     def post(self, request):
@@ -45,26 +67,15 @@ class ScheduleTemplateView(View):
             HttpResponse: Rendered template with the filter form and filtered
             schedule templates.
         """
-        form = ScheduleTemplateFilterForm(request.POST)
         schedule_templates = ScheduleTemplate.objects.none()
-        if form.is_valid():
-            term = form.cleaned_data['term']
-            study_group = form.cleaned_data['study_group']
-            
-            templates = ScheduleTemplate.objects.filter(
-                term=term, 
-                study_group=study_group
-            )
+        form = ScheduleTemplateFilterForm(request.POST)
+        term = request.POST.get('term')
+        study_group = request.POST.get('study_group')
 
-            # Group schedule templates by weekday and order number
-            schedule_templates = self.get_full_week_schedule(templates)
-            
-        return render(
-            request,
-            self.template_name,
-            {
-                'form': form,
-                'schedule_templates': schedule_templates}
+        return redirect(
+            f"{reverse(
+                'tutor:schedule_templates'
+                )}?term={term}&study_group={study_group}"
         )
 
     def get_full_week_schedule(self, templates):
@@ -75,14 +86,50 @@ class ScheduleTemplateView(View):
         # Initialize schedule_templates with all weekdays and order numbers
         # (1–10)
         schedule = {
-            value: [label, {order: '' for order in range(1, 11)}]
-            for (value, label) in WeekdayChoices.choices
+            value: [label, {
+                order: {'subject':'', 'id':''} for order in range(1, 11)
+                }] for (value, label) in WeekdayChoices.choices
         }
+
         # Populate the schedule with actual templates from the queryset
         for template in templates:
-            schedule[template.weekday][1][template.order_number] = template.subject
+            schedule[template.weekday][1][template.order_number] = {
+                'subject': template.subject, 'id':template.id
+            }
 
         return schedule
+
+class EditScheduleTemplateView(View):
+    """
+    View to edit a ScheduleTemplate. Renders a form with existing data for GET,
+    saves changes for valid POST, and redirects to schedule list with term and
+    group parameters.
+    """
+    template_name = 'tutor_dashboard/edit_schedule_template.html'
+
+    def get(self, request, pk):
+        """Render the form with the existing ScheduleTemplate instance."""
+        schedule_template = ScheduleTemplate.objects.get(pk=pk)
+        form = ScheduleTemplateForm(instance=schedule_template)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, pk):
+        """
+        Save the updated ScheduleTemplate and redirect or reload the form on
+        error.
+        """
+        schedule_template = ScheduleTemplate.objects.get(pk=pk)
+        form = ScheduleTemplateForm(request.POST, instance=schedule_template)
+        if form.is_valid():
+            form.save()
+            term = form.cleaned_data.get('term').id
+            study_group = form.cleaned_data.get('study_group').id
+            return redirect(
+                f"{reverse(
+                    'tutor:schedule_templates'
+                    )}?term={term}&study_group={study_group}"
+            )
+        return render(request, self.template_name, {'form': form})
 
 def tutor_schedules(request):
     """
@@ -91,13 +138,4 @@ def tutor_schedules(request):
     return render(
         request,
         "tutor_dashboard/schedule.html",
-    )
-
-def tutor_schedule_templates(request):
-    """
-    Renders the Schedule templates page
-    """
-    return render(
-        request,
-        "tutor_dashboard/schedule-templates.html",
     )

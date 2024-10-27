@@ -1,0 +1,16 @@
+{% extends 'tutor_dashboard/tutor-dashboard.html' %}
+
+{% block table_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mt-3 offset-md-3 text-white font-monospace fw-medium">
+            <h2>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Schedule Template</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock table_content %}

@@ -1,6 +1,6 @@
 from django.test import TestCase
-from .forms import ScheduleTemplateFilterForm
-from .models import Term, StudyGroup
+from .forms import ScheduleTemplateFilterForm, ScheduleTemplateForm
+from .models import Term, StudyGroup, ScheduleTemplate, Subject
 
 class ScheduleTemplateFilterFormTests(TestCase):
     """
@@ -79,3 +79,121 @@ class ScheduleTemplateFilterFormTests(TestCase):
         form = ScheduleTemplateFilterForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('study_group', form.errors)
+
+
+class ScheduleTemplateFormTests(TestCase):
+    """
+    Test suite for ScheduleTemplateForm to ensure form fields,
+    querysets, and validation behave correctly.
+    """
+    def setUp(self):
+        """Create necessary objects for ScheduleTemplate"""
+        self.term = Term.objects.create(
+            name="Term 1",
+            date_from='2024-01-01',
+            date_to='2024-05-31',
+            active=True
+        )
+        self.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
+        
+        # Create active and inactive subjects
+        self.active_subject = Subject.objects.create(
+            name="Subject1",
+            active=True
+        )
+        self.inactive_subject = Subject.objects.create(
+            name="Subject2",
+            active=False
+        )
+        
+        # Create a ScheduleTemplate instance for edit testing
+        self.schedule_template = ScheduleTemplate.objects.create(
+            term=self.term,
+            study_group=self.study_group,
+            weekday=2,
+            order_number=1,
+            subject=self.active_subject
+        )
+
+    def test_form_fields_disabled_on_edit(self):
+        """
+        Test that 'term', 'study_group', 'order_number' and 'weekday'
+        fields are disabled when editing an existing instance.
+        """
+        form = ScheduleTemplateForm(instance=self.schedule_template)
+        
+        # Check that the fields are disabled
+        self.assertTrue(form.fields['term'].disabled)
+        self.assertTrue(form.fields['study_group'].disabled)
+        self.assertTrue(form.fields['weekday'].disabled)
+        self.assertTrue(form.fields['order_number'].disabled)
+        # Subject should remain editable
+        self.assertFalse(form.fields['subject'].disabled)
+    
+    def test_subject_queryset_filters_active_only(self):
+        """
+        Test that the subject field queryset contains only active subjects.
+        """
+        form = ScheduleTemplateForm(instance=self.schedule_template)
+        subjects_queryset = form.fields['subject'].queryset
+        self.assertIn(self.active_subject, subjects_queryset)
+        self.assertNotIn(self.inactive_subject, subjects_queryset)
+    
+    def test_form_fields_enabled_on_new_instance(self):
+        """Test that all fields are enabled for a new instance."""
+        form = ScheduleTemplateForm()
+        
+        # Check that the fields are disabled
+        self.assertTrue(form.fields['term'].disabled)
+        self.assertTrue(form.fields['study_group'].disabled)
+        self.assertTrue(form.fields['weekday'].disabled)
+        self.assertTrue(form.fields['order_number'].disabled)
+        # Subject should remain editable
+        self.assertFalse(form.fields['subject'].disabled)
+
+
+    def test_form_valid_with_all_fields(self):
+        """Test form validation for valid data."""
+        schedule_template_instance = ScheduleTemplate.objects.create(
+            term=self.term,
+            study_group=self.study_group,
+            weekday=3,
+            order_number=1,
+            subject=self.active_subject
+        )
+
+        # Update only the 'subject' field via the form data
+        form_data = {
+            'subject': self.active_subject.id
+        }
+        form = ScheduleTemplateForm(
+            data=form_data,
+            instance=schedule_template_instance
+        )
+
+        self.assertTrue(form.is_valid())
+            
+    def test_form_invalid_without_required_fields(self):
+        """Test form validation fails when required fields are missing."""
+        schedule_template_instance = ScheduleTemplate.objects.create(
+            term=self.term,
+            study_group=self.study_group,
+            weekday=3,
+            order_number=1,
+            subject=self.active_subject
+        )
+
+        # Update only the 'subject' field via the form data
+        form_data = {
+            'subject': ''
+        }
+        form = ScheduleTemplateForm(
+            data=form_data,
+            instance=schedule_template_instance
+        )
+        form = ScheduleTemplateForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('subject', form.errors)

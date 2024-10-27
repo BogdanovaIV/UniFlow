@@ -1,13 +1,14 @@
 {% extends 'tutor_dashboard/tutor-dashboard.html' %}
 {% load static %}
 
-{% block table %}
+{% block table_content %}
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-8 mt-3 offset-md-3 text-white font-monospace fw-medium">
             <div class="row">
                 <div class="col-4 col-md-2">
-                    <button class="btn-custom mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+                    <button class="btn-custom mb-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
                         Selection
                     </button>
                 </div>
@@ -23,7 +24,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid" id="schedule-templates" data-empty="{{ table_empty }}">
         <div class="row">
             {% for weekday, details in schedule_templates.items %}
             <div class="col-12 col-md-4 col-lg-3 col-xl px-0">
@@ -33,15 +34,26 @@
                         {{ details|first }}</h6>
                     <ul class="list-group list-group-flush bg-transparent">
                         {% for detail in details|slice:":2" %}
-                        {% for order, subject in detail.items %}
-                        <li
-                            class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
-                            <div class="row px-3">
-                                <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
-                                <div class="col-10 px-1">{{ subject }}</div>
-                            </div>
-                        </li>
-                        {% endfor %}
+                            {% for order, subject_detail in detail.items %}
+                                {% if subject_detail.id %}
+                                <a href="{% url 'tutor:edit_schedule_template' pk=subject_detail.id %}"
+                                    class="text-decoration-none text-reset">
+                                    <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
+                                        <div class="row px-3">
+                                            <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
+                                            <div class="col-10 px-1">{{ subject_detail.subject }}</div>
+                                        </div>
+                                    </li>
+                                </a>
+                                {% else %}
+                                <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
+                                    <div class="row px-3">
+                                        <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
+                                        <div class="col-10 px-1"></div>
+                                    </div>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
                         {% endfor %}
                     </ul>
                 </div>
@@ -50,4 +62,4 @@
         </div>
     </div>
 </div>
-{% endblock table %}
+{% endblock table_content %}
