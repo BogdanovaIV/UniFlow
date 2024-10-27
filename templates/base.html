@@ -5,6 +5,9 @@
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
+{% url 'student:dashboard' as url_dashboard %}
+{% url 'tutor:schedules' as url_schedules %}
+{% url 'tutor:schedule_templates' as url_schedule_templates %}
 
 <!DOCTYPE html>
 <html class="h-100" lang="en">
@@ -53,6 +56,23 @@
                             href="{% url 'contact' %}" aria-label="Contact Page">Contact</a>
                     </li>
                     {% if user.is_authenticated %}
+                    {% for group in user_groups %}
+                    {% if group.name == 'Student' %}
+                    <li class="nav-item"></li>
+                        <a class="nav-link {% if request.path == url_dashboard %}fw-bolder{% endif %}"
+                            href="{% url 'student:dashboard' %}">
+                            Dashboard
+                        </a>
+                    </li>
+                    {% elif group.name == 'Tutor' %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == url_schedules or request.path == url_schedule_templates %}fw-bolder{% endif %}"
+                            href="{% url 'tutor:schedules' %}">
+                            Dashboard
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == logout_url %}fw-bolder{% endif %}"
                             href="{% url 'account_logout' %}" aria-label="Logout Page">Logout</a>
