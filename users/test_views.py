@@ -13,6 +13,7 @@ class CustomAuthViewTests(TestCase):
     def setUp(self):
         # Set up groups
         self.student_group = Group.objects.get(name='Student')
+        self.tutor_group = Group.objects.get(name='Tutor')
 
         # Set up test users
         self.student_user = User.objects.create_user(
@@ -22,19 +23,25 @@ class CustomAuthViewTests(TestCase):
             first_name='student',
             last_name='student'
         )
+        self.tutor_user = User.objects.create_user(
+            username='tutor@email.com',
+            email='tutor@email.com',
+            password='Password123!',
+            first_name='tutor',
+            last_name='tutor'
+        )
 
         # Assign groups to users
         self.student_user.groups.add(self.student_group)
         self.student_user.save()
+        
+        self.tutor_user.groups.add(self.tutor_group)
+        self.tutor_user.save()
         # Set up the client for testing
         self.client = Client()
 
 
     def test_student_login_redirect(self):
-        """
-        Test that a student user is redirected to the student dashboard after
-        login.
-        """
         """
         Test that a student user is redirected to the student dashboard after
         login.
@@ -47,8 +54,22 @@ class CustomAuthViewTests(TestCase):
             print(response.context['form'].errors)
         
         # Check for the redirect to student dashboard
-        self.assertRedirects(response, reverse('student_dashboard'))
+        self.assertRedirects(response, reverse('student:dashboard'))
 
+    def test_student_login_redirect(self):
+        """
+        Test that a tutor user is redirected to the tutor dashboard after
+        login.
+        """
+        response = self.client.post(
+            reverse('account_login'),
+            {'login': 'tutor@email.com', 'password': 'Password123!'}
+        )
+        if response.status_code == 200:
+            print(response.context['form'].errors)
+        
+        # Check for the redirect to student dashboard
+        self.assertRedirects(response, reverse('tutor:schedules'))
 
     def test_student_signup_redirect(self):
         """
@@ -66,5 +87,5 @@ class CustomAuthViewTests(TestCase):
         if response.status_code == 200:
             print(response.context['form'].errors)
 
-        self.assertRedirects(response, reverse('student_dashboard'))
+        self.assertRedirects(response, reverse('student:dashboard'))
 
