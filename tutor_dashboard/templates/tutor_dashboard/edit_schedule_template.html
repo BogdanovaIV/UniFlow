@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-10">
                         <p id="id_term">{{ form.term_name }}</p>
-                        <input type="hidden" name="term" value="{{ form.instance.term.id }}">
+                        <p hidden>{{ form.term }}</p>
                     </div>
                 </div>
 
@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-10">
                         <p id="id_study_group">{{ form.study_group_name }}</p>
-                        <input type="hidden" name="study_group" value="{{ form.instance.study_group.id }}">
+                        <p hidden>{{ form.study_group }}</p>
                     </div>
                 </div>
 
@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-10">
                         <p id="id_weekday">{{ form.weekday_name }}</p>
-                        <input type="hidden" name="weekday" value="{{ form.instance.weekday }}">
+                        <p hidden>{{ form.weekday }}</p>
                     </div>
                 </div>
 
@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-10">
                         <p id="id_order_number">{{ form.order_number.value }}</p>
-                        <input type="hidden" name="order_number" value="{{ form.order_number.value }}">
+                        <p hidden>{{ form.order_number }}</p>
                     </div>
                 </div>
                 <div class="row mb-3">

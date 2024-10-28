@@ -16,26 +16,16 @@ class ScheduleTemplateBaseView(View):
         """
         Extract initial data from the request for the form.
         """
+        def get_first_value(key):
+            """Retrieve the first value for a given key from the request."""
+            values = request.getlist(key)
+            return values[0] if values else request.get(key)
+
         return {
-            'term': (
-                request.POST.getlist('term')[0] if request.POST.getlist('term')
-                else request.GET.get('term')
-            ),
-            'study_group': (
-                request.POST.getlist('study_group')[0]
-                if request.POST.getlist('study_group')
-                else request.GET.get('study_group')
-            ),
-            'weekday': (
-                request.POST.getlist('weekday')[0]
-                if request.POST.getlist('weekday')
-                else request.GET.get('weekday')
-            ),
-            'order_number': (
-                request.POST.getlist('order_number')[0]
-                if request.POST.getlist('order_number')
-                else request.GET.get('order_number')
-            ),
+            'term': get_first_value('term'),
+            'study_group': get_first_value('study_group'),
+            'weekday': get_first_value('weekday'),
+            'order_number': get_first_value('order_number'),
         }
 
     def handle_redirect(self, form):
@@ -166,13 +156,14 @@ class AddScheduleTemplateView(ScheduleTemplateBaseView):
 
     def get(self, request):
         """Render the form to add a new ScheduleTemplate."""
-        initial_data = self.get_initial_data(request)
+        initial_data = self.get_initial_data(request.GET)
         form = ScheduleTemplateForm(initial=initial_data)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         """Process the form submission to add a new ScheduleTemplate."""
-        initial_data = self.get_initial_data(request)
+
+        initial_data = self.get_initial_data(request.POST)
         form = ScheduleTemplateForm(request.POST, initial=initial_data)
 
         if form.is_valid():

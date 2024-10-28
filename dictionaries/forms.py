@@ -62,9 +62,6 @@ class ScheduleTemplateForm(forms.ModelForm):
         'subject' choices to active subjects.
         """
         super().__init__(*args, **kwargs)
-        self.fields['term'].disabled = True
-        self.fields['study_group'].disabled = True
-        self.fields['weekday'].disabled = True
 
         weekday_value = None
         if self.instance and self.instance.pk:
@@ -87,4 +84,5 @@ class ScheduleTemplateForm(forms.ModelForm):
 
         if weekday_value is not None:
             self.fields['weekday_name'].initial = WeekdayChoices(weekday_value).label
+
         self.fields['subject'].queryset = Subject.active_objects()

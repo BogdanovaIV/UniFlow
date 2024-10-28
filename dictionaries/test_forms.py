@@ -118,28 +118,6 @@ class ScheduleTemplateFormTests(TestCase):
             subject=self.active_subject
         )
 
-
-    def test_form_fields_disabled_on_edit(self):
-        """
-        Test that 'term_name', 'study_group_name', 'weekday_name',
-        'term', 'study_group' fields are read-only
-        when editing an existing instance.
-        """
-        form = ScheduleTemplateForm(instance=self.schedule_template)
-
-        # Check that the fields are read-only
-        self.assertTrue(form.fields['term'].disabled)
-        self.assertTrue(form.fields['study_group'].disabled)
-        self.assertTrue(form.fields['weekday'].disabled)
-
-        # Verify that read-only fields are initialized correctly
-        self.assertEqual(form.fields['term_name'].initial, self.schedule_template.term)
-        self.assertEqual(form.fields['study_group_name'].initial, self.schedule_template.study_group)
-        self.assertEqual(form.fields['weekday_name'].initial, WeekdayChoices(self.schedule_template.weekday).label)
-
-        # Subject should remain editable
-        self.assertFalse(form.fields['subject'].disabled)
-
     def test_subject_queryset_filters_active_only(self):
         """
         Test that the subject field queryset contains only active subjects.
@@ -149,30 +127,17 @@ class ScheduleTemplateFormTests(TestCase):
         self.assertIn(self.active_subject, subjects_queryset)
         self.assertNotIn(self.inactive_subject, subjects_queryset)
 
-    def test_form_fields_enabled_on_new_instance(self):
-        """Test that all fields are enabled for a new instance."""
-        form = ScheduleTemplateForm()
-
-        # Check that the fields are not disabled
-        self.assertTrue(form.fields['term'].disabled)
-        self.assertTrue(form.fields['study_group'].disabled)
-        self.assertTrue(form.fields['weekday'].disabled)
-
-        # Subject should remain editable
-        self.assertFalse(form.fields['subject'].disabled)
-
     def test_form_valid_with_all_fields(self):
         """Test form validation for valid data."""
         form_data = {
-            'order_number': 1,
-            'subject': self.active_subject.id
-        }
-        form_initial = {
             'term': self.term.id,
             'study_group': self.study_group.id,
             'weekday': 3,
+            'order_number': 1,
+            'subject': self.active_subject.id
         }
-        form = ScheduleTemplateForm(data=form_data, initial=form_initial)
+
+        form = ScheduleTemplateForm(data=form_data)
         self.assertTrue(form.is_valid(), msg=f"Form errors: {form.errors}")
 
     def test_form_invalid_without_required_fields(self):

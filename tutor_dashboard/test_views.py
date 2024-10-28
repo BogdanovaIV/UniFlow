@@ -30,7 +30,7 @@ class ScheduleTemplateBaseViewTests(TestCase):
             'weekday': '1',
             'order_number': '1'
         })
-        initial_data = self.view.get_initial_data(request)
+        initial_data = self.view.get_initial_data(request.GET)
         
         self.assertEqual(initial_data['term'], str(self.term.id))
         self.assertEqual(initial_data['study_group'], str(self.study_group.id))
@@ -39,7 +39,7 @@ class ScheduleTemplateBaseViewTests(TestCase):
 
     def test_get_initial_data_with_missing_get_parameters(self):
         request = self.factory.get('/some-url/', {'term': str(self.term.id)})
-        initial_data = self.view.get_initial_data(request)
+        initial_data = self.view.get_initial_data(request.GET)
         
         self.assertEqual(initial_data['term'], str(self.term.id))
         self.assertIsNone(initial_data['study_group'])
