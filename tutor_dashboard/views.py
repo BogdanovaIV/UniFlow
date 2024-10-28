@@ -1,5 +1,5 @@
 from django.views.generic import View
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from dictionaries.models import ScheduleTemplate, WeekdayChoices
 from dictionaries.forms import ScheduleTemplateFilterForm
@@ -32,8 +32,8 @@ class ScheduleTemplateBaseView(View):
         """
         Handle redirection after saving the form.
         """
-        term = form.cleaned_data.get('term').id
-        study_group = form.cleaned_data.get('study_group').id
+        term = form.get('term').id
+        study_group = form.get('study_group').id
         return redirect(
             f"{reverse('tutor:schedule_templates')}?term={term}"
             f"&study_group={study_group}"
@@ -144,7 +144,11 @@ class EditScheduleTemplateView(ScheduleTemplateBaseView):
 
         if form.is_valid():
             form.save()
-            return self.handle_redirect(form)
+            data = {
+                'term':form.cleaned_data.get('term'),
+                'study_group':form.cleaned_data.get('study_group'),
+            }
+            return self.handle_redirect(data)
 
         return render(request, self.template_name, {'form': form})
 
@@ -168,10 +172,31 @@ class AddScheduleTemplateView(ScheduleTemplateBaseView):
 
         if form.is_valid():
             form.save()
-            return self.handle_redirect(form)
+            data = {
+                'term':form.cleaned_data.get('term'),
+                'study_group':form.cleaned_data.get('study_group'),
+            }
+            return self.handle_redirect(data)
 
         return render(request, self.template_name, {'form': form})
 
+
+class DeleteScheduleTemplateView(ScheduleTemplateBaseView):
+    """
+    View to delete a ScheduleTemplate.
+    """
+    def post(self, request, pk):
+        """
+        Handles the POST request to delete the specified ScheduleTemplate 
+        and redirects to the schedule templates list.
+        """
+        schedule_template = get_object_or_404(ScheduleTemplate, pk=pk)
+        data = {
+                'term':schedule_template.term,
+                'study_group':schedule_template.study_group,
+        }
+        schedule_template.delete()
+        return self.handle_redirect(data)
 
 def tutor_schedules(request):
     """

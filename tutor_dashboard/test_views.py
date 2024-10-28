@@ -1,6 +1,5 @@
 from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
-from unittest.mock import Mock
 from dictionaries.models import Term, StudyGroup, ScheduleTemplate, Subject
 from dictionaries.forms import ScheduleTemplateFilterForm
 from dictionaries.forms import ScheduleTemplateForm
@@ -47,10 +46,9 @@ class ScheduleTemplateBaseViewTests(TestCase):
         self.assertIsNone(initial_data['order_number'])
 
     def test_handle_redirect_with_valid_form_data(self):
-        mock_form = Mock()
-        mock_form.cleaned_data = {'term': self.term, 'study_group': self.study_group}
+        data = {'term': self.term, 'study_group': self.study_group}
 
-        response = self.view.handle_redirect(mock_form)
+        response = self.view.handle_redirect(data)
         
         # Expected redirect URL
         expected_url = (
@@ -408,3 +406,64 @@ class AddScheduleTemplateViewTests(TestCase):
             'subject',
             'This field is required.'
         )
+
+
+class DeleteScheduleTemplateViewTests(TestCase):
+    """
+    Tests for the DeleteScheduleTemplateView.
+    """
+
+    def setUp(self):
+        """Set up test data for the tests."""
+        self.term = Term.objects.create(
+            name="Term 1",
+            date_from=date(2024, 1, 1),
+            date_to=date(2024, 5, 31),
+            active=True
+        )
+        self.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
+        self.subject = Subject.objects.create(name="Subject1", active=True)
+        self.schedule_template = ScheduleTemplate.objects.create(
+            term=self.term,
+            study_group=self.study_group,
+            weekday=1,
+            order_number=1,
+            subject=self.subject
+        )
+        self.url = reverse(
+            'tutor:delete_schedule_template',
+            args=[self.schedule_template.pk]
+        )
+
+    def test_delete_schedule_template_success(self):
+        """Test successful deletion of a schedule template."""
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            ScheduleTemplate.objects.filter(
+                pk=self.schedule_template.pk
+                ).exists()
+        )
+
+    def test_delete_non_existent_schedule_template(self):
+        """
+        Test trying to delete a non-existent schedule template raises a 404.
+        """
+        non_existent_url = reverse('tutor:delete_schedule_template', args=[999])
+        response = self.client.post(non_existent_url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_redirect_after_delete(self):
+        """
+        Test that the user is redirected to the schedule templates list
+        after deletion.
+        """
+        response = self.client.post(self.url)
+        self.assertRedirects(
+            response,
+            f"{reverse('tutor:schedule_templates')}?term={self.term.id}"
+            f"&study_group={self.study_group.id}"
+            )
