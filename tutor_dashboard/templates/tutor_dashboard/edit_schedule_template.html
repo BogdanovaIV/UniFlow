@@ -9,53 +9,63 @@
                 {% csrf_token %}
 
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-3 col-md-2">
                         <label for="id_term">Term:</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-9 col-md-10">
                         <p id="id_term">{{ form.term_name }}</p>
                         <p hidden>{{ form.term }}</p>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-3 col-md-2">
                         <label for="id_study_group">Study Group:</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-9 col-md-10">
                         <p id="id_study_group">{{ form.study_group_name }}</p>
                         <p hidden>{{ form.study_group }}</p>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-3 col-md-2">
                         <label for="id_weekday">Weekday:</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-9 col-md-10">
                         <p id="id_weekday">{{ form.weekday_name }}</p>
                         <p hidden>{{ form.weekday }}</p>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-3 col-md-2">
                         <label for="id_order_number">Order Number:</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-9 col-md-10">
                         <p id="id_order_number">{{ form.order_number.value }}</p>
                         <p hidden>{{ form.order_number }}</p>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-2">
+                    <div class="col-3 col-md-2">
                         <label for="id_order_number">Subject:</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-9 col-md-10">
                         {{ form.subject }}
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success">Save</button>
+                <div class="row mb-3">
+                    <div class="d-flex">
+                        <button type="submit" class="btn btn-success me-2">
+                            Save
+                        </button>
+                        <a href="{% url 'tutor:schedule_templates' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}" class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
