@@ -4,20 +4,23 @@
 {% block table_content %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-8 mt-3 offset-md-3 text-white font-monospace fw-medium">
+        <div class="col-md-9 mt-3 offset-md-3 text-white font-monospace fw-medium">
             <div class="row">
-                <div class="col-4 col-md-2">
-                    <button class="btn-custom mb-2" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
-                        Selection
-                    </button>
-                </div>
-                <div class="col-8 col-md-10">
-                    <p id="selectionDescription" class="text-light"></p>
+                <div class="col mb-2 me-2">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <a id="update-selection" class="icon-link icon-link-hover link-warning me-3" href="#" aria-label="Update selection">
+                            <i class="fas fa-sync"></i>
+                        </a>
+                        <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm" aria-label="Toggle selection form">
+                            Selection
+                        </button>
+                        <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
+                    </div>
                 </div>
             </div>
             <div class="collapse" id="collapseForm">
-                <form method="post" id="selection-shedule-templates">
+                <form method="post" id="selection-shedule-templates" aria-label="Selection schedule templates form">
                     {% csrf_token %}
                     {{ form.as_p }}
                 </form>
@@ -34,28 +37,29 @@
                         {{ details|first }}</h6>
                     <ul class="list-group list-group-flush bg-transparent">
                         {% for detail in details|slice:":2" %}
-                            {% for order, subject_detail in detail.items %}
-                                {% if subject_detail.id %}
-                                <a href="{% url 'tutor:edit_schedule_template' pk=subject_detail.id %}"
-                                    class="text-decoration-none text-reset">
-                                    <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
-                                        <div class="row px-3">
-                                            <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
-                                            <div class="col-10 px-1">{{ subject_detail.subject }}</div>
-                                        </div>
-                                    </li>
-                                </a>
-                                {% else %}
-                                <a href="{% url 'tutor:add_schedule_template' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}&weekday={{ weekday }}&order_number={{ order }}" class="text-decoration-none text-reset">
-                                    <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
-                                        <div class="row px-3">
-                                            <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
-                                            <div class="col-10 px-1"></div>
-                                        </div>
-                                    </li>
-                                </a>
-                                {% endif %}
-                            {% endfor %}
+                        {% for order, subject_detail in detail.items %}
+                        {% if subject_detail.id %}
+                        <a href="{% url 'tutor:edit_schedule_template' pk=subject_detail.id %}"
+                            class="text-decoration-none text-reset" aria-label="Edit schedule template for {{ subject_detail.subject }}">
+                            <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
+                                <div class="row px-3">
+                                    <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
+                                    <div class="col-10 px-1">{{ subject_detail.subject }}</div>
+                                </div>
+                            </li>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'tutor:add_schedule_template' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}&weekday={{ weekday }}&order_number={{ order }}"
+                            class="text-decoration-none text-reset" aria-label="Add new schedule template for term {{ form.term.value }} and study group {{ form.study_group.value }}">
+                            <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
+                                <div class="row px-3">
+                                    <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
+                                    <div class="col-10 px-1"></div>
+                                </div>
+                            </li>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
                         {% endfor %}
                     </ul>
                 </div>

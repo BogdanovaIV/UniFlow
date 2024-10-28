@@ -4,18 +4,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('selection-shedule-templates');
     const sheduleTemplates = document.getElementById('schedule-templates');
     // Attach change event to all input and select elements in the form
+    const upadateSelection = function () {
+        updateSelectionDescription(form, selectionDescription);
+
+        if (areAllFieldsFilled(form) ||
+            sheduleTemplates.getAttribute('data-empty') == "False") {
+            form.submit();
+        }
+    }
+
     const inputElements = form.querySelectorAll('input, select');
     inputElements.forEach(input => {
-        input.addEventListener('change', function () {
-            updateSelectionDescription(form, selectionDescription);
-
-            if (areAllFieldsFilled(form) ||
-                sheduleTemplates.getAttribute('data-empty') == "False") {
-                form.submit();
-            }
-        }  );
+        input.addEventListener('change', upadateSelection);
     });
-
+    document.getElementById('update-selection').addEventListener(
+        'click', upadateSelection
+    );
     updateSelectionDescription(form, selectionDescription)
 });
 
