@@ -4,15 +4,23 @@
 {% block table_content %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-9 mt-3 offset-md-3 text-white font-monospace fw-medium">
+        <div class="col mt-3 text-white font-monospace fw-medium">
             <div class="row">
-                <div class="col mb-2 me-2">
+                <div class="col-2 pt-1">
+                    <a id="instructions-button" href="#" class="icon-link icon-link-hover link-info me-3"
+                        data-bs-toggle="modal" data-bs-target="#instructionModal" aria-label="Open instructions">
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                </div>
+                <div class="col-10">
                     <div class="d-flex flex-wrap align-items-center">
-                        <a id="update-selection" class="icon-link icon-link-hover link-warning me-3" href="#" aria-label="Update selection">
+                        <a id="update-selection" class="icon-link icon-link-hover link-warning me-3" href="#"
+                            aria-label="Update selection">
                             <i class="fas fa-sync"></i>
                         </a>
                         <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm" aria-label="Toggle selection form">
+                            data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"
+                            aria-label="Toggle selection form">
                             Selection
                         </button>
                         <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
@@ -40,7 +48,8 @@
                         {% for order, subject_detail in detail.items %}
                         {% if subject_detail.id %}
                         <a href="{% url 'tutor:edit_schedule_template' pk=subject_detail.id %}"
-                            class="text-decoration-none text-reset" aria-label="Edit schedule template for {{ subject_detail.subject }}">
+                            class="text-decoration-none text-reset"
+                            aria-label="Edit schedule template for {{ subject_detail.subject }}">
                             <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
                                 <div class="row px-3">
                                     <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
@@ -50,7 +59,8 @@
                         </a>
                         {% else %}
                         <a href="{% url 'tutor:add_schedule_template' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}&weekday={{ weekday }}&order_number={{ order }}"
-                            class="text-decoration-none text-reset" aria-label="Add new schedule template for term {{ form.term.value }} and study group {{ form.study_group.value }}">
+                            class="text-decoration-none text-reset"
+                            aria-label="Add new schedule template for term {{ form.term.value }} and study group {{ form.study_group.value }}">
                             <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
                                 <div class="row px-3">
                                     <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
@@ -65,6 +75,48 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Instruction Modal -->
+<div class="modal fade text-dark" id="instructionModal" tabindex="-1" aria-labelledby="instructionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info-subtle">
+                <h5 class="modal-title" id="instructionModalLabel">Form Instructions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light">
+                <p>To use the schedule selection form:</p>
+                <ul>
+                    <li>Selection
+                        <ol>
+                            <li>Click on the <strong>Selection</strong> button to expand the form.</li>
+                            <li>Fill out the required fields, including term, and study group.</li>
+                        </ol>
+                    </li>
+                    <li>Adding and changing data
+                        <ol>
+                            <li>Сlick on a cell to open a form to fill out or edit</li>
+                            <li>Fill out the subject.</li>
+                            <li>Click <strong>Save</strong> to save changes, or <strong>Cancel</strong> to go back
+                                without
+                                saving.</li>
+                        </ol>
+                    </li>
+                    <li>Delete data
+                        <ol>
+                            <li>Click on a cell to open a form</li>
+                            <li>Click <strong>Delete</strong> to delete the object, or <strong>Cancel</strong> to go back without
+                                deleting.</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer bg-body-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
