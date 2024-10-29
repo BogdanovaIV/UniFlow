@@ -10,12 +10,17 @@ GROUPS = {
         'view_scheduletemplate',
         'add_scheduletemplate',
         'change_scheduletemplate',
-        'delete_scheduletemplate'
+        'delete_scheduletemplate',
+        'view_schedule',
+        'add_schedule',
+        'change_schedule',
+        'delete_schedule'
         ],
     'Student': [
         'view_studygroup',
         'view_term',
         'view_subject',
+        'view_schedule',
         ]
 }
 

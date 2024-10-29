@@ -1,5 +1,6 @@
 from django.test import TestCase
 from .models import StudyGroup, Term, Subject, WeekdayChoices, ScheduleTemplate
+from .models import Schedule
 from django.core.exceptions import ValidationError
 from datetime import date
 
@@ -346,3 +347,179 @@ class ScheduleTemplateTests(TestCase):
         )
         with self.assertRaises(ValidationError):
             schedule.full_clean()  # Trigger validation error
+
+
+class ScheduleTests(TestCase):
+    """
+    Tests for the Schedule model.
+    Covers model field validation, unique constraints, and string
+    representation.
+    """
+
+    def setUp(self):
+        """Set up test instances for foreign key fields."""
+        self.study_group = StudyGroup.objects.create(
+            name='101',
+            active=True
+        )
+        self.subject = Subject.objects.create(name='Subject1', active=True)
+
+    def test_schedule_creation(self):
+        """
+        Test that a Schedule instance can be created with valid fields.
+        """
+        schedule = Schedule.objects.create(
+            study_group=self.study_group,
+            date=date(2024, 9, 1),
+            order_number=1,
+            subject=self.subject,
+            homework='Homework'
+        )
+
+        self.assertEqual(schedule.study_group, self.study_group)
+        self.assertEqual(schedule.date, date(2024, 9, 1))
+        self.assertEqual(schedule.order_number, 1)
+        self.assertEqual(schedule.subject, self.subject)
+        self.assertEqual(schedule.homework, 'Homework')
+
+    def test_schedule_str_method(self):
+        """
+        Test the __str__ method returns the correct string representation.
+        """
+        schedule = Schedule.objects.create(
+            study_group=self.study_group,
+            date=date(2024, 9, 1),
+            order_number=1,
+            subject=self.subject,
+            homework='Homework'
+        )
+        
+        expected_str = (
+            f"{self.study_group} - "
+            f"{schedule.date} - "
+            "1. - "
+            f"{self.subject}"
+        )
+        
+        self.assertEqual(str(schedule), expected_str)
+
+    def test_order_number_validation(self):
+        """
+        Test that order_number raises ValidationError when outside the valid
+        range (1-10).
+        """
+        schedule = Schedule.objects.create(
+            study_group=self.study_group,
+            date=date(2024, 9, 1),
+            order_number=11,  # Out of range
+            subject=self.subject,
+            homework='Homework'
+        )
+        with self.assertRaises(ValidationError):
+            schedule.full_clean()  # Trigger validation error
+
+        schedule = Schedule.objects.create(
+            study_group=self.study_group,
+            date=date(2024, 9, 1),
+            order_number=0,  # Out of range
+            subject=self.subject,
+            homework='Homework'
+        )
+        with self.assertRaises(ValidationError):
+            schedule.full_clean()  # Trigger validation error
+
+    def test_unique_constraint(self):
+        """Test that a unique constraint violation raises a ValidationError."""
+        # Create a Schedule instance
+        schedule = Schedule.objects.create(
+            study_group=self.study_group,
+            date=date(2024, 9, 1),
+            order_number=1,
+            subject=self.subject,
+            homework='Homework'
+        )
+        
+        # Attempt to create a duplicate entry
+        with self.assertRaises(ValidationError):
+            duplicate_schedule = Schedule(
+                study_group=self.study_group,
+                date=date(2024, 9, 1),
+                order_number=1,
+                subject=self.subject,
+                homework='Homework'
+            )
+            duplicate_schedule.full_clean()  # This should raise a ValidationError
+
+    def test_study_group_field_null(self):
+        """
+        Test that the study_group field cannot be null.
+        """
+        schedule = Schedule(
+            study_group=None,  # Invalid
+            date=date(2024, 9, 1),
+            order_number=1,
+            subject=self.subject,
+            homework='Homework'
+        )
+        with self.assertRaises(ValidationError):
+            schedule.full_clean()  # Trigger validation error
+
+    def test_date_field_null(self):
+        """
+        Test that the date field cannot be null.
+        """
+        schedule = Schedule(
+            study_group=self.study_group,
+            date=None, # Invalid
+            order_number=1,
+            subject=self.subject,
+            homework='Homework'
+        )
+        with self.assertRaises(ValidationError):
+            schedule.full_clean()  # Trigger validation error
+
+    def test_order_number_field_null(self):
+        """
+        Test that the order_number field cannot be null.
+        """
+        schedule = Schedule(
+            study_group=self.study_group,
+            date=date(2024, 9, 1),
+            order_number=None,  # Invalid
+            subject=self.subject,
+            homework='Homework'
+        )
+        with self.assertRaises(ValidationError):
+            schedule.full_clean()  # Trigger validation error
+
+    def test_subject_field_null(self):
+        """
+        Test that the subject field cannot be null.
+        """
+        schedule = Schedule(
+            study_group=self.study_group,
+            date=date(2024, 9, 1),
+            order_number=1,
+            subject=None,  # Invalid
+            homework='Homework'
+        )
+        with self.assertRaises(ValidationError):
+            schedule.full_clean()  # Trigger validation error
+
+    def test_homework_field_null(self):
+        """
+        Test that the subject field can be null.
+        """
+        schedule = Schedule(
+            study_group=self.study_group,
+            date=date(2024, 9, 1),
+            order_number=1,
+            subject=self.subject
+        )
+        try:
+            schedule.full_clean()  # Trigger validation to check for errors
+        except ValidationError as e:
+            self.fail(
+                f"Schedule.full_clean() raised ValidationError "
+                f"unexpectedly: {e}"
+            )

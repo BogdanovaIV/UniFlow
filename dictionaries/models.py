@@ -231,3 +231,75 @@ class ScheduleTemplate(models.Model):
             f"{self.order_number}. - "
             f"{self.subject}"
         )
+
+class Schedule(models.Model):
+    """
+    Model representing a schedule for a specific study group.
+
+    Attributes:
+        study_group (ForeignKey): The study group associated with the schedule
+        template.
+        date (DateField): The date for the schedule.
+        order_number (PositiveIntegerField): The order of the class
+        for the day (1-10).
+        subject (ForeignKey): The subject associated with the schedule.
+        homework (TextField): The homework for students
+
+    Meta:
+        ordering (list): The default ordering of Schedule instances
+        is by study_group, date, order_number.
+        constraints (list): Unique constraints for the model fields by
+        study_group, date, order_number.
+        indexes (list): Indexes for optimizing queries by study group and date.
+    """
+    study_group = models.ForeignKey(
+        StudyGroup,
+        on_delete=models.CASCADE,
+        null=False
+    )
+    date = models.DateField(null=False)
+    order_number = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(1),      
+            MaxValueValidator(10)
+        ],
+        null=False
+    )
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=False)
+    homework = models.TextField(blank=True)
+
+    class Meta:
+
+        ordering = ["study_group", "date", "order_number"]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    'study_group',
+                    'date',
+                    'order_number'
+                ], name='unique_schedule_row'
+            ),
+        ]
+    
+        indexes = [
+            models.Index(
+                fields=['study_group', 'date'],
+                name='study_group_date_idx'),
+        ]
+
+    def __str__(self):
+        """
+        String representation of the Schedule instance.
+
+        Returns:
+            str: A formatted string containing the study group, date,
+            order number, and subject.
+        """
+
+        return (
+            f"{self.study_group} - "
+            f"{self.date} - "
+            f"{self.order_number}. - "
+            f"{self.subject}"
+        )
