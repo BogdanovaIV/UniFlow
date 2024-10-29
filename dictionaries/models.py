@@ -176,6 +176,7 @@ class ScheduleTemplate(models.Model):
         is by term, study_group, weekday, order_number.
         constraints (list): Unique constraints for the model fields by term,
         study_group, weekday, order_number.
+        indexes (list): Indexes for optimizing queries by term and study group.
     """
     term = models.ForeignKey(Term, on_delete=models.CASCADE, null=False) 
     study_group = models.ForeignKey(
@@ -206,6 +207,12 @@ class ScheduleTemplate(models.Model):
                     'order_number'
                 ], name='unique_schedule_template_row'
             ),
+        ]
+    
+        indexes = [
+            models.Index(
+                fields=['term', 'study_group'],
+                name='term_study_group_idx'),
         ]
 
     def __str__(self):
