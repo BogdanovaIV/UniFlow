@@ -55,6 +55,10 @@
     color: var(--dark-color);
 }
 
+.link-light:hover, .link-light:focus {
+    opacity: 75%;
+}
+
 /* Home page */
 .bg-image-home {
     background-image: url('https://c.pxhere.com/images/fd/75/25e0b91093d48d1f365fd43c7cc2-1571983.jpg!d');

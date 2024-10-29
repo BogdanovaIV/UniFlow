@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-10">
                     <div class="d-flex flex-wrap align-items-center">
-                        <a id="update-selection" class="icon-link icon-link-hover link-warning me-3" href="#"
+                        <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
                             aria-label="Update selection">
                             <i class="fas fa-sync"></i>
                         </a>
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="collapse" id="collapseForm">
+            <div class="collapse col-10 offset-2 mt-2" id="collapseForm">
                 <form method="post" id="selection-shedule-templates" aria-label="Selection schedule templates form">
                     {% csrf_token %}
                     {{ form.as_p }}

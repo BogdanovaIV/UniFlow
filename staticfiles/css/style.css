@@ -55,6 +55,10 @@
     color: var(--dark-color);
 }
 
+.link-light:hover, .link-light:focus {
+    opacity: 75%;
+}
+
 /* Home page */
 .bg-image-home {
     background-image: url('https://c.pxhere.com/images/fd/75/25e0b91093d48d1f365fd43c7cc2-1571983.jpg!d');
@@ -96,11 +100,19 @@
     color: var(--light-color);
 }
 
-/* Student dushboard*/
+/* Dashboard*/
 
 .bg-image-student-dashboard-info {
     background-image: url('https://c.pxhere.com/photos/c1/e2/black_board_chalk_traces_school_learn_education_smeared_writing_board-1057578.jpg!d');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+#update-selection {
+    font-size: 180%;
+}
+
+#instructions-button {
+    font-size: 200%;
 }

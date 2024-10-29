@@ -3,24 +3,23 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('selection-shedule-templates');
     const sheduleTemplates = document.getElementById('schedule-templates');
-    console.log(sheduleTemplates);
-    console.log(sheduleTemplates.getAttribute('data-empty'));
     // Attach change event to all input and select elements in the form
+    const upadateSelection = function () {
+        updateSelectionDescription(form, selectionDescription);
+
+        if (areAllFieldsFilled(form) ||
+            sheduleTemplates.getAttribute('data-empty') == "False") {
+            form.submit();
+        }
+    }
+
     const inputElements = form.querySelectorAll('input, select');
     inputElements.forEach(input => {
-        input.addEventListener('change', function () {
-            updateSelectionDescription(form, selectionDescription);
-
-            if (areAllFieldsFilled(form)) {
-                form.submit();
-                sheduleTemplates.getAttribute('data-empty') = "false";
-            } else if (sheduleTemplates.getAttribute('data-empty') == "false") {
-                form.submit();
-                sheduleTemplates.getAttribute('data-empty') = "true";
-            }
-        }  );
+        input.addEventListener('change', upadateSelection);
     });
-
+    document.getElementById('update-selection').addEventListener(
+        'click', upadateSelection
+    );
     updateSelectionDescription(form, selectionDescription)
 });
 
