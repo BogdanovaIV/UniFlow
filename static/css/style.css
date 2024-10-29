@@ -116,3 +116,11 @@
 #instructions-button {
     font-size: 200%;
 }
+
+/* 403 page*/
+.bg-image-403 {
+    background-image: url('https://c.pxhere.com/photos/41/73/advertisement_advertising_background_billboard_black_blackboard_blank_board-1177338.jpg!d');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

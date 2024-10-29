@@ -16,8 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
+from django.conf.urls import handler403
+from django.shortcuts import render
 from django.urls import path, include
 
+def custom_permission_denied_view(request, exception):
+    return render(request, '403.html', status=403)
+
+handler403 = custom_permission_denied_view
 
 urlpatterns = [
     path('accounts/logout/', LogoutView.as_view(), name='account_logout'), 

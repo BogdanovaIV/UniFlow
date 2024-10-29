@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -6,7 +7,7 @@ from dictionaries.forms import ScheduleTemplateFilterForm
 from dictionaries.forms import ScheduleTemplateForm
 
 
-class ScheduleTemplateBaseView(View):
+class ScheduleTemplateBaseView(PermissionRequiredMixin, View):
     """
     Base view for handling ScheduleTemplate forms and display logic.
     """
@@ -40,12 +41,13 @@ class ScheduleTemplateBaseView(View):
         )
 
 
-class ScheduleTemplateView(View):
+class ScheduleTemplateView(PermissionRequiredMixin, View):
     """
     View for displaying and filtering schedule templates based on user-selected
     term and study group.
     """
     template_name = 'tutor_dashboard/schedule-templates.html'
+    permission_required = 'dictionaries.view_scheduletemplate'
 
     def get(self, request):
         """
@@ -127,7 +129,8 @@ class EditScheduleTemplateView(ScheduleTemplateBaseView):
     """
     View to edit a ScheduleTemplate.
     """
-
+    permission_required = 'dictionaries.change_scheduletemplate'
+    
     def get(self, request, pk):
         """Render the form with the existing ScheduleTemplate instance."""
         schedule_template = ScheduleTemplate.objects.get(pk=pk)
@@ -157,7 +160,8 @@ class AddScheduleTemplateView(ScheduleTemplateBaseView):
     """
     View to add a new ScheduleTemplate. Uses initial data from query parameters.
     """
-
+    permission_required = 'dictionaries.add_scheduletemplate'
+    
     def get(self, request):
         """Render the form to add a new ScheduleTemplate."""
         initial_data = self.get_initial_data(request.GET)
@@ -185,6 +189,8 @@ class DeleteScheduleTemplateView(ScheduleTemplateBaseView):
     """
     View to delete a ScheduleTemplate.
     """
+    permission_required = 'dictionaries.delete_scheduletemplate'
+    
     def post(self, request, pk):
         """
         Handles the POST request to delete the specified ScheduleTemplate 
