@@ -1,9 +1,14 @@
 from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
 from dictionaries.models import Term, StudyGroup, ScheduleTemplate, Subject
-from dictionaries.forms import ScheduleTemplateFilterForm
-from dictionaries.forms import ScheduleTemplateForm
-from .views import ScheduleTemplateView, ScheduleTemplateBaseView
+from dictionaries.forms import (
+    ScheduleTemplateFilterForm,
+    ScheduleTemplateForm
+)
+from tutor_dashboard.views import (
+    ScheduleTemplateView,
+    ScheduleTemplateBaseView
+)
 from datetime import date
 
 
