@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
 from dictionaries.models import Term, StudyGroup, ScheduleTemplate, Subject
@@ -92,6 +93,19 @@ class ScheduleTemplateViewTests(TestCase):
             order_number=1,
             subject=cls.subject
         )
+        cls.tutor_user = User.objects.create_user(
+            username="tutor",
+            password="password"
+        )
+        cls.student_user = User.objects.create_user(
+            username="student",
+            password="password"
+        )
+        tutor_group = Group.objects.get(name="Tutor")
+        student_group = Group.objects.get(name="Student")
+        cls.tutor_user.groups.add(tutor_group)
+        cls.student_user.groups.add(student_group)
+
 
     def setUp(self):
         """
@@ -105,6 +119,7 @@ class ScheduleTemplateViewTests(TestCase):
         Test that a GET request renders the template with the filter form and
         schedule templates in context.
         """
+        self.client.login(username="tutor", password="password")
         response = self.client.get(
             self.url,
             {'term': self.term.id, 'study_group': self.study_group.id}
@@ -133,11 +148,20 @@ class ScheduleTemplateViewTests(TestCase):
         self.assertIn('schedule_templates', response.context)
         self.assertFalse(response.context['table_empty'])
 
+    def test_student_cannot_view_schedule_templates(self):
+        """
+        Test that a student cannot view schedule templates.
+        """
+        self.client.login(username="student", password="password")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+        
     def test_post_request_redirects_with_filter_params(self):
         """
         Test that a POST request with valid form data redirects to the view with
         appropriate query parameters.
         """
+        self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
             'term': self.term.id,
             'study_group': self.study_group.id
@@ -152,6 +176,7 @@ class ScheduleTemplateViewTests(TestCase):
         Test that a POST request with invalid data (e.g., missing required fields)
         redirects with only the provided term or study group ID.
         """
+        self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {'term': self.term.id})
         expected_url = f"{self.url}?term={self.term.id}&study_group="
         self.assertRedirects(response, expected_url)
@@ -245,7 +270,19 @@ class EditScheduleTemplateViewTests(TestCase):
             order_number=1,
             subject=cls.subject
         )
-        
+        cls.tutor_user = User.objects.create_user(
+            username="tutor",
+            password="password"
+        )
+        cls.student_user = User.objects.create_user(
+            username="student",
+            password="password"
+        )
+        tutor_group = Group.objects.get(name="Tutor")
+        student_group = Group.objects.get(name="Student")
+        cls.tutor_user.groups.add(tutor_group)
+        cls.student_user.groups.add(student_group)
+
     def setUp(self):
         """
         Set up client and URL for the view under test.
@@ -260,6 +297,7 @@ class EditScheduleTemplateViewTests(TestCase):
         """
         Test that a GET request renders the form with instance data.
         """
+        self.client.login(username="tutor", password="password")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
@@ -270,6 +308,14 @@ class EditScheduleTemplateViewTests(TestCase):
         form = response.context['form']
         self.assertIsInstance(form, ScheduleTemplateForm)
         self.assertEqual(form.instance, self.schedule_template)
+        
+    def test_student_cannot_edit_schedule_templates(self):
+        """
+        Test that a student cannot edit schedule templates.
+        """
+        self.client.login(username="student", password="password")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
 
     def test_post_request_with_valid_data_updates_instance(self):
         """
@@ -277,6 +323,7 @@ class EditScheduleTemplateViewTests(TestCase):
         instance and redirects correctly.
         """
         new_subject = Subject.objects.create(name="Subject2", active=True)
+        self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
             'term': self.term.pk,
             'study_group': self.study_group.pk,
@@ -299,6 +346,7 @@ class EditScheduleTemplateViewTests(TestCase):
         """
         Test that a POST request with invalid data renders the form with errors.
         """
+        self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
             'term': self.term.pk,
             'study_group': self.study_group.pk,
@@ -333,6 +381,18 @@ class AddScheduleTemplateViewTests(TestCase):
         )
         cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
         cls.subject = Subject.objects.create(name="Subject1", active=True)
+        cls.tutor_user = User.objects.create_user(
+            username="tutor",
+            password="password"
+        )
+        cls.student_user = User.objects.create_user(
+            username="student",
+            password="password"
+        )
+        tutor_group = Group.objects.get(name="Tutor")
+        student_group = Group.objects.get(name="Student")
+        cls.tutor_user.groups.add(tutor_group)
+        cls.student_user.groups.add(student_group)
 
     def setUp(self):
         """
@@ -343,6 +403,7 @@ class AddScheduleTemplateViewTests(TestCase):
 
     def test_get_add_schedule_template_view(self):
         """Test the GET method renders the form with initial data."""
+        self.client.login(username="tutor", password="password")
         response = self.client.get(
             self.url,
             {
@@ -367,8 +428,25 @@ class AddScheduleTemplateViewTests(TestCase):
             str(self.study_group.id)
         )
 
+    def test_get_student_cannot_add_schedule_templates(self):
+        """
+        Test that a student cannot call GET method.
+        """
+        self.client.login(username="student", password="password")
+        response = self.client.get(
+            self.url,
+            {
+                'term': self.term.id,
+                'study_group': self.study_group.id,
+                'weekday': 1,
+                'order_number': 1
+            }
+        )
+        self.assertEqual(response.status_code, 403)
+
     def test_post_add_schedule_template_view_success(self):
         """Test the POST method successfully adds a ScheduleTemplate."""
+        self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
             'term': self.term.id,
             'term_id': self.term.id,
@@ -390,9 +468,25 @@ class AddScheduleTemplateViewTests(TestCase):
                 order_number=1
             ).exists()
         )
-        
+
+    def test_get_student_cannot_add_schedule_templates(self):
+        """
+        Test that a student cannot call POST method.
+        """
+        self.client.login(username="student", password="password")
+        response = self.client.post(self.url, {
+            'term': self.term.id,
+            'term_id': self.term.id,
+            'study_group': self.study_group.id,
+            'weekday': 1,
+            'order_number': 1,
+            'subject': self.subject.id
+        })
+        self.assertEqual(response.status_code, 403)
+
     def test_post_add_schedule_template_view_failure(self):
         """Test the POST method fails when form data is invalid."""
+        self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
             'term': self.term.id,
             'study_group': self.study_group.id,
@@ -417,6 +511,23 @@ class DeleteScheduleTemplateViewTests(TestCase):
     """
     Tests for the DeleteScheduleTemplateView.
     """
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up initial data for testing.
+        """
+        cls.tutor_user = User.objects.create_user(
+            username="tutor",
+            password="password"
+        )
+        cls.student_user = User.objects.create_user(
+            username="student",
+            password="password"
+        )
+        tutor_group = Group.objects.get(name="Tutor")
+        student_group = Group.objects.get(name="Student")
+        cls.tutor_user.groups.add(tutor_group)
+        cls.student_user.groups.add(student_group)
 
     def setUp(self):
         """Set up test data for the tests."""
@@ -445,6 +556,7 @@ class DeleteScheduleTemplateViewTests(TestCase):
 
     def test_delete_schedule_template_success(self):
         """Test successful deletion of a schedule template."""
+        self.client.login(username="tutor", password="password")
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 302)
         self.assertFalse(
@@ -452,11 +564,19 @@ class DeleteScheduleTemplateViewTests(TestCase):
                 pk=self.schedule_template.pk
                 ).exists()
         )
+    def test_get_student_cannot_add_schedule_templates(self):
+        """
+        Test that a student cannot delete schedule template.
+        """
+        self.client.login(username="student", password="password")
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 403)
 
     def test_delete_non_existent_schedule_template(self):
         """
         Test trying to delete a non-existent schedule template raises a 404.
         """
+        self.client.login(username="tutor", password="password")
         non_existent_url = reverse('tutor:delete_schedule_template', args=[999])
         response = self.client.post(non_existent_url)
         self.assertEqual(response.status_code, 404)
@@ -466,6 +586,7 @@ class DeleteScheduleTemplateViewTests(TestCase):
         Test that the user is redirected to the schedule templates list
         after deletion.
         """
+        self.client.login(username="tutor", password="password")
         response = self.client.post(self.url)
         self.assertRedirects(
             response,
