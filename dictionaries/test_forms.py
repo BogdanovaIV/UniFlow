@@ -1,5 +1,9 @@
 from django.test import TestCase
-from .forms import ScheduleTemplateFilterForm, ScheduleTemplateForm
+from datetime import date, timedelta
+from .forms import (
+    ScheduleTemplateFilterForm,
+    ScheduleTemplateForm,
+    ScheduleFilterForm)
 from .models import Term, StudyGroup, ScheduleTemplate, Subject, WeekdayChoices
 
 class ScheduleTemplateFilterFormTests(TestCase):
@@ -154,3 +158,77 @@ class ScheduleTemplateFormTests(TestCase):
         form = ScheduleTemplateForm(data=form_data, initial=form_initial)
         self.assertFalse(form.is_valid())
         self.assertIn('subject', form.errors)
+
+
+class ScheduleFilterFormTests(TestCase):
+    """
+    Test suite for ScheduleFilterForm to ensure form fields,
+    querysets, and validation behave correctly.
+    """
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Sets up initial test data by creating active and inactive terms 
+        and study groups for validating form filtering and field behavior.
+        """
+        cls.group1 = StudyGroup.objects.create(name="Group A", active=True)
+        cls.group2 = StudyGroup.objects.create(name="Group B", active=False)
+
+    def test_form_fields(self):
+        """
+        Validates that the form includes 'term' and 'study_group' fields 
+        and confirms that their labels are correctly set.
+        """
+        form = ScheduleFilterForm()
+        # Check if 'term' and 'study_group' fields are in the form
+        self.assertIn('date', form.fields)
+        self.assertIn('study_group', form.fields)
+        # Verify labels for each field
+        self.assertEqual(form.fields['date'].label, "Week Date")
+        self.assertEqual(form.fields['study_group'].label, "Study Group")
+
+    def test_queryset_for_study_group_field(self):
+        """
+        Confirms that the 'study_group' field's queryset includes only active 
+        study groups and excludes inactive ones.
+        """
+        form = ScheduleFilterForm()
+        study_groups_queryset = form.fields['study_group'].queryset
+        self.assertIn(self.group1, study_groups_queryset)
+        self.assertNotIn(self.group2, study_groups_queryset)
+
+    def test_form_is_valid_with_correct_data(self):
+        """
+        Ensures that the form is valid when provided with data for both 
+        'term' and 'study_group' fields.
+        """
+        test_date = date(2024, 9, 1)
+        form_data = {'date': test_date, 'study_group': self.group1.id}
+        form = ScheduleFilterForm(data=form_data)
+        self.assertTrue(form.is_valid(), msg=f"Form errors: {form.errors}")
+        
+        # Check the filter parameters
+        filter_params = form.get_filter_params()
+        expected_week_start = test_date - timedelta(days=test_date.weekday())
+        expected_week_end = expected_week_start + timedelta(days=6)
+        
+        self.assertEqual(filter_params['study_group'], self.group1)
+        self.assertEqual(
+            filter_params['date__range'],
+            (expected_week_start, expected_week_end)
+        )
+
+    def test_form_is_invalid_with_missing_data(self):
+        """
+        Tests that the form is invalid if required fields are missing, 
+        such as when only the 'term' field is provided.
+        """
+        form_data = {'date': date(2024, 9, 1)}
+        form = ScheduleFilterForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('study_group', form.errors)
+
+        form_data = {'study_group': self.group1}
+        form = ScheduleFilterForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('date', form.errors)

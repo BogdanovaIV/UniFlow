@@ -1,14 +1,16 @@
 /* jshint esversion: 11, sub:true */
 
 document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('selection-shedule-templates');
-    const sheduleTemplates = document.getElementById('schedule-templates');
+
+    const form = document.getElementById('selection-schedule');
+    const schedule = document.getElementById('schedule');
+    const dataTemplateName = schedule.getAttribute('data-template-name')
     // Attach change event to all input and select elements in the form
     const upadateSelection = function () {
-        updateSelectionDescription(form, selectionDescription);
+        updateSelectionDescription(form, selectionDescription, dataTemplateName);
 
         if (areAllFieldsFilled(form) ||
-            sheduleTemplates.getAttribute('data-empty') == "False") {
+            schedule.getAttribute('data-empty') == "False") {
             form.submit();
         }
     }
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('update-selection').addEventListener(
         'click', upadateSelection
     );
-    updateSelectionDescription(form, selectionDescription)
+    updateSelectionDescription(form, selectionDescription, dataTemplateName)
 });
 
 // Function to check if all required fields are filled
@@ -34,16 +36,24 @@ function areAllFieldsFilled(form) {
 }
 
 // Function to update the selection description
-function updateSelectionDescription(form, selectionDescription) {
-    const termSelect = form.querySelector('select[name="term"]'); 
-    const groupSelect = form.querySelector('select[name="study_group"]'); 
-    
-    const selectedTermText = termSelect.options[termSelect.selectedIndex].text; 
+function updateSelectionDescription(form, selectionDescription, dataTemplateName) {
+    let selectedFirstText;
+    let labelFirstSelect = 'Term';
+    if (dataTemplateName == 'schedule') {
+        const firstSelect = form.querySelector("[name='date']"); 
+        selectedFirstText = firstSelect.value;
+        labelFirstSelect = 'Date';
+    } else {
+        const firstSelect = form.querySelector("select[name='term']");
+        selectedFirstText = firstSelect.options[firstSelect.selectedIndex].text;
+    }
+
+    const groupSelect = form.querySelector('select[name="study_group"]');  
     const selectedGroupText = groupSelect.options[groupSelect.selectedIndex].text;
 
     // Update description based on selections
-    if (selectedTermText || selectedGroupText) {
-        selectionDescription.textContent = `Term: ${selectedTermText}; Study Group: ${selectedGroupText};`;
+    if (selectedFirstText || selectedGroupText) {
+        selectionDescription.textContent = `${labelFirstSelect}: ${selectedFirstText}; Study Group: ${selectedGroupText};`;
     } else {
         selectionDescription.textContent = ''; // Clear if selections are not complete
     }

@@ -28,14 +28,14 @@
                 </div>
             </div>
             <div class="collapse col-10 offset-2 mt-2" id="collapseForm">
-                <form method="post" id="selection-shedule-templates" aria-label="Selection schedule templates form">
+                <form method="post" id="selection-schedule" aria-label="Selection schedule templates form">
                     {% csrf_token %}
                     {{ form.as_p }}
                 </form>
             </div>
         </div>
     </div>
-    <div class="container-fluid" id="schedule-templates" data-empty="{{ table_empty }}">
+    <div class="container-fluid" id="schedule" data-empty="{{ table_empty }}" data-template-name="schedule-templates">
         <div class="row">
             {% for weekday, details in schedule_templates.items %}
             <div class="col-12 col-md-4 col-lg-3 col-xl px-0">

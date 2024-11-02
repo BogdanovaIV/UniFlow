@@ -1,7 +1,11 @@
 from django.urls import path
-from .views import ScheduleTemplateView, tutor_schedules
-from .views import EditScheduleTemplateView, AddScheduleTemplateView
-from .views import DeleteScheduleTemplateView
+from .views import (
+    ScheduleTemplateView,
+    AddScheduleTemplateView,
+    EditScheduleTemplateView,
+    DeleteScheduleTemplateView,
+    ScheduleView
+    )
 app_name = 'tutor'
 urlpatterns = [
     path(
@@ -24,5 +28,24 @@ urlpatterns = [
         DeleteScheduleTemplateView.as_view(),
         name='delete_schedule_template'
     ),
-    path('schedules/', tutor_schedules, name='schedules'), 
+    path(
+        'schedule/',
+        ScheduleView.as_view(),
+        name='schedule'
+    ),
+    path(
+        'schedule-templates/add/',
+        ScheduleView.as_view(),
+        name='add_schedule'
+    ),
+    path(
+        'schedule-templates/edit/<int:pk>/',
+        ScheduleView.as_view(),
+        name='edit_schedule'
+    ),
+    path(
+        'schedule-templates/delete/<int:pk>/',
+        ScheduleView.as_view(),
+        name='delete_schedule'
+    ),
 ]

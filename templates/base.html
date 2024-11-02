@@ -6,7 +6,7 @@
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
 {% url 'student:dashboard' as url_dashboard %}
-{% url 'tutor:schedules' as url_schedules %}
+{% url 'tutor:schedule' as url_schedule %}
 {% url 'tutor:schedule_templates' as url_schedule_templates %}
 
 <!DOCTYPE html>
@@ -66,8 +66,8 @@
                     </li>
                     {% elif group.name == 'Tutor' %}
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == url_schedules or request.path == url_schedule_templates %}fw-bolder{% endif %}"
-                            href="{% url 'tutor:schedules' %}">
+                        <a class="nav-link {% if request.path == url_schedule or request.path == url_schedule_templates %}fw-bolder{% endif %}"
+                            href="{% url 'tutor:schedule' %}">
                             Dashboard
                         </a>
                     </li>

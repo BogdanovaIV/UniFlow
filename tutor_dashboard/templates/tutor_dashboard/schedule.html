@@ -1,6 +1,138 @@
 {% extends 'tutor_dashboard/tutor-dashboard.html' %}
 {% load static %}
 
-{% block table %}
-    Schedule
-{% endblock table %}
+{% block table_content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col mt-3 text-white font-monospace fw-medium">
+            <div class="row">
+                <div class="col-2 pt-1">
+                    <a id="instructions-button" href="#" class="icon-link icon-link-hover link-info me-3"
+                        data-bs-toggle="modal" data-bs-target="#instructionModal" aria-label="Open instructions">
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                </div>
+                <div class="col-10">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
+                            aria-label="Update selection">
+                            <i class="fas fa-sync"></i>
+                        </a>
+                        <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"
+                            aria-label="Toggle selection form">
+                            Selection
+                        </button>
+                        <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse col-10 offset-2 mt-2" id="collapseForm">
+                <form method="post" id="selection-schedule" aria-label="Selection schedule form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="schedule" data-empty="{{ table_empty }}" data-template-name="schedule">
+        <div class="row">
+            {% for weekday, weekday_info in schedule.items %}
+            <div class="col-12 col-md-4 col-lg-3 col-xl px-0">
+                <div class="card bg-transparent mt-3 border-light">
+                    <h6
+                        class="card-header {% if weekday < 5 %}text-bg-info{% else %}text-bg-danger{% endif %} text-light bg-opacity-50 text-uppercase">
+                        <div class="container"></div>
+                        <div class="row">{{ weekday_info.label_weekday }}</div>
+                        <div class="row">{{ weekday_info.date }}</div>
+                    </h6>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        {% for order, row_detail in weekday_info.details.items %}
+                        {% if row_detail.id %}
+                        <a href="{% url 'tutor:edit_schedule' pk=row_detail.id %}"
+                            class="text-decoration-none text-reset"
+                            aria-label="Edit schedule for {{ row_detail.subject }}">
+                            <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
+                                <div class="row m-0">
+                                    <div class="row m-0 p-0">
+                                        <div class="col-2 text-center p-0 m-0 border-end border-bottom border-secondary">{{ order }}</div>
+                                        <div class="col-10 px-1 m-0 border-bottom border-secondary">{{ row_detail.subject }}</div>
+                                    </div>
+                                    <div class="row m-0 p-0 {% if order < 10 %}border-bottom border-light{% endif %}">
+                                        <div class="col-2 text-center p-0 m-0 border-end border-secondary">H</div>
+                                        <div class="col-10 px-1 text-truncate">{{ row_detail.homework }}</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'tutor:add_schedule' %}?term={{ form.date.value }}&study_group={{ form.study_group.value }}&order_number={{ order }}"
+                            class="text-decoration-none text-reset"
+                            aria-label="Add new schedule for term {{ form.date.value }} and study group {{ form.study_group.value }}">
+                            <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
+                                <div class="row m-0">
+                                    <div class="row m-0 p-0">
+                                        <div class="col-2 text-center p-0 m-0 border-end border-bottom border-secondary">{{ order }}</div>
+                                        <div class="col-10 p-0 m-0 border-bottom border-secondary"></div>
+                                    </div>
+                                    <div class="row m-0 p-0 {% if order < 10 %}border-bottom border-light{% endif %}">
+                                        <div class="col-2 text-center p-0 m-0 border-end border-secondary">H</div>
+                                        <div class="col-10"></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Instruction Modal -->
+<div class="modal fade text-dark" id="instructionModal" tabindex="-1" aria-labelledby="instructionModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info-subtle">
+                <h5 class="modal-title" id="instructionModalLabel">Form Instructions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light">
+                <p>To use the schedule selection form:</p>
+                <ul>
+                    <li>Selection
+                        <ol>
+                            <li>Click on the <strong>Selection</strong> button to expand the form.</li>
+                            <li>Fill out the required fields, including term, and study group.</li>
+                        </ol>
+                    </li>
+                    <li>Adding and changing data
+                        <ol>
+                            <li>Сlick on a cell to open a form to fill out or edit</li>
+                            <li>Fill out the subject.</li>
+                            <li>Click <strong>Save</strong> to save changes, or <strong>Cancel</strong> to go back
+                                without
+                                saving.</li>
+                        </ol>
+                    </li>
+                    <li>Delete data
+                        <ol>
+                            <li>Click on a cell to open a form</li>
+                            <li>Click <strong>Delete</strong> to delete the object, or <strong>Cancel</strong> to go
+                                back without
+                                deleting.</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer bg-body-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock table_content %}

@@ -3,7 +3,7 @@
 
 {% block content %}
 
-{% url 'tutor:schedules' as url_schedules %}
+{% url 'tutor:schedule' as url_schedule %}
 {% url 'tutor:schedule_templates' as url_schedule_templates %}
 
 <section class="masthead py-4 text-light bg-image-dashboard-info">
@@ -14,7 +14,7 @@
     </div>
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link nav-link-tutor {% if request.path == url_schedules %}active{% endif %}" href="{% url 'tutor:schedules' %}">
+            <a class="nav-link nav-link-tutor {% if request.path == url_schedule %}active{% endif %}" href="{% url 'tutor:schedule' %}">
                 Schedule
             </a>
         </li>

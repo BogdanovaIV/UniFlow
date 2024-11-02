@@ -69,7 +69,7 @@ class CustomAuthViewTests(TestCase):
             print(response.context['form'].errors)
         
         # Check for the redirect to student dashboard
-        self.assertRedirects(response, reverse('tutor:schedules'))
+        self.assertRedirects(response, reverse('tutor:schedule'))
 
     def test_student_signup_redirect(self):
         """

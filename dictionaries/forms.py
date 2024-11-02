@@ -1,4 +1,5 @@
 from django import forms
+from datetime import timedelta
 from .models import Term, StudyGroup, ScheduleTemplate, Subject, WeekdayChoices  
 
 class ScheduleTemplateFilterForm(forms.Form):
@@ -7,9 +8,9 @@ class ScheduleTemplateFilterForm(forms.Form):
 
     Fields:
         - term: A ModelChoiceField that allows the user to select a term 
-          from the active terms available in the database.
+        from the active terms available in the database.
         - study_group: A ModelChoiceField that allows the user to select 
-          a study group from the active study groups available in the database.
+        a study group from the active study groups available in the database.
     """
     term = forms.ModelChoiceField(
         queryset=Term.active_objects(),
@@ -86,3 +87,59 @@ class ScheduleTemplateForm(forms.ModelForm):
             self.fields['weekday_name'].initial = WeekdayChoices(weekday_value).label
 
         self.fields['subject'].queryset = Subject.active_objects()
+
+
+class ScheduleFilterForm(forms.Form):
+    """
+    A form to filter schedule based on selected dates and study group.
+
+    Fields:
+        - week (DateField): A date input field for selecting a week, used to
+        filter data within the specified week period.
+        - study_group: A ModelChoiceField that allows the user to select 
+        a study group from the active study groups available in the database.
+    """
+    date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=True,
+        label="Week Date"
+    )
+    study_group = forms.ModelChoiceField(
+        queryset=StudyGroup.active_objects(),
+        required=True,
+        label="Study Group"
+    )
+
+    def get_filter_params(self):
+        """
+        Generates a dictionary of filtering parameters based on the form inputs.
+        
+        The week start date is extended to a full week range (Monday to Sunday), 
+        allowing the schedule data to be filtered by the chosen study group 
+        and date range.
+        
+        Returns:
+            dict: Filter parameters including study group and date range for
+            the selected week.
+        """
+        week_start = None
+        week_end = None
+        study_group = None
+        if self.is_valid():
+            
+            week_start = (
+                self.cleaned_data.get('date')
+                if 'date' in self.cleaned_data else None
+            )
+            study_group = (
+                self.cleaned_data.get('study_group')
+                if 'study_group' in self.cleaned_data else None
+            )
+            if week_start:
+                week_start = week_start - timedelta(days=week_start.weekday())
+                week_end = week_start + timedelta(days=6)
+
+        return {
+                'study_group': study_group,
+                'date__range': (week_start, week_end)
+            }
