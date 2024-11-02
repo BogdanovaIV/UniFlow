@@ -3,8 +3,16 @@ from datetime import date, timedelta
 from .forms import (
     ScheduleTemplateFilterForm,
     ScheduleTemplateForm,
-    ScheduleFilterForm)
-from .models import Term, StudyGroup, ScheduleTemplate, Subject, WeekdayChoices
+    ScheduleFilterForm,
+    ScheduleForm)
+from .models import (
+    Term,
+    StudyGroup,
+    ScheduleTemplate,
+    Subject,
+    WeekdayChoices,
+    Schedule
+)
 
 class ScheduleTemplateFilterFormTests(TestCase):
     """
@@ -83,6 +91,7 @@ class ScheduleTemplateFilterFormTests(TestCase):
         form = ScheduleTemplateFilterForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('study_group', form.errors)
+
 
 class ScheduleTemplateFormTests(TestCase):
     """
@@ -232,3 +241,71 @@ class ScheduleFilterFormTests(TestCase):
         form = ScheduleFilterForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('date', form.errors)
+
+
+class ScheduleFormTests(TestCase):
+    """
+    Test suite for ScheduleForm to ensure form fields,
+    querysets, and validation behave correctly.
+    """
+
+    def setUp(self):
+        """Create necessary objects for Schedule."""
+        self.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
+        
+        # Create active and inactive subjects
+        self.active_subject = Subject.objects.create(
+            name="Subject1",
+            active=True
+        )
+        self.inactive_subject = Subject.objects.create(
+            name="Subject2",
+            active=False
+        )
+        
+        # Create a ScheduleTemplate instance for edit testing
+        self.schedule = Schedule.objects.create(
+            date=date(2024, 9, 3),
+            study_group=self.study_group,
+            order_number=1,
+            subject=self.active_subject,
+            homework='homework'
+        )
+
+    def test_subject_queryset_filters_active_only(self):
+        """
+        Test that the subject field queryset contains only active subjects.
+        """
+        form = ScheduleForm(instance=self.schedule)
+        subjects_queryset = form.fields['subject'].queryset
+        self.assertIn(self.active_subject, subjects_queryset)
+        self.assertNotIn(self.inactive_subject, subjects_queryset)
+
+    def test_form_valid_with_all_fields(self):
+        """Test form validation for valid data."""
+        form_data = {
+            'date': date(2024, 9, 2),
+            'study_group': self.study_group.id,
+            'order_number': 1,
+            'subject': self.active_subject.id
+        }
+
+        form = ScheduleForm(data=form_data)
+        self.assertTrue(form.is_valid(), msg=f"Form errors: {form.errors}")
+
+    def test_form_invalid_without_required_fields(self):
+        """Test form validation fails when required fields are missing."""
+        form_data = {
+            'order_number': 1,
+            'subject': ''
+        }
+        form_initial = {
+            'date': date(2024, 9, 3),
+            'study_group': self.study_group.id,
+        }
+        form = ScheduleForm(data=form_data, initial=form_initial)
+        self.assertFalse(form.is_valid())
+        self.assertIn('subject', form.errors)

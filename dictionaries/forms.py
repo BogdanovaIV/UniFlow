@@ -1,6 +1,12 @@
 from django import forms
 from datetime import timedelta
-from .models import Term, StudyGroup, ScheduleTemplate, Subject, WeekdayChoices  
+from .models import (
+    Term,
+    StudyGroup,
+    ScheduleTemplate,
+    Subject,
+    WeekdayChoices,
+    Schedule)  
 
 class ScheduleTemplateFilterForm(forms.Form):
     """
@@ -143,3 +149,70 @@ class ScheduleFilterForm(forms.Form):
                 'study_group': study_group,
                 'date__range': (week_start, week_end)
             }
+
+
+class ScheduleForm(forms.ModelForm):
+    """
+    A form for editing Schedule instances with restricted field access.
+    
+    - Fields 'date', 'study_group', and 'order_number' are disabled,
+    leaving only 'homework' editable when an instance exists.
+    - Filters 'homework' to display only active subjects.
+    """
+    study_group_name = forms.CharField(
+        label='Study group',
+        required=False,
+        widget=forms.TextInput(attrs={'readonly':'readonly'})
+    )
+    weekday_name = forms.CharField(
+        label='Weekday',
+        required=False,
+        widget=forms.TextInput(attrs={'readonly':'readonly'})
+    )
+    weekday_value = forms.IntegerField(
+        label='Weekday (value)',
+        required=False,
+        widget=forms.NumberInput()
+    )
+
+    class Meta:
+        model = Schedule
+        fields = [
+            'date',
+            'study_group',
+            'order_number',
+            'subject',
+            'homework',
+            'study_group_name',
+            'weekday_name',
+            'weekday_value'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        """
+        Initializes the form, setting specific fields to read-only and limiting
+        'subject' choices to active subjects.
+        """
+        super().__init__(*args, **kwargs)
+
+        weekday_value = None
+        if self.instance and self.instance.pk:
+            self.fields['study_group_name'].initial = self.instance.study_group
+            self.fields['weekday_name'].initial = (
+                WeekdayChoices(self.instance.date.weekday()).label
+            )
+            self.fields['weekday_value'].initial = self.instance.date.weekday()
+
+        if 'study_group' in self.initial:
+            self.fields['study_group_name'].initial = (
+                StudyGroup.objects.get(pk=self.initial['study_group'])
+            )
+        if 'date' in self.initial:
+            self.fields['weekday_name'].initial = (
+                WeekdayChoices(self.initial['date'].weekday()).label
+            )
+            self.fields['weekday_value'].initial = (
+                self.initial['date'].weekday()
+            )
+
+        self.fields['subject'].queryset = Subject.active_objects()

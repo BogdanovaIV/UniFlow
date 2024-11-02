@@ -4,7 +4,8 @@ from .views import (
     AddScheduleTemplateView,
     EditScheduleTemplateView,
     DeleteScheduleTemplateView,
-    ScheduleView
+    ScheduleView,
+    EditScheduleView
     )
 app_name = 'tutor'
 urlpatterns = [
@@ -34,17 +35,17 @@ urlpatterns = [
         name='schedule'
     ),
     path(
-        'schedule-templates/add/',
+        'schedule/add/',
         ScheduleView.as_view(),
         name='add_schedule'
     ),
     path(
-        'schedule-templates/edit/<int:pk>/',
-        ScheduleView.as_view(),
+        'schedule/edit/<int:pk>/',
+        EditScheduleView.as_view(),
         name='edit_schedule'
     ),
     path(
-        'schedule-templates/delete/<int:pk>/',
+        'schedule/delete/<int:pk>/',
         ScheduleView.as_view(),
         name='delete_schedule'
     ),

@@ -3,7 +3,7 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
 from dictionaries.models import Term, StudyGroup, Schedule, Subject
-from dictionaries.forms import ScheduleFilterForm
+from dictionaries.forms import ScheduleFilterForm, ScheduleForm
 from tutor_dashboard.views import ScheduleView
 
 
@@ -136,4 +136,121 @@ class ScheduleViewTests(TestCase):
         self.assertFalse(table_empty)
         self.assertIn(1, schedule)
         self.assertEqual(schedule[1]['details'][1]['subject'], self.subject)
+
+
+
+class EditScheduleViewTests(TestCase):
+    """
+    Test suite for EditScheduleView.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up initial data for testing.
+        """
+        
+        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.subject = Subject.objects.create(name="Subject1", active=True)
+        
+        # Schedule template instance to be edited
+        cls.schedule = Schedule.objects.create(
+            date=date(2024, 9, 3),
+            study_group=cls.study_group,
+            order_number=1,
+            subject=cls.subject,
+            homework='homework'
+        )
+        cls.tutor_user = User.objects.create_user(
+            username="tutor",
+            password="password"
+        )
+        cls.student_user = User.objects.create_user(
+            username="student",
+            password="password"
+        )
+        tutor_group = Group.objects.get(name="Tutor")
+        student_group = Group.objects.get(name="Student")
+        cls.tutor_user.groups.add(tutor_group)
+        cls.student_user.groups.add(student_group)
+
+    def setUp(self):
+        """
+        Set up client and URL for the view under test.
+        """
+        self.client = Client()
+        self.url = reverse(
+            'tutor:edit_schedule',
+            args=[self.schedule.pk]
+        )
+
+    def test_get_request_renders_form_with_instance_data(self):
+        """
+        Test that a GET request renders the form with instance data.
+        """
+        self.client.login(username="tutor", password="password")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            'tutor_dashboard/edit_schedule.html'
+        )
+        
+        form = response.context['form']
+        self.assertIsInstance(form, ScheduleForm)
+        self.assertEqual(form.instance, self.schedule)
+        
+    def test_student_cannot_edit_schedule(self):
+        """
+        Test that a student cannot edit schedule.
+        """
+        self.client.login(username="student", password="password")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_post_request_with_valid_data_updates_instance(self):
+        """
+        Test that a POST request with valid data updates the Schedule
+        instance and redirects correctly.
+        """
+        new_subject = Subject.objects.create(name="Subject2", active=True)
+        self.client.login(username="tutor", password="password")
+        response = self.client.post(self.url, {
+            'date': date(2024, 9, 3),
+            'study_group': self.study_group.pk,
+            'weekday': 1,
+            'order_number': 1,
+            'subject': new_subject.pk
+        })
+
+        # Refresh instance from database and check updated values
+        self.schedule.refresh_from_db()
+        self.assertEqual(response.status_code, 302)
+        expected_url = (
+            f"{reverse('tutor:schedule')}?date={date(2024, 9, 3)}&"
+            f"study_group={self.study_group.pk}"
+        )
+        self.assertRedirects(response, expected_url)
+        self.assertEqual(self.schedule.subject, new_subject)
+
+    def test_post_request_with_invalid_data_displays_errors(self):
+        """
+        Test that a POST request with invalid data renders the form with errors.
+        """
+        self.client.login(username="tutor", password="password")
+        response = self.client.post(self.url, {
+            'date': date(2024, 9, 3),
+            'study_group': self.study_group.pk,
+            'order_number': '',
+            'subject': self.subject.pk
+        })
+        form = response.context['form']
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            'tutor_dashboard/edit_schedule.html'
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn('order_number', form.errors)
 
