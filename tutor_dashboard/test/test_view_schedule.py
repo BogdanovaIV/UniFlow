@@ -254,3 +254,133 @@ class EditScheduleViewTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('order_number', form.errors)
 
+
+
+class AddScheduleViewTests(TestCase):
+    """Test suite for AddScheduleView."""
+    
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up initial data for testing.
+        """
+        
+        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.subject = Subject.objects.create(name="Subject1", active=True)
+        cls.tutor_user = User.objects.create_user(
+            username="tutor",
+            password="password"
+        )
+        cls.student_user = User.objects.create_user(
+            username="student",
+            password="password"
+        )
+        tutor_group = Group.objects.get(name="Tutor")
+        student_group = Group.objects.get(name="Student")
+        cls.tutor_user.groups.add(tutor_group)
+        cls.student_user.groups.add(student_group)
+
+    def setUp(self):
+        """
+        Set up client and URL for the view under test.
+        """
+        self.client = Client()
+        self.url = reverse('tutor:add_schedule')
+
+    def test_get_add_schedule_template_view(self):
+        """Test the GET method renders the form with initial data."""
+        self.client.login(username="tutor", password="password")
+        response = self.client.get(
+            self.url,
+            {
+                'date': date(2024, 9, 3),
+                'study_group': self.study_group.id,
+                'order_number': 1
+            }
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            'tutor_dashboard/edit_schedule.html'
+        )
+        self.assertIsInstance(response.context['form'], ScheduleForm)
+        self.assertEqual(
+            response.context['form'].initial['date'],
+            date(2024, 9, 3)
+        )
+        self.assertEqual(
+            response.context['form'].initial['study_group'],
+            str(self.study_group.id)
+        )
+
+    def test_get_student_cannot_add_schedule(self):
+        """
+        Test that a student cannot call GET method.
+        """
+        self.client.login(username="student", password="password")
+        response = self.client.get(
+            self.url,
+            {
+                'date': date(2024, 9, 3),
+                'study_group': self.study_group.id,
+                'order_number': 1
+            }
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_post_add_schedule_view_success(self):
+        """Test the POST method successfully adds a Schedule."""
+        self.client.login(username="tutor", password="password")
+        response = self.client.post(self.url, {
+            'date': date(2024, 9, 3),
+            'study_group': self.study_group.id,
+            'order_number': 1,
+            'subject': self.subject.id
+        })
+        self.assertRedirects(
+            response,
+            f"{reverse('tutor:schedule')}?date={date(2024, 9, 3)}"
+            f"&study_group={self.study_group.id}"
+            )
+        self.assertTrue(
+            Schedule.objects.filter(
+                date=date(2024, 9, 3),
+                study_group=self.study_group,
+                order_number=1
+            ).exists()
+        )
+
+    def test_get_student_cannot_add_schedule(self):
+        """
+        Test that a student cannot call POST method.
+        """
+        self.client.login(username="student", password="password")
+        response = self.client.post(self.url, {
+            'date': date(2024, 9, 3),
+            'study_group': self.study_group.id,
+            'order_number': 1,
+            'subject': self.subject.id
+        })
+        self.assertEqual(response.status_code, 403)
+
+    def test_post_add_schedule_view_failure(self):
+        """Test the POST method fails when form data is invalid."""
+        self.client.login(username="tutor", password="password")
+        response = self.client.post(self.url, {
+            'date': date(2024, 9, 3),
+            'study_group': self.study_group.id,
+            'order_number': 1,
+            'subject': ''
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            'tutor_dashboard/edit_schedule.html'
+        )
+        self.assertFormError(
+            response,
+            'form',
+            'subject',
+            'This field is required.'
+        )
+

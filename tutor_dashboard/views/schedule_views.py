@@ -1,6 +1,6 @@
 from django.views.generic import View
-from django.shortcuts import render, redirect, reverse
-from datetime import timedelta
+from django.shortcuts import render, redirect, reverse, get_object_or_404
+from datetime import timedelta, datetime
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from dictionaries.forms import ScheduleFilterForm, ScheduleForm
 from dictionaries.models import Schedule, WeekdayChoices
@@ -22,7 +22,10 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
             return values[0] if values else request.get(key)
 
         return {
-            'date': get_first_value('term'),
+            'date':
+                datetime.strptime(get_first_value('date'), "%Y-%m-%d").date()
+                if isinstance(get_first_value('date'), str)
+                else get_first_value('date'),
             'study_group': get_first_value('study_group'),
             'order_number': get_first_value('order_number'),
             'subject': get_first_value('subject'),
@@ -112,12 +115,14 @@ class ScheduleView(PermissionRequiredMixin, View):
             'label_weekday': label,
             'date': filter_params['date__range'][0] + timedelta(days=(value))
             if filter_params['date__range'][0] else '',
+            'date_str': str(
+                filter_params['date__range'][0] + timedelta(days=(value))
+                ) if filter_params['date__range'][0] else '',
             'details': {order: {'id': '','subject': '', 'homework': ''}
                         for order in range(1, 11)}
         }
         for value, label in WeekdayChoices.choices
         }
-        
         for object in objects:
             schedule[object.date.weekday()]['details'][object.order_number] = {
                 'id': object.id,
@@ -155,4 +160,53 @@ class EditScheduleView(ScheduleBaseView):
             return self.handle_redirect(data)
 
         return render(request, self.template_name, {'form': form})
+
+
+class AddScheduleView(ScheduleBaseView):
+    """
+    View to add a new Schedule. Uses initial data from query parameters.
+    """
+    permission_required = 'dictionaries.add_schedule'
+    
+    def get(self, request):
+        """Render the form to add a new Schedule."""
+        initial_data = self.get_initial_data(request.GET)
+        form = ScheduleForm(initial=initial_data)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        """Process the form submission to add a new Schedule."""
+
+        initial_data = self.get_initial_data(request.POST)
+        form = ScheduleForm(request.POST, initial=initial_data)
+
+        if form.is_valid():
+            form.save()
+            data = {
+                'date':form.cleaned_data.get('date'),
+                'study_group':form.cleaned_data.get('study_group'),
+            }
+            return self.handle_redirect(data)
+
+        return render(request, self.template_name, {'form': form})
+
+
+class DeleteScheduleView(ScheduleBaseView):
+    """
+    View to delete a Schedule.
+    """
+    permission_required = 'dictionaries.delete_schedule'
+    
+    def post(self, request, pk):
+        """
+        Handles the POST request to delete the specified Schedule 
+        and redirects to the schedule list.
+        """
+        schedule = get_object_or_404(Schedule, pk=pk)
+        data = {
+                'date':schedule.date,
+                'study_group':schedule.study_group,
+        }
+        schedule.delete()
+        return self.handle_redirect(data)
 

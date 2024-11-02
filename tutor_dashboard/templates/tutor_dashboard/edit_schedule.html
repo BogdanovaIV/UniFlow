@@ -64,7 +64,7 @@
                             </button>
                         </div>
                         {% endif %}
-                        <a href="{% url 'tutor:schedule_templates' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}"
+                        <a href="{% url 'tutor:schedule' %}?date={{ form.date_str.value }}&study_group={{ form.study_group.value }}"
                             class="btn btn-secondary me-2">
                             Cancel
                         </a>
@@ -90,7 +90,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <form id="deleteForm" method="post"
-                    action="{% url 'tutor:delete_schedule_template' form.instance.pk %}">
+                    action="{% url 'tutor:delete_schedule' form.instance.pk %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>

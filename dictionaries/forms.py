@@ -1,5 +1,5 @@
 from django import forms
-from datetime import timedelta
+from datetime import timedelta, datetime
 from .models import (
     Term,
     StudyGroup,
@@ -159,6 +159,11 @@ class ScheduleForm(forms.ModelForm):
     leaving only 'homework' editable when an instance exists.
     - Filters 'homework' to display only active subjects.
     """
+    date_str = forms.CharField(
+        label='Date (str)',
+        required=False,
+        widget=forms.TextInput(attrs={'readonly':'readonly'})
+    )
     study_group_name = forms.CharField(
         label='Study group',
         required=False,
@@ -185,7 +190,8 @@ class ScheduleForm(forms.ModelForm):
             'homework',
             'study_group_name',
             'weekday_name',
-            'weekday_value'
+            'weekday_value',
+            'date_str'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -197,6 +203,7 @@ class ScheduleForm(forms.ModelForm):
 
         weekday_value = None
         if self.instance and self.instance.pk:
+            self.fields['date_str'].initial = str(self.instance.date)
             self.fields['study_group_name'].initial = self.instance.study_group
             self.fields['weekday_name'].initial = (
                 WeekdayChoices(self.instance.date.weekday()).label
@@ -207,12 +214,17 @@ class ScheduleForm(forms.ModelForm):
             self.fields['study_group_name'].initial = (
                 StudyGroup.objects.get(pk=self.initial['study_group'])
             )
-        if 'date' in self.initial:
+        if 'date' in self.initial and self.initial['date']:
+            date_obj = (
+                datetime.strptime(self.initial['date'], "%Y-%m-%d").date()
+                if isinstance(self.initial['date'], str)
+                else self.initial['date']
+            )
+            self.fields['date_str'].initial = str(self.initial['date'])
             self.fields['weekday_name'].initial = (
-                WeekdayChoices(self.initial['date'].weekday()).label
+                WeekdayChoices(date_obj.weekday()).label
             )
             self.fields['weekday_value'].initial = (
-                self.initial['date'].weekday()
+                date_obj.weekday()
             )
-
         self.fields['subject'].queryset = Subject.active_objects()
