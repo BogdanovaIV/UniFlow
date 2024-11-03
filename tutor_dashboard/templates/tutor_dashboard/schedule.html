@@ -2,6 +2,25 @@
 {% load static %}
 
 {% block table_content %}
+<!--Toast messages-->
+{% if messages %}
+<div aria-live="polite" aria-atomic="true" class="position-relative top-0">
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+        {% for message in messages %}
+        <div class="toast align-items-center {% if message.tags == 'error' %} text-bg-danger {% else %} text-bg-{{ message.tags }} {% endif %} border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" data-bs-delay="10000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
 <div class="container-fluid">
     <div class="row">
         <div class="col mt-3 text-white font-monospace fw-medium">
@@ -23,6 +42,12 @@
                             aria-label="Toggle selection form">
                             Selection
                         </button>
+                        <form method="post" action="{% url 'tutor:fill_schedule' %}" {% if not table_empty %} hidden {% endif %}>
+                            {% csrf_token %}
+                            <input type="hidden" name="date" value="{{ form.date.value }}">
+                            <input type="hidden" name="study_group" value="{{ form.study_group.value }}">
+                            <button type="submit" class="btn btn-success p-2 me-2">Fill</button>
+                        </form>
                         <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
                     </div>
                 </div>
@@ -55,7 +80,9 @@
                             <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
                                 <div class="row m-0">
                                     <div class="row m-0 p-0">
-                                        <div class="col-2 text-center p-0 m-0 border-end border-bottom border-secondary">{{ order }}</div>
+                                        <div
+                                            class="col-2 text-center p-0 m-0 border-end border-bottom border-secondary">
+                                            {{ order }}</div>
                                         <div class="col-10 px-1 m-0 border-bottom border-secondary">{{ row_detail.subject }}</div>
                                     </div>
                                     <div class="row m-0 p-0 {% if order < 10 %}border-bottom border-light{% endif %}">
@@ -72,7 +99,9 @@
                             <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
                                 <div class="row m-0">
                                     <div class="row m-0 p-0">
-                                        <div class="col-2 text-center p-0 m-0 border-end border-bottom border-secondary">{{ order }}</div>
+                                        <div
+                                            class="col-2 text-center p-0 m-0 border-end border-bottom border-secondary">
+                                            {{ order }}</div>
                                         <div class="col-10 p-0 m-0 border-bottom border-secondary"></div>
                                     </div>
                                     <div class="row m-0 p-0 {% if order < 10 %}border-bottom border-light{% endif %}">

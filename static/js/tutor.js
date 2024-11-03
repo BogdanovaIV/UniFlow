@@ -5,10 +5,26 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('selection-schedule');
     const schedule = document.getElementById('schedule');
     const dataTemplateName = schedule.getAttribute('data-template-name')
+    const fillForm = document.getElementById('fill-form')
     // Attach change event to all input and select elements in the form
     const upadateSelection = function () {
         updateSelectionDescription(form, selectionDescription, dataTemplateName);
-
+        if (fillForm) {
+            console.log(schedule.getAttribute('data-empty'));
+            if (schedule.getAttribute('data-empty') == "False") {
+                if (!fillForm.hasAttribute('hidden')) {
+                    fillForm.setAttribute('hidden', '');
+                }
+            } else if (areAllFieldsFilled(form)) {
+                if (fillForm.hasAttribute('hidden')) {
+                    fillForm.removeAttribute('hidden');
+                }
+            } else {
+                if (!fillForm.hasAttribute('hidden')) {
+                    fillForm.setAttribute('hidden', '');
+                }
+            }
+        }
         if (areAllFieldsFilled(form) ||
             schedule.getAttribute('data-empty') == "False") {
             form.submit();
@@ -23,6 +39,14 @@ document.addEventListener('DOMContentLoaded', function () {
         'click', upadateSelection
     );
     updateSelectionDescription(form, selectionDescription, dataTemplateName)
+
+    //Add event for toast messages
+    var toastElements = document.querySelectorAll('.toast');
+    toastElements.forEach(function (toastElement) {
+        var toast = new bootstrap.Toast(toastElement);
+        toast.show();
+    });
+
 });
 
 // Function to check if all required fields are filled
@@ -40,7 +64,7 @@ function updateSelectionDescription(form, selectionDescription, dataTemplateName
     let selectedFirstText;
     let labelFirstSelect = 'Term';
     if (dataTemplateName == 'schedule') {
-        const firstSelect = form.querySelector("[name='date']"); 
+        const firstSelect = form.querySelector("[name='date']");
         selectedFirstText = firstSelect.value;
         labelFirstSelect = 'Date';
     } else {
@@ -48,7 +72,7 @@ function updateSelectionDescription(form, selectionDescription, dataTemplateName
         selectedFirstText = firstSelect.options[firstSelect.selectedIndex].text;
     }
 
-    const groupSelect = form.querySelector('select[name="study_group"]');  
+    const groupSelect = form.querySelector('select[name="study_group"]');
     const selectedGroupText = groupSelect.options[groupSelect.selectedIndex].text;
 
     // Update description based on selections

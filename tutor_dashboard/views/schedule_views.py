@@ -1,9 +1,17 @@
 from django.views.generic import View
 from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.contrib import messages
 from datetime import timedelta, datetime
+from django.db.models import Q
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from dictionaries.forms import ScheduleFilterForm, ScheduleForm
-from dictionaries.models import Schedule, WeekdayChoices
+from dictionaries.models import (
+    Schedule,
+    WeekdayChoices,
+    ScheduleTemplate,
+    StudyGroup,
+    Term
+)
 
 
 class ScheduleBaseView(PermissionRequiredMixin, View):
@@ -36,10 +44,14 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
         Handle redirection after saving the form.
         """
         date = form.get('date')
-        study_group = form.get('study_group').id
+        study_group = (
+            form.get('study_group').id 
+            if isinstance(form.get('study_group'), StudyGroup) 
+            else form.get('study_group')
+        )
         return redirect(
             f"{reverse('tutor:schedule')}?date={date}"
-            f"&study_group={study_group}"
+            f"&study_group={study_group}",
         )
 
 
@@ -98,7 +110,7 @@ class ScheduleView(PermissionRequiredMixin, View):
         """
         if filter_params['date__range'][0] and filter_params['study_group']:
             objects = Schedule.objects.filter(**filter_params)
-            table_empty = False
+            table_empty = not objects.exists()
         else:
             objects = Schedule.objects.none()
             table_empty = True
@@ -210,3 +222,135 @@ class DeleteScheduleView(ScheduleBaseView):
         schedule.delete()
         return self.handle_redirect(data)
 
+
+class FillScheduleView(ScheduleBaseView):
+    """
+    View to fill the Schedule based on selected study group and date.
+    Checks for existing schedules and uses applicable terms for filling.
+    """
+    permission_required = 'dictionaries.add_schedule'
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST request to fill the schedule. Validates 
+        study group and date, checks for existing entries, 
+        and fills the schedule based on templates.
+        """
+        study_group_request = request.POST.get("study_group", '')
+        date_request = request.POST.get("date", '')
+        data = {'date': date_request, 'study_group': study_group_request}
+
+        if study_group_request and date_request:
+            date_template = self.parse_date(date_request)
+            start_of_week, end_of_week = self.get_week_range(date_template)
+
+            # Check if Schedule entries already exist
+            if self.schedule_exists(
+                study_group_request, start_of_week, end_of_week):
+                messages.error(
+                    request,
+                    'Schedule entries already exist for the specified study '
+                    'group and date range.'
+                    )
+                return self.handle_redirect(data)
+
+            terms = self.get_terms(start_of_week, end_of_week)
+            if not terms.exists():
+                messages.error(
+                    request,
+                    'No active terms found for the specified date range.'
+                    )
+                return self.handle_redirect(data)
+
+            combinations = self.create_combinations(start_of_week, terms)
+            query = self.build_query(study_group_request, combinations)
+            templates = ScheduleTemplate.objects.filter(query)
+            if not templates.exists():
+                messages.error(
+                    request,
+                    'No template found for the selected study group and terms.'
+                    )
+                return self.handle_redirect(data)
+
+            self.fill_schedule(templates, start_of_week)
+            messages.success(
+                request,
+                'Schedule filled successfully from template.'
+                )
+        else:
+            messages.error(request, 'Study group and date are not specified.')
+
+        return self.handle_redirect(data)
+
+    def get_study_group(self, request):
+        """ Retrieves the study group from the request. """
+        return request.POST.get("study_group", '')
+
+    def parse_date(self, date_request):
+        """Parses the date string to a date object."""
+        if isinstance(date_request, str):
+            # Convert the date string to a date object
+            parsed_date = datetime.strptime(date_request, "%Y-%m-%d").date()
+        else:
+            parsed_date = date_request
+
+        return parsed_date
+
+    def get_week_range(self, date_template):
+        """ Returns the start and end of the week for a given date. """
+        start_of_week = date_template - timedelta(days=date_template.weekday())
+        end_of_week = (
+            date_template + timedelta(days=(6 - date_template.weekday()))
+        )
+        return start_of_week, end_of_week
+
+    def schedule_exists(self, study_group_request, start_of_week, end_of_week):
+        """ Checks for existing Schedule entries within the specified range. """
+        return Schedule.objects.filter(
+            study_group=study_group_request,
+            date__range=(start_of_week, end_of_week)
+        ).exists()
+
+    def get_terms(self, start_of_week, end_of_week):
+        """ Retrieves active terms overlapping with the specified week. """
+        return Term.objects.filter(
+            Q(date_from__lte=end_of_week) & Q(date_to__gte=start_of_week)
+        ).order_by('date_from')
+
+    def create_combinations(self, start_of_week, terms):
+        """ Creates a list of weekday-term combinations for the week. """
+        combinations = []
+        for date_week in (start_of_week + timedelta(days=i) for i in range(7)):
+            term = terms.filter(
+                date_from__lte=date_week, date_to__gte=date_week
+                ).first()
+            if term:
+                combinations.append(
+                    {'weekday': date_week.weekday(), 'term': term}
+                    )
+        return combinations
+
+    def build_query(self, study_group_request, combinations):
+        """
+        Builds a query for filtering ScheduleTemplate based on combinations.
+        """
+        query = Q(
+            study_group=study_group_request,
+            weekday=combinations[0]['weekday'],
+            term=combinations[0]['term'])
+        for combo in combinations[1:]:
+            query |= Q(
+                study_group=study_group_request,
+                weekday=combo['weekday'],
+                term=combo['term'])
+        return query
+
+    def fill_schedule(self, templates, start_of_week):
+        """ Fills the Schedule by creating entries based on the templates. """
+        for template in templates:
+            Schedule.objects.create(
+                date=start_of_week + timedelta(days=template.weekday),
+                study_group=template.study_group,
+                subject=template.subject,
+                order_number=template.order_number
+            )

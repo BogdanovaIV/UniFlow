@@ -1,8 +1,15 @@
 from datetime import date
 from django.test import TestCase, Client
+from django.contrib.messages import get_messages
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
-from dictionaries.models import Term, StudyGroup, Schedule, Subject
+from dictionaries.models import (
+    Term,
+    StudyGroup,
+    Schedule,
+    Subject,
+    ScheduleTemplate
+    )
 from dictionaries.forms import ScheduleFilterForm, ScheduleForm
 from tutor_dashboard.views import ScheduleView
 
@@ -384,3 +391,143 @@ class AddScheduleViewTests(TestCase):
             'This field is required.'
         )
 
+
+class FillScheduleViewTests(TestCase):
+    """Test suite for AddScheduleView."""
+    def setUp(self):
+        """Set up the test environment."""
+        self.study_group = StudyGroup.objects.create(
+            name="Group A", active=True
+            )
+        self.subject = Subject.objects.create(name="Subject1", active=True)
+        
+        # Create schedule templates
+        self.schedule = Schedule.objects.create(
+            date=date(2024,9,3),
+            study_group=self.study_group,
+            order_number=1,
+            subject=self.subject
+        )
+        self.term = Term.objects.create(
+            name='Term1',
+            date_from=date(2024, 10, 1),
+            date_to=date(2024, 10, 31),
+            active=True
+        )
+        self.template = ScheduleTemplate.objects.create(
+            study_group=self.study_group,
+            weekday=2,
+            subject=self.subject,
+            order_number=1,
+            term=self.term
+        )
+        self.tutor_user = User.objects.create_user(
+            username="tutor",
+            password="password"
+        )
+        self.student_user = User.objects.create_user(
+            username="student",
+            password="password"
+        )
+        tutor_group = Group.objects.get(name="Tutor")
+        student_group = Group.objects.get(name="Student")
+        self.tutor_user.groups.add(tutor_group)
+        self.student_user.groups.add(student_group)
+        self.date = '2024-10-15'
+        
+        self.client = Client()
+        self.url = reverse('tutor:fill_schedule')
+
+    def test_post_successful_fill_schedule(self):
+        """Test successful schedule filling."""
+        self.client.login(username='tutor', password='password')
+        response = self.client.post(self.url, {
+            'study_group': self.study_group.id,
+            'date': self.date
+        })
+
+        self.assertEqual(response.status_code, 302) 
+        self.assertTrue(
+            Schedule.objects.filter(study_group=self.study_group).exists()
+            )
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn('Schedule filled successfully from template.', messages)
+    
+    def test_post_schedule_exists(self):
+        """Test when schedule entries already exist."""
+        self.client.login(username='tutor', password='password')
+        Schedule.objects.create(
+            date=date(2024, 10, 15),
+            study_group=self.study_group,
+            subject=self.subject,
+            order_number=1
+        )
+
+        response = self.client.post(self.url, {
+            'study_group': self.study_group.id,
+            'date': self.date
+        })
+
+        self.assertEqual(response.status_code, 302)
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn(
+            'Schedule entries already exist for the specified study group and '
+            'date range.',
+            messages)
+
+    def test_post_no_active_terms(self):
+        """Test when no active terms are found."""
+        self.client.login(username='tutor', password='password')
+        Term.objects.all().delete()
+        response = self.client.post(self.url, {
+            'study_group': self.study_group.id,
+            'date': self.date
+        })
+
+        self.assertEqual(response.status_code, 302) 
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn(
+            'No active terms found for the specified date range.',
+            messages
+            )
+
+    def test_post_no_template_found(self):
+        """Test when no schedule templates are found."""
+        self.client.login(username='tutor', password='password')
+        ScheduleTemplate.objects.all().delete()  
+
+        response = self.client.post(self.url, {
+            'study_group': self.study_group.id,
+            'date': self.date
+        })
+
+        self.assertEqual(response.status_code, 302)
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn(
+            'No template found for the selected study group and terms.',
+            messages
+            )
+
+    def test_post_invalid_data(self):
+        """Test when study group and date are not specified."""
+        self.client.login(username='tutor', password='password')
+        response = self.client.post(self.url, {
+            'study_group': '',
+            'date': ''
+        })
+
+        self.assertEqual(response.status_code, 302)
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn('Study group and date are not specified.', messages)
+
+    def test_get_student_cannot_fill_schedule(self):
+        """
+        Test that a student cannot call POST method.
+        """
+        self.client.login(username="student", password="password")
+        response = self.client.post(self.url, {
+            'study_group': self.study_group.id,
+            'date': self.date
+        })
+
+        self.assertEqual(response.status_code, 403)

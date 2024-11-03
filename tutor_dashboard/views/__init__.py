@@ -10,5 +10,6 @@ from .schedule_views import (
     ScheduleView,
     EditScheduleView,
     AddScheduleView,
-    DeleteScheduleView
+    DeleteScheduleView,
+    FillScheduleView
 )

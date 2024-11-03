@@ -7,7 +7,8 @@ from .views import (
     ScheduleView,
     EditScheduleView,
     AddScheduleView,
-    DeleteScheduleView
+    DeleteScheduleView,
+    FillScheduleView
     )
 app_name = 'tutor'
 urlpatterns = [
@@ -51,4 +52,5 @@ urlpatterns = [
         DeleteScheduleView.as_view(),
         name='delete_schedule'
     ),
+    path('schedules/fill/', FillScheduleView.as_view(), name='fill_schedule')
 ]
