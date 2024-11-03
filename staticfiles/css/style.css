@@ -17,7 +17,7 @@
     color: var(--dark-color);
     opacity: 75%;
     border: 1px solid var(--light-color);
-    padding: 8px 8px;
+    padding: 0.5rem;
     font-size: 1rem;
     font-weight: 600;
     border-radius: 4px;
@@ -102,7 +102,7 @@
 
 /* Dashboard*/
 
-.bg-image-student-dashboard-info {
+.bg-image-dashboard-info {
     background-image: url('https://c.pxhere.com/photos/c1/e2/black_board_chalk_traces_school_learn_education_smeared_writing_board-1057578.jpg!d');
     background-size: cover;
     background-position: center;
@@ -115,4 +115,12 @@
 
 #instructions-button {
     font-size: 200%;
+}
+
+/* 403 page*/
+.bg-image-403 {
+    background-image: url('https://c.pxhere.com/photos/41/73/advertisement_advertising_background_billboard_black_blackboard_blank_board-1177338.jpg!d');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }

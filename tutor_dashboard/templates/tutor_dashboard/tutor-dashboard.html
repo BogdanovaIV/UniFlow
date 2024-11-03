@@ -14,19 +14,39 @@
     </div>
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link nav-link-tutor {% if request.path == url_schedule %}active{% endif %}" href="{% url 'tutor:schedule' %}">
+            <a class="nav-link nav-link-tutor {% if request.path == url_schedule %}active{% endif %}"
+                href="{% url 'tutor:schedule' %}">
                 Schedule
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-tutor {% if request.path == url_schedule_templates %}active{% endif %}" href="{% url 'tutor:schedule_templates' %}">
+            <a class="nav-link nav-link-tutor {% if request.path == url_schedule_templates %}active{% endif %}"
+                href="{% url 'tutor:schedule_templates' %}">
                 Schedule templates
             </a>
         </li>
     </ul>
-
+    <!--Toast messages-->
+    {% if messages %}
+    <div aria-live="polite" aria-atomic="true" class="position-relative top-0">
+        <div class="toast-container position-absolute top-0 end-0 p-3">
+            {% for message in messages %}
+            <div class="toast align-items-center {% if message.tags == 'error' %} text-bg-danger {% else %} text-bg-{{ message.tags }} {% endif %} border-0"
+                role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
     {% block table_content %}
-        <!-- dashboard Goes here -->
+    <!-- dashboard Goes here -->
     {% endblock table_content %}
 </section>
 

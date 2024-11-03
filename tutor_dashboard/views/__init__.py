@@ -15,5 +15,6 @@ from .schedule_views import (
 )
 
 from .student_mark_views import (
-    EditStudentMarkView
+    EditStudentMarkView,
+    AddStudentMarkView
 )
