@@ -10,7 +10,8 @@ from dictionaries.models import (
     WeekdayChoices,
     ScheduleTemplate,
     StudyGroup,
-    Term
+    Term,
+    StudentMark
 )
 
 
@@ -154,7 +155,15 @@ class EditScheduleView(ScheduleBaseView):
         """Render the form with the existing Schedule instance."""
         schedule = Schedule.objects.get(pk=pk)
         form = ScheduleForm(instance=schedule)
-        return render(request, self.template_name, {'form': form})
+        student_marks = StudentMark.objects.filter(schedule=schedule)
+        return render(
+            request,
+            self.template_name,
+            {
+                'form': form,
+                'student_marks': student_marks
+            }
+        )
 
     def post(self, request, pk):
         """

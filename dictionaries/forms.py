@@ -6,7 +6,8 @@ from .models import (
     ScheduleTemplate,
     Subject,
     WeekdayChoices,
-    Schedule)  
+    Schedule,
+    StudentMark)  
 
 class ScheduleTemplateFilterForm(forms.Form):
     """
@@ -228,3 +229,9 @@ class ScheduleForm(forms.ModelForm):
                 date_obj.weekday()
             )
         self.fields['subject'].queryset = Subject.active_objects()
+
+
+class StudentMarkForm(forms.ModelForm):
+    class Meta:
+        model = StudentMark
+        fields = ['student', 'mark']

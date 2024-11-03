@@ -14,13 +14,15 @@ GROUPS = {
         'view_schedule',
         'add_schedule',
         'change_schedule',
-        'delete_schedule'
+        'delete_schedule',
+        'view_studentmark',
         ],
     'Student': [
         'view_studygroup',
         'view_term',
         'view_subject',
         'view_schedule',
+        'view_studentmark'
         ]
 }
 

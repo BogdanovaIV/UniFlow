@@ -1,10 +1,12 @@
 from django.test import TestCase
 from datetime import date, timedelta
+from django.contrib.auth.models import User
 from .forms import (
     ScheduleTemplateFilterForm,
     ScheduleTemplateForm,
     ScheduleFilterForm,
-    ScheduleForm)
+    ScheduleForm,
+    StudentMarkForm)
 from .models import (
     Term,
     StudyGroup,
@@ -309,3 +311,56 @@ class ScheduleFormTests(TestCase):
         form = ScheduleForm(data=form_data, initial=form_initial)
         self.assertFalse(form.is_valid())
         self.assertIn('subject', form.errors)
+
+
+class StudentMarkFormTest(TestCase):
+    def setUp(self):
+        # Set up a test user to be used as a 'student'
+        self.student = User.objects.create_user(
+            username='student', password='password')
+
+    def test_form_valid_data(self):
+        # Test form with valid data
+        form_data = {
+            'student': self.student.id,
+            'mark': 85
+        }
+        form = StudentMarkForm(data=form_data)
+        self.assertTrue(
+            form.is_valid(),
+            "Form should be valid with correct data."
+        )
+
+    def test_form_invalid_empty_student(self):
+        # Test form with an empty 'student' field
+        form_data = {
+            'student': None,
+            'mark': 85
+        }
+        form = StudentMarkForm(data=form_data)
+        self.assertFalse(
+            form.is_valid(),
+            "Form should be invalid if 'student' is empty."
+        )
+        self.assertIn(
+            'student',
+            form.errors,
+            "Expected an error message for the empty 'student' field."
+        )
+
+    def test_form_invalid_empty_mark(self):
+        # Test form with an empty 'mark' field
+        form_data = {
+            'student': self.student.id,
+            'mark': None
+        }
+        form = StudentMarkForm(data=form_data)
+        self.assertFalse(
+            form.is_valid(),
+            "Form should be invalid if 'mark' is empty."
+        )
+        self.assertIn(
+            'mark',
+            form.errors,
+            "Expected an error message for the empty 'mark' field."
+        )
