@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class StudyGroup(models.Model):
@@ -302,4 +303,75 @@ class Schedule(models.Model):
             f"{self.date} - "
             f"{self.order_number}. - "
             f"{self.subject}"
+        )
+
+
+class StudentMark(models.Model):
+    """
+    Model representing a marks for a specific student.
+
+    Attributes:
+        student (ForeignKey): The student.
+        schedule (ForeignKey):The schedule associated with the student's mark.
+        mark (PositiveIntegerField): The student's mark (0-100).
+
+    Meta:
+        ordering (list): The default ordering of StudentMark instances
+        is by schedule, student.
+        constraints (list): Unique constraints for the model fields by
+        schedule, student.
+        indexes (list): Indexes for optimizing queries by student and schedule.
+    """
+    student = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=False
+    )
+    schedule = models.ForeignKey(
+        Schedule,
+        on_delete=models.CASCADE,
+        null=False
+    )
+    mark = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(0),      
+            MaxValueValidator(100)
+        ],
+        null=False
+    )
+
+    class Meta:
+
+        ordering = ["schedule", "student"]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    'schedule',
+                    'student'
+                ], name='unique_student_mark_row'
+            ),
+        ]
+    
+        indexes = [
+            models.Index(
+                fields=['student', 'schedule'],
+                name='student_schedule_idx'),
+            models.Index(
+                fields=['schedule'],
+                name='schedule_idx'),
+        ]
+
+    def __str__(self):
+        """
+        String representation of the StudentMark instance.
+
+        Returns:
+            str: A formatted string containing the schedule, student, and mark.
+        """
+
+        return (
+            f"{self.schedule} - "
+            f"{self.student} - "
+            f"{self.mark}"
         )

@@ -1,7 +1,15 @@
 from django.core.exceptions import ValidationError
 from django.contrib import admin
+from django.contrib.auth.models import User
 from django.contrib.admin import SimpleListFilter
-from .models import StudyGroup, Term, Subject, ScheduleTemplate, Schedule
+from .models import (
+    StudyGroup,
+    Term,
+    Subject,
+    ScheduleTemplate,
+    Schedule,
+    StudentMark
+    )
 
 
 @admin.register(StudyGroup)
@@ -123,4 +131,27 @@ class ScheduleAdmin(admin.ModelAdmin):
             kwargs["queryset"] = StudyGroup.active_objects()
         elif db_field.name == "subject":
             kwargs["queryset"] = Subject.active_objects()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+@admin.register(StudentMark)
+class StudentMarkAdmin(admin.ModelAdmin):
+    """
+    Admin interface for managing StudentMark instances.
+
+    Attributes:
+        list_display (tuple): Fields to display in the list view of 
+        StudentMark instances.
+        list_filter (tuple): Fields that can be used to filter the list view.
+    """
+    list_display = (
+        'schedule',
+        'student',
+        'mark',
+    )
+
+    list_filter = ('student',)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "student":
+            kwargs["queryset"] = User.objects.filter(is_active=True)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)

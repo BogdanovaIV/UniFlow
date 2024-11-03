@@ -1,8 +1,17 @@
 from django.test import TestCase
-from .models import StudyGroup, Term, Subject, WeekdayChoices, ScheduleTemplate
-from .models import Schedule
-from django.core.exceptions import ValidationError
 from datetime import date
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from .models import (
+    StudyGroup,
+    Term,
+    Subject,
+    WeekdayChoices,
+    ScheduleTemplate,
+    Schedule,
+    StudentMark
+    )
+
 
 
 class TestStudyGroupModel(TestCase):
@@ -523,3 +532,90 @@ class ScheduleTests(TestCase):
                 f"Schedule.full_clean() raised ValidationError "
                 f"unexpectedly: {e}"
             )
+
+
+class StudentMarkModelTests(TestCase):
+   
+    def setUp(self):
+        """Set up test instances for foreign key fields."""
+        self.student = User.objects.create_user(
+            username='student', password='password'
+            )
+        self.study_group = StudyGroup.objects.create(
+            name='101',
+            active=True
+        )
+        self.subject = Subject.objects.create(name='Subject1', active=True)
+        self.schedule = Schedule.objects.create(
+            study_group=self.study_group,
+            date=date(2024, 9, 1),
+            order_number=1,
+            subject=self.subject,
+            homework='Homework'
+        )
+
+    def test_create_student_mark(self):
+        """Test creating a StudentMark with valid data."""
+        student_mark = StudentMark.objects.create(
+            student=self.student,
+            schedule=self.schedule,
+            mark=85
+        )
+        self.assertEqual(student_mark.mark, 85)
+        self.assertEqual(student_mark.student, self.student)
+        self.assertEqual(student_mark.schedule, self.schedule)
+
+    def test_mark_within_valid_range(self):
+        """Test that the mark value is within the valid range (0-100)."""
+        student_mark = StudentMark(student=self.student, schedule=self.schedule)
+
+        # Test valid marks
+        student_mark.mark = 0
+        student_mark.full_clean()
+
+        student_mark.mark = 100
+        student_mark.full_clean()
+
+    def test_mark_out_of_range(self):
+        """Test that a ValidationError is raised if the mark is out of range."""
+        student_mark = StudentMark(student=self.student, schedule=self.schedule)
+
+        # Test mark below 0
+        student_mark.mark = -1
+        with self.assertRaises(ValidationError):
+            student_mark.full_clean()
+
+        # Test mark above 100
+        student_mark.mark = 101
+        with self.assertRaises(ValidationError):
+            student_mark.full_clean()
+
+    def test_unique_constraint(self):
+        """Test unique constraint on schedule and student."""
+        # Create initial StudentMark instance
+        StudentMark.objects.create(
+            student=self.student,
+            schedule=self.schedule,
+            mark=75
+            )
+
+        # Attempt to create another with the same schedule and student
+        duplicate_student_mark = StudentMark(
+            student=self.student,
+            schedule=self.schedule,
+            mark=85
+            )
+        with self.assertRaises(ValidationError):
+            duplicate_student_mark.full_clean()
+
+    def test_string_representation(self):
+        """Test the string representation of the StudentMark instance."""
+        student_mark = StudentMark.objects.create(
+            student=self.student,
+            schedule=self.schedule,
+            mark=90
+        )
+        self.assertEqual(
+            str(student_mark),
+            f"{self.schedule} - {self.student} - 90"
+        )
