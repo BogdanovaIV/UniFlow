@@ -10,7 +10,8 @@ from .views import (
     DeleteScheduleView,
     FillScheduleView,
     EditStudentMarkView,
-    AddStudentMarkView
+    AddStudentMarkView,
+    DeleteStudentMarkView
     )
 app_name = 'tutor'
 urlpatterns = [
@@ -65,4 +66,9 @@ urlpatterns = [
         AddStudentMarkView.as_view(),
         name='add_student_mark'
         ),
+    path(
+        'schedule/<int:schedule_pk>/student_mark/<int:mark_pk>/delete/',
+        DeleteStudentMarkView.as_view(),
+        name='delete_student_mark'
+    ),
 ]

@@ -82,3 +82,13 @@ class AddStudentMarkView(View):
                 messages.error(request, f"Error in {field}: {error}")
 
         return redirect(reverse('tutor:edit_schedule', args=[schedule_pk]))
+
+
+class DeleteStudentMarkView(View):
+    """View to delete a StudentMark entry."""
+    
+    def post(self, request, schedule_pk, mark_pk):
+        student_mark = get_object_or_404(StudentMark, pk=mark_pk)
+        student_mark.delete()
+        messages.success(request, "Student mark deleted successfully.")
+        return redirect(reverse('tutor:edit_schedule', args=[schedule_pk]))

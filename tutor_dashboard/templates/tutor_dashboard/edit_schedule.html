@@ -97,6 +97,11 @@
                                 data-bs-target="#editMarkModal{{ forloop.counter }}">
                                 Edit
                             </button>
+                            <!-- Delete Button -->
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal-{{ student_mark.pk }}">
+                                Delete
+                            </button>
                         </td>
                     </tr>
 
@@ -145,6 +150,34 @@
                                         <button type="submit" class="btn btn-success">Save</button>
                                     </div>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delete Student Mark Modal for each mark -->
+                    <div class="modal fade text-dark" id="deleteModal-{{ student_mark.pk }}" tabindex="-1"
+                        aria-labelledby="deleteModalLabel-{{ student_mark.pk }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-info-subtle">
+                                    <h5 class="modal-title" id="deleteModalLabel-{{ student_mark.pk }}">Confirm Delete
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this entry for {{ mark.student.get_full_name }}?
+                                </div>
+                                <div class="modal-footer bg-body-secondary">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <form
+                                        action="{% url 'tutor:delete_student_mark' schedule_pk=schedule.instance.pk mark_pk=mark.pk %}"
+                                        method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
