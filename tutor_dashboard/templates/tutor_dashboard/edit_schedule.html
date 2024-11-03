@@ -4,16 +4,17 @@
 <div class="container">
     <div class="row">
         <div class="col-6 mt-3 text-white font-monospace fw-medium">
-            <h2>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Schedule</h2>
+            <h2>{% if schedule.instance.pk %}Edit{% else %}Add{% endif %} Schedule</h2>
             <form method="post">
                 {% csrf_token %}
-                <div class="row {% if form.weekday_value.value < 5 %}text-info{% else %}text-danger{% endif %} fw-bold">
+                <div
+                    class="row {% if schedule.weekday_value.value < 5 %}text-info{% else %}text-danger{% endif %} fw-bold">
                     <div class="col-3 col-md-2">
                         <label for="id_date">Date:</label>
                     </div>
                     <div class="col-9 col-md-10">
-                        <p id="id_date">{{ form.date.value }} ({{ form.weekday_name.value }})</p>
-                        <p hidden>{{ form.date }}</p>
+                        <p id="id_date">{{ schedule.date.value }} ({{ schedule.weekday_name.value }})</p>
+                        <p hidden>{{ schedule.date }}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -21,8 +22,8 @@
                         <label for="id_study_group">Study Group:</label>
                     </div>
                     <div class="col-9 col-md-10">
-                        <p id="id_study_group">{{ form.study_group_name.value }}</p>
-                        <p hidden>{{ form.study_group }}</p>
+                        <p id="id_study_group">{{ schedule.study_group_name.value }}</p>
+                        <p hidden>{{ schedule.study_group }}</p>
                     </div>
                 </div>
 
@@ -31,8 +32,8 @@
                         <label for="id_order_number">Order Number:</label>
                     </div>
                     <div class="col-9 col-md-10">
-                        <p id="id_order_number">{{ form.order_number.value }}</p>
-                        <p hidden>{{ form.order_number }}</p>
+                        <p id="id_order_number">{{ schedule.order_number.value }}</p>
+                        <p hidden>{{ schedule.order_number }}</p>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -40,7 +41,7 @@
                         <label for="subject">Subject:</label>
                     </div>
                     <div class="col-9 col-md-10">
-                        {{ form.subject }}
+                        {{ schedule.subject }}
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -48,7 +49,7 @@
                         <label for="homework">Homework:</label>
                     </div>
                     <div class="col-9 col-md-10">
-                        {{ form.homework }}
+                        {{ schedule.homework }}
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -56,7 +57,7 @@
                         <button type="submit" class="btn btn-success me-2">
                             Save
                         </button>
-                        {% if form.instance.pk %}
+                        {% if schedule.instance.pk %}
                         <div class="me-2">
                             <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal">
@@ -64,7 +65,7 @@
                             </button>
                         </div>
                         {% endif %}
-                        <a href="{% url 'tutor:schedule' %}?date={{ form.date_str.value }}&study_group={{ form.study_group.value }}"
+                        <a href="{% url 'tutor:schedule' %}?date={{ schedule.date_str.value }}&study_group={{ schedule.study_group.value }}"
                             class="btn btn-secondary me-2">
                             Cancel
                         </a>
@@ -85,10 +86,65 @@
                 <tbody>
                     {% for mark in student_marks %}
                     <tr>
-                        <td>{{ mark.student }}</td>
+                        <td>{{ mark.student.get_full_name }}</td>
                         <td>{{ mark.mark }}</td>
-                        <td></td>
+                        <td>
+                            <!-- Edit Button -->
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editMarkModal{{ forloop.counter }}">
+                                Edit
+                            </button>
+                        </td>
                     </tr>
+
+                    <!-- Edit Student Mark Modal for each mark -->
+                    <div class="modal fade text-dark" id="editMarkModal{{ forloop.counter }}" tabindex="-1"
+                        aria-labelledby="editMarkModalLabel{{ forloop.counter }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post"
+                                    action="{% url 'tutor:edit_student_mark' schedule_pk=schedule.instance.pk mark_pk=mark.pk %}">
+                                    {% csrf_token %}
+                                    <div class="modal-header bg-info-subtle">
+                                        <h5 class="modal-title" id="editMarkModalLabel{{ forloop.counter }}">Edit
+                                            Student
+                                            Mark</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row mb-3">
+                                            <div class="col-3 col-md-2">
+                                                <label for="student" class="form-label">Student</label>
+                                            </div>
+                                            <div class="col-9 col-md-10">
+                                                <select name="student" id="student" class="form-select">
+                                                    {% for user_profile in users %}
+                                                    <option value="{{ user_profile.user.pk }}" {% if user_profile.user.pk == mark.student.pk %}selected{% endif %}>
+                                                        {{ user_profile.user.get_full_name }}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-3 col-md-2">
+                                                <label for="mark" class="form-label">Mark</label>
+                                            </div>
+                                            <div class="col-9 col-md-10">
+                                                <input type="number" name="mark" id="mark" class="form-control"
+                                                    value="{{ mark.mark }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer bg-body-secondary">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-success">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     {% empty %}
                     <tr>
                         <td colspan="3">No marks available.</td>
@@ -99,8 +155,8 @@
         </div>
     </div>
 </div>
-{% if form.instance.pk %}
-<!-- Modal -->
+{% if schedule.instance.pk %}
+<!-- Delete Schedule Modal -->
 <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog text-dark">
@@ -114,7 +170,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <form id="deleteForm" method="post" action="{% url 'tutor:delete_schedule' form.instance.pk %}">
+                <form id="deleteForm" method="post" action="{% url 'tutor:delete_schedule' schedule.instance.pk %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
@@ -122,5 +178,6 @@
         </div>
     </div>
 </div>
+
 {% endif %}
 {% endblock table_content %}

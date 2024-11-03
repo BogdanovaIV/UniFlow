@@ -13,3 +13,7 @@ from .schedule_views import (
     DeleteScheduleView,
     FillScheduleView
 )
+
+from .student_mark_views import (
+    EditStudentMarkView
+)

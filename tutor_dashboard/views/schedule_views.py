@@ -4,7 +4,11 @@ from django.contrib import messages
 from datetime import timedelta, datetime
 from django.db.models import Q
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from dictionaries.forms import ScheduleFilterForm, ScheduleForm
+from users.models import UserProfile
+from dictionaries.forms import (
+    ScheduleFilterForm,
+    ScheduleForm
+)
 from dictionaries.models import (
     Schedule,
     WeekdayChoices,
@@ -156,12 +160,16 @@ class EditScheduleView(ScheduleBaseView):
         schedule = Schedule.objects.get(pk=pk)
         form = ScheduleForm(instance=schedule)
         student_marks = StudentMark.objects.filter(schedule=schedule)
+        users = UserProfile.objects.filter(
+            study_group=schedule.study_group
+            ).select_related('user')
         return render(
             request,
             self.template_name,
             {
-                'form': form,
-                'student_marks': student_marks
+                'schedule': form,
+                'student_marks': student_marks,
+                'users': users,
             }
         )
 
