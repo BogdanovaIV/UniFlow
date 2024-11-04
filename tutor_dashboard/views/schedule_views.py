@@ -229,7 +229,8 @@ class ScheduleView(PermissionRequiredMixin, View):
         Returns:
         - A dictionary representing the weekly schedule, where each day
         includes its date, weekday label, and details for each order number
-        (up to 10), such as subject and homework assignments.
+        (up to 10), such as subject, homework assignments and the number of
+        student marks.
         """
         schedule = {
         value: {
@@ -239,8 +240,12 @@ class ScheduleView(PermissionRequiredMixin, View):
             'date_str': str(
                 filter_params['date__range'][0] + timedelta(days=(value))
                 ) if filter_params['date__range'][0] else '',
-            'details': {order: {'id': '','subject': '', 'homework': ''}
-                        for order in range(1, 11)}
+            'details': {order: {
+                'id': '',
+                'subject': '',
+                'homework': '',
+                'marks': 0
+                } for order in range(1, 11)}
         }
         for value, label in WeekdayChoices.choices
         }
@@ -248,7 +253,8 @@ class ScheduleView(PermissionRequiredMixin, View):
             schedule[object.date.weekday()]['details'][object.order_number] = {
                 'id': object.id,
                 'subject': object.subject,
-                'homework': object.homework
+                'homework': object.homework,
+                'marks': StudentMark.objects.filter(schedule=object).count(),
             }
         return schedule
 
