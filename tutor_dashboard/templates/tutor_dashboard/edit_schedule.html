@@ -75,6 +75,7 @@
         </div>
         <div class="col-12 col-md-6 mt-3 text-white font-monospace fw-medium">
             <h3 class="text-white">Student Marks</h3>
+            {% if schedule.instance.pk %}
             <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addMarkModal">
                 Add
             </button>
@@ -235,6 +236,9 @@
                     </div>
                 </div>
             </div>
+            {% else %}
+            <p class="text-info fs-5">Please save the schedule before managing Student Marks.</p>
+            {% endif%}
         </div>
     </div>
 </div>

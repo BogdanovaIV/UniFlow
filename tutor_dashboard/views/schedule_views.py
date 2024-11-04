@@ -25,7 +25,16 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
     Base view for handling Schedule forms and display logic.
     """
     template_name = 'tutor_dashboard/edit_schedule.html'
+    def parse_date(self, date_request):
+        """Parses the date string to a date object."""
+        if isinstance(date_request, str) and date_request:
+            # Convert the date string to a date object
+            parsed_date = datetime.strptime(date_request, "%Y-%m-%d").date()
+        else:
+            parsed_date = date_request
 
+        return parsed_date
+    
     def get_initial_data(self, request):
         """
         Extract initial data from the request for the form.
@@ -36,10 +45,7 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
             return values[0] if values else request.get(key)
 
         return {
-            'date':
-                datetime.strptime(get_first_value('date'), "%Y-%m-%d").date()
-                if isinstance(get_first_value('date'), str)
-                else get_first_value('date'),
+            'date': self.parse_date(get_first_value('date')),
             'study_group': get_first_value('study_group'),
             'order_number': get_first_value('order_number'),
             'subject': get_first_value('subject'),
@@ -108,7 +114,8 @@ class ScheduleView(PermissionRequiredMixin, View):
             {
                 'form': form,
                 'schedule': schedule,
-                'table_empty': table_empty
+                'table_empty': table_empty,
+                'selection_valid': form.is_valid()
             }
         )
 
@@ -224,7 +231,8 @@ class AddScheduleView(ScheduleBaseView):
         """Render the form to add a new Schedule."""
         initial_data = self.get_initial_data(request.GET)
         form = ScheduleForm(initial=initial_data)
-        return render(request, self.template_name, {'form': form})
+
+        return render(request, self.template_name, {'schedule': form})
 
     def post(self, request):
         """Process the form submission to add a new Schedule."""
@@ -233,13 +241,12 @@ class AddScheduleView(ScheduleBaseView):
         form = ScheduleForm(request.POST, initial=initial_data)
 
         if form.is_valid():
-            form.save()
-            data = {
-                'date':form.cleaned_data.get('date'),
-                'study_group':form.cleaned_data.get('study_group'),
-            }
+            schedule = form.save()
+            
             messages.success(request, "Schedule added successfully.")
-            return self.handle_redirect(data)
+            return redirect(
+                reverse('tutor:edit_schedule', args=[schedule.pk])
+            )
         
         # Form validation error message
         for field, errors in form.errors.items():
@@ -332,16 +339,6 @@ class FillScheduleView(ScheduleBaseView):
     def get_study_group(self, request):
         """ Retrieves the study group from the request. """
         return request.POST.get("study_group", '')
-
-    def parse_date(self, date_request):
-        """Parses the date string to a date object."""
-        if isinstance(date_request, str):
-            # Convert the date string to a date object
-            parsed_date = datetime.strptime(date_request, "%Y-%m-%d").date()
-        else:
-            parsed_date = date_request
-
-        return parsed_date
 
     def get_week_range(self, date_template):
         """ Returns the start and end of the week for a given date. """

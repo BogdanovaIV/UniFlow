@@ -211,7 +211,7 @@ class ScheduleForm(forms.ModelForm):
             )
             self.fields['weekday_value'].initial = self.instance.date.weekday()
 
-        if 'study_group' in self.initial:
+        if 'study_group' in self.initial and self.initial['study_group']:
             self.fields['study_group_name'].initial = (
                 StudyGroup.objects.get(pk=self.initial['study_group'])
             )
