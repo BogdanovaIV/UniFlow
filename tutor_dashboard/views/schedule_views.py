@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from datetime import timedelta, datetime
 from django.db.models import Q
+from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from users.models import UserProfile
 from dictionaries.forms import (
@@ -79,11 +80,27 @@ class ScheduleView(PermissionRequiredMixin, View):
             else ''
         )
         form = ScheduleFilterForm(request.GET)
+        
+        if not form.is_valid():
+            # Display form validation errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Error in {field}: {error}")
 
         filter_params = form.get_filter_params()
         schedule, table_empty = self.get_schedule(
             filter_params
         )
+        if table_empty:
+            # Display message if no schedule is available for the selected
+            # filters
+            messages.info(
+                request,
+                "No schedule available for the selected date and study group."
+            )
+        else:
+            # Display success message when schedule is successfully filtered
+            messages.success(request, "Schedule displayed successfully.")
 
         return render(
             request,
@@ -186,7 +203,13 @@ class EditScheduleView(ScheduleBaseView):
                 'date':form.cleaned_data.get('date'),
                 'study_group':form.cleaned_data.get('study_group'),
             }
+            messages.success(request, "Schedule updated successfully.")
             return self.handle_redirect(data)
+
+        # Form validation error message
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(request, f"Error in {field}: {error}")
 
         return render(request, self.template_name, {'form': form})
 
@@ -215,7 +238,13 @@ class AddScheduleView(ScheduleBaseView):
                 'date':form.cleaned_data.get('date'),
                 'study_group':form.cleaned_data.get('study_group'),
             }
+            messages.success(request, "Schedule added successfully.")
             return self.handle_redirect(data)
+        
+        # Form validation error message
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(request, f"Error in {field}: {error}")
 
         return render(request, self.template_name, {'form': form})
 
@@ -237,6 +266,7 @@ class DeleteScheduleView(ScheduleBaseView):
                 'study_group':schedule.study_group,
         }
         schedule.delete()
+        messages.success(request, "Schedule deleted successfully.")
         return self.handle_redirect(data)
 
 
