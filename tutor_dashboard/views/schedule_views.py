@@ -22,11 +22,25 @@ from dictionaries.models import (
 
 class ScheduleBaseView(PermissionRequiredMixin, View):
     """
-    Base view for handling Schedule forms and display logic.
+    Base view for handling common functionality across schedule views, such as
+    form data handling and redirection.
+
+    This view provides shared utilities for schedule views in the tutor
+    dashboard, enabling form data initialization, date parsing, and
+    standardized redirection upon form submission.
     """
     template_name = 'tutor_dashboard/edit_schedule.html'
     def parse_date(self, date_request):
-        """Parses the date string to a date object."""
+        """
+        Parses a date string into a date object.
+
+        Parameters:
+        - date_request: A date string in 'YYYY-MM-DD' format or a date object. 
+
+        Returns:
+        - A date object if the input is a valid date string, or the original
+        input if it's already a date.
+        """
         if isinstance(date_request, str) and date_request:
             # Convert the date string to a date object
             parsed_date = datetime.strptime(date_request, "%Y-%m-%d").date()
@@ -37,7 +51,14 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
     
     def get_initial_data(self, request):
         """
-        Extract initial data from the request for the form.
+        Extracts initial data from the request for form pre-population.
+
+        Parameters:
+        - request: The HTTP request object containing GET or POST data.
+
+        Returns:
+        - A dictionary containing initial values for form fields: 'date',
+        'study_group', 'order_number', and 'subject'.
         """
         def get_first_value(key):
             """Retrieve the first value for a given key from the request."""
@@ -53,7 +74,17 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
 
     def handle_redirect(self, form):
         """
-        Handle redirection after saving the form.
+        Redirects to the schedule view with the specified date and study group
+        parameters.
+
+        Parameters:
+        - form: A dictionary containing form data, where 'date' and
+        'study_group' are expected keys. 'study_group' can be an instance
+        of `StudyGroup` or a string ID.
+
+        Returns:
+        - A HttpResponseRedirect to the 'tutor:schedule' URL, including query
+        parameters for date and study group.
         """
         date = form.get('date')
         study_group = (
@@ -69,15 +100,29 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
 
 class ScheduleView(PermissionRequiredMixin, View):
     """
-    View for displaying and filtering schedule based on user-selected
-    term and study group.
+    View for displaying and filtering the schedule based on user-selected term
+    and study group.
+
+    This view provides functionality for displaying a filtered schedule based
+    on the selected term and study group, organizing schedule data by weekdays,
+    and handling both GET and POST requests for schedule filtering.
     """
     template_name = 'tutor_dashboard/schedule.html'
     permission_required = 'dictionaries.view_schedule'
 
     def get(self, request):
         """
-        Handles GET requests to display the schedule filter form.
+        Handles GET requests to display the schedule with the filter form.
+
+        Parameters:
+        - request: The HTTP request object containing optional query parameters
+        for date and study group.
+
+        Returns:
+        - Renders the schedule page with the filter form and displays the
+        filtered schedule if valid.
+        Shows error messages if form validation fails and displays an info
+        message if no schedule matches the filter.
         """
         
         date = request.GET.get('date') if 'date' in request.GET else ''
@@ -120,7 +165,17 @@ class ScheduleView(PermissionRequiredMixin, View):
         )
 
     def post(self, request):
-        """Handles POST requests to process the filter form submission."""
+        """
+        Handles POST requests to process the schedule filter form submission.
+
+        Parameters:
+        - request: The HTTP request object containing POST data with date and
+        study group.
+
+        Returns:
+        - Redirects to the schedule view with selected date and study group as
+        query parameters.
+        """
         form = ScheduleFilterForm(request.POST)
         date = request.POST.get('date') if 'date' in request.POST else ''
         study_group = (
@@ -135,7 +190,19 @@ class ScheduleView(PermissionRequiredMixin, View):
 
     def get_schedule(self, filter_params):
         """
-        Retrieve and organize schedule based on term and group.
+        Retrieves and organizes the schedule based on selected date range and
+        study group.
+
+        Parameters:
+        - filter_params: Dictionary containing filter parameters for date range
+        and study group.
+
+        Returns:
+        - A tuple with:
+        1. Organized schedule dictionary by weekdays, where each weekday
+        contains details for subjects and homework.
+        2. Boolean indicating whether the schedule table is empty (no schedule
+        found for the filters).
         """
         if filter_params['date__range'][0] and filter_params['study_group']:
             objects = Schedule.objects.filter(**filter_params)
@@ -150,7 +217,20 @@ class ScheduleView(PermissionRequiredMixin, View):
         )
 
     def get_full_week_schedule(self, objects, filter_params):
-        """Organizes schedule by dates."""
+        """
+        Organizes schedule objects by weekdays within the selected date range.
+
+        Parameters:
+        - objects: Queryset of Schedule objects filtered by the selected term
+        and study group.
+        - filter_params: Dictionary of filter parameters, specifically date
+        range and study group.
+
+        Returns:
+        - A dictionary representing the weekly schedule, where each day
+        includes its date, weekday label, and details for each order number
+        (up to 10), such as subject and homework assignments.
+        """
         schedule = {
         value: {
             'label_weekday': label,
@@ -175,12 +255,31 @@ class ScheduleView(PermissionRequiredMixin, View):
 
 class EditScheduleView(ScheduleBaseView):
     """
-    View to edit a Schedule.
+    View to edit an existing Schedule entry.
+
+    This view allows users with the necessary permissions to edit an existing
+    Schedule instance. It provides methods to handle both GET requests, which
+    render the form with the current Schedule data, and POST requests, which
+    update the Schedule with the submitted form data.
     """
     permission_required = 'dictionaries.change_schedule'
     
     def get(self, request, pk):
-        """Render the form with the existing Schedule instance."""
+        """
+        Renders the form with the existing Schedule instance for editing.
+
+        Parameters:
+        - request: The HTTP request object containing request data.
+        - pk: Primary key of the Schedule instance to be edited.
+
+        Returns:
+        - Renders the `edit_schedule.html` template with:
+        1. `schedule`: The form pre-filled with the current Schedule data.
+        2. `student_marks`: A queryset of StudentMark instances related to the
+        schedule.
+        3. `users`: A queryset of UserProfile instances in the study group for
+        the schedule.
+        """
         schedule = Schedule.objects.get(pk=pk)
         form = ScheduleForm(instance=schedule)
         student_marks = StudentMark.objects.filter(schedule=schedule)
@@ -199,8 +298,17 @@ class EditScheduleView(ScheduleBaseView):
 
     def post(self, request, pk):
         """
-        Save the updated Schedule and redirect or reload the form
-        on error.
+        Saves the updated Schedule instance or reloads the form on error.
+
+        Parameters:
+        - request: The HTTP request object containing POST data.
+        - pk: Primary key of the Schedule instance to be updated.
+
+        Returns:
+        - If the form is valid: Saves the Schedule and redirects to the
+        schedule view with success message.
+        - If the form is invalid: Reloads the form with error messages
+        displayed for each invalid field.
         """
         schedule = Schedule.objects.get(pk=pk)
         form = ScheduleForm(request.POST, instance=schedule)
@@ -223,19 +331,46 @@ class EditScheduleView(ScheduleBaseView):
 
 class AddScheduleView(ScheduleBaseView):
     """
-    View to add a new Schedule. Uses initial data from query parameters.
+    View to add a new Schedule entry.
+
+    This view allows users with the necessary permissions to create a new
+    Schedule. It uses initial data extracted from query parameters to pre-fill
+    the form fields. Handles both GET requests, which display the form, and
+    POST requests, which process the form submission.
     """
     permission_required = 'dictionaries.add_schedule'
     
     def get(self, request):
-        """Render the form to add a new Schedule."""
+        """
+        Renders the form to add a new Schedule, pre-filled with initial data if
+        available.
+
+        Parameters:
+        - request: The HTTP request object containing GET data.
+
+        Returns:
+        - Renders the `edit_schedule.html` template with:
+        1. `schedule`: The form instance, pre-filled with initial data based on
+        query parameters.
+        """
         initial_data = self.get_initial_data(request.GET)
         form = ScheduleForm(initial=initial_data)
 
         return render(request, self.template_name, {'schedule': form})
 
     def post(self, request):
-        """Process the form submission to add a new Schedule."""
+        """
+        Processes the form submission to add a new Schedule entry.
+
+        Parameters:
+        - request: The HTTP request object containing POST data.
+
+        Returns:
+        - If the form is valid: Saves the new Schedule instance and redirects
+        to the edit schedule page with a success message.
+        - If the form is invalid: Reloads the form with error messages
+        displayed for each invalid field.
+        """
 
         initial_data = self.get_initial_data(request.POST)
         form = ScheduleForm(request.POST, initial=initial_data)
@@ -258,14 +393,25 @@ class AddScheduleView(ScheduleBaseView):
 
 class DeleteScheduleView(ScheduleBaseView):
     """
-    View to delete a Schedule.
+    View to delete an existing Schedule entry.
+
+    This view allows users with the appropriate permissions to delete a
+    Schedule. It handles POST requests to delete the specified Schedule
+    instance and provides feedback messages based on the outcome.
     """
     permission_required = 'dictionaries.delete_schedule'
     
     def post(self, request, pk):
         """
-        Handles the POST request to delete the specified Schedule 
-        and redirects to the schedule list.
+        Processes the deletion of a specified Schedule entry.
+
+        Parameters:
+        - request: The HTTP request object containing POST data.
+        - pk: Primary key of the Schedule to be deleted.
+
+        Returns:
+        - Redirects to the schedule list page with filter parameters for date
+        and study group, if the deletion is successful.
         """
         schedule = get_object_or_404(Schedule, pk=pk)
         data = {
@@ -279,16 +425,26 @@ class DeleteScheduleView(ScheduleBaseView):
 
 class FillScheduleView(ScheduleBaseView):
     """
-    View to fill the Schedule based on selected study group and date.
-    Checks for existing schedules and uses applicable terms for filling.
+    View to populate the Schedule based on the selected study group, date,
+    and applicable ScheduleTemplate entries for a given term.
+
+    This view processes a form submission to fill the schedule for a study
+    group within a specified week. It performs various validations, including
+    checking for existing schedules, ensuring active terms are present, and
+    verifying applicable templates before creating new Schedule entries.
     """
     permission_required = 'dictionaries.add_schedule'
 
     def post(self, request, *args, **kwargs):
         """
-        Handles POST request to fill the schedule. Validates 
-        study group and date, checks for existing entries, 
-        and fills the schedule based on templates.
+        Handles POST request to fill the schedule based on selected study group
+        and date.
+
+        Parameters:
+        - request: The HTTP request object containing POST data.
+
+        Returns:
+        - Redirects to a specified view with messages for success or failure.
         """
         study_group_request = request.POST.get("study_group", '')
         date_request = request.POST.get("date", '')
@@ -336,12 +492,16 @@ class FillScheduleView(ScheduleBaseView):
 
         return self.handle_redirect(data)
 
-    def get_study_group(self, request):
-        """ Retrieves the study group from the request. """
-        return request.POST.get("study_group", '')
-
     def get_week_range(self, date_template):
-        """ Returns the start and end of the week for a given date. """
+        """ 
+        Calculates the start and end dates of the week for the given date.
+
+        Parameters:
+        - date_template: A datetime object representing the reference date.
+
+        Returns:
+        - Tuple containing start and end dates of the week.
+        """
         start_of_week = date_template - timedelta(days=date_template.weekday())
         end_of_week = (
             date_template + timedelta(days=(6 - date_template.weekday()))
@@ -349,20 +509,52 @@ class FillScheduleView(ScheduleBaseView):
         return start_of_week, end_of_week
 
     def schedule_exists(self, study_group_request, start_of_week, end_of_week):
-        """ Checks for existing Schedule entries within the specified range. """
+        """ 
+        Checks if Schedule entries already exist for the specified study group 
+        within the given date range.
+
+        Parameters:
+        - study_group_request: Study group identifier from the request.
+        - start_of_week: The start date of the week.
+        - end_of_week: The end date of the week.
+
+        Returns:
+        - Boolean indicating whether Schedule entries exist in the specified
+        range.
+        """
         return Schedule.objects.filter(
             study_group=study_group_request,
             date__range=(start_of_week, end_of_week)
         ).exists()
 
     def get_terms(self, start_of_week, end_of_week):
-        """ Retrieves active terms overlapping with the specified week. """
+        """ 
+        Retrieves active terms that overlap with the specified week range.
+
+        Parameters:
+        - start_of_week: The start date of the week.
+        - end_of_week: The end date of the week.
+
+        Returns:
+        - A QuerySet of Term instances that are active within the date range.
+        """
         return Term.objects.filter(
             Q(date_from__lte=end_of_week) & Q(date_to__gte=start_of_week)
         ).order_by('date_from')
 
     def create_combinations(self, start_of_week, terms):
-        """ Creates a list of weekday-term combinations for the week. """
+        """ 
+        Creates a list of combinations of weekdays and active terms within the
+        week.
+
+        Parameters:
+        - start_of_week: The start date of the week.
+        - terms: A QuerySet of active Term instances.
+
+        Returns:
+        - A list of dictionaries, each containing a `weekday` and `term` for 
+        the dates in the specified week.
+        """
         combinations = []
         for date_week in (start_of_week + timedelta(days=i) for i in range(7)):
             term = terms.filter(
@@ -376,7 +568,15 @@ class FillScheduleView(ScheduleBaseView):
 
     def build_query(self, study_group_request, combinations):
         """
-        Builds a query for filtering ScheduleTemplate based on combinations.
+        Constructs a query for filtering ScheduleTemplate instances based on
+        study group and combinations of weekday and term.
+
+        Parameters:
+        - study_group_request: The study group identifier.
+        - combinations: List of dictionaries with weekday-term pairs.
+
+        Returns:
+        - A Q object representing the query for matching ScheduleTemplates.
         """
         query = Q(
             study_group=study_group_request,
@@ -390,7 +590,15 @@ class FillScheduleView(ScheduleBaseView):
         return query
 
     def fill_schedule(self, templates, start_of_week):
-        """ Fills the Schedule by creating entries based on the templates. """
+        """ 
+        Populates the Schedule by creating entries based on ScheduleTemplate
+        instances.
+
+        Parameters:
+        - templates: QuerySet of ScheduleTemplate instances that match the
+        filter criteria.
+        - start_of_week: The start date of the week being populated.
+        """
         for template in templates:
             Schedule.objects.create(
                 date=start_of_week + timedelta(days=template.weekday),
