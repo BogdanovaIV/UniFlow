@@ -3,7 +3,7 @@
 {% block table_content %}
 <div class="container">
     <div class="row">
-        <div class="col-6 mt-3 text-white font-monospace fw-medium">
+        <div class="col-12 col-md-6 mt-3 text-white font-monospace fw-medium">
             <h2>{% if schedule.instance.pk %}Edit{% else %}Add{% endif %} Schedule</h2>
             <form method="post">
                 {% csrf_token %}
@@ -17,65 +17,65 @@
                         <p hidden>{{ schedule.date }}</p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-3 col-md-2">
+                <div class="row mb-3">
+                    <div class="col-4">
                         <label for="id_study_group">Study Group:</label>
                     </div>
-                    <div class="col-9 col-md-10">
+                    <div class="col-8">
                         <p id="id_study_group">{{ schedule.study_group_name.value }}</p>
                         <p hidden>{{ schedule.study_group }}</p>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-3 col-md-2">
+                <div class="row mb-3">
+                    <div class="col-4">
                         <label for="id_order_number">Order Number:</label>
                     </div>
-                    <div class="col-9 col-md-10">
+                    <div class="col-8">
                         <p id="id_order_number">{{ schedule.order_number.value }}</p>
                         <p hidden>{{ schedule.order_number }}</p>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-3 col-md-2">
+                    <div class="col-4">
                         <label for="subject">Subject:</label>
                     </div>
-                    <div class="col-9 col-md-10">
+                    <div class="col-8">
                         {{ schedule.subject }}
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-3 col-md-2">
+                    <div class="col-4">
                         <label for="homework">Homework:</label>
                     </div>
-                    <div class="col-9 col-md-10">
+                    <div class="col-8">
                         {{ schedule.homework }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="d-flex">
-                        <button type="submit" class="btn btn-success me-2">
+                        <button type="submit" class="btn btn-success me-3">
                             Save
                         </button>
                         {% if schedule.instance.pk %}
-                        <div class="me-2">
-                            <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
+                        <div class="me-3">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal">
                                 Delete
                             </button>
                         </div>
                         {% endif %}
                         <a href="{% url 'tutor:schedule' %}?date={{ schedule.date_str.value }}&study_group={{ schedule.study_group.value }}"
-                            class="btn btn-secondary me-2">
+                            class="btn btn-secondary me-3">
                             Cancel
                         </a>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="col-6 mt-3 text-white font-monospace fw-medium">
+        <div class="col-12 col-md-6 mt-3 text-white font-monospace fw-medium">
             <h3 class="text-white">Student Marks</h3>
-            <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#addMarkModal">
+            <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addMarkModal">
                 Add
             </button>
             <table class="table table-light table-striped table-hover table-bordered">
@@ -93,7 +93,7 @@
                         <td>{{ mark.mark }}</td>
                         <td>
                             <!-- Edit Button -->
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-primary btn-sm mb-2 mb-md-0" data-bs-toggle="modal"
                                 data-bs-target="#editMarkModal{{ forloop.counter }}">
                                 Edit
                             </button>
