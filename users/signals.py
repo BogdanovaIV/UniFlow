@@ -16,6 +16,9 @@ GROUPS = {
         'change_schedule',
         'delete_schedule',
         'view_studentmark',
+        'add_studentmark',
+        'change_studentmark',
+        'delete_studentmark',
         ],
     'Student': [
         'view_studygroup',
