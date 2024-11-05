@@ -11,7 +11,122 @@ from dictionaries.models import (
     ScheduleTemplate
     )
 from dictionaries.forms import ScheduleFilterForm, ScheduleForm
-from tutor_dashboard.views import ScheduleView
+from tutor_dashboard.views import ScheduleView, ScheduleBaseView
+
+
+class ScheduleBaseViewTests(TestCase):
+    """
+    Test suite for the ScheduleBaseView to ensure shared functionality works
+    as expected.
+    """
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Sets up initial test data for testing purposes.
+        """
+        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.subject = Subject.objects.create(name="Subject1", active=True)
+        cls.client = Client()
+        cls.view = ScheduleBaseView()
+        cls.tutor_user = User.objects.create_user(
+            username="tutor",
+            password="password"
+        )
+        cls.student_user = User.objects.create_user(
+            username="student",
+            password="password"
+        )
+        tutor_group = Group.objects.get(name="Tutor")
+        student_group = Group.objects.get(name="Student")
+        cls.tutor_user.groups.add(tutor_group)
+        cls.student_user.groups.add(student_group)
+
+    def test_parse_date_with_valid_string(self):
+        """
+        Test that parse_date correctly converts a valid date string to a date
+        object.
+        """
+        date_string = "2024-11-05"
+        parsed_date = self.view.parse_date(date_string)
+        self.assertEqual(parsed_date, date(2024, 11, 5))
+
+    def test_parse_date_with_date_object(self):
+        """
+        Test that parse_date returns the same date object if a date is provided.
+        """
+        parsed_date = self.view.parse_date(date(2024, 11, 5))
+        self.assertEqual(parsed_date, date(2024, 11, 5))
+
+    def test_parse_date_with_invalid_string(self):
+        """
+        Test that parse_date raises a ValueError for an invalid date string.
+        """
+        invalid_date_string = "invalid-date"
+        with self.assertRaises(ValueError):
+            self.view.parse_date(invalid_date_string)
+
+    def test_get_initial_data_with_request(self):
+        """
+        Test that get_initial_data extracts the correct initial data from the
+        request.
+        """
+        self.client.login(username="tutor", password="password")
+        request = self.client.get(reverse('tutor:schedule'), {
+            'date': '2024-11-05',
+            'study_group': self.study_group.id,
+            'order_number': 1,
+            'subject': self.subject.id
+        })
+        initial_data = self.view.get_initial_data(request.wsgi_request.GET)
+        self.assertEqual(initial_data['date'], date(2024, 11, 5))
+        self.assertEqual(initial_data['study_group'], str(self.study_group.id))
+        self.assertEqual(initial_data['order_number'], '1')
+        self.assertEqual(initial_data['subject'], str(self.subject.id))
+
+    def test_handle_redirect_with_valid_data(self):
+        """
+        Test that handle_redirect correctly constructs a redirect response with
+        the right URL.
+        """
+        self.client.login(username="tutor", password="password")
+        form_data = {
+            'date': date(2024, 11, 5),
+            'study_group': self.study_group
+        }
+        response = self.view.handle_redirect(form_data)
+        self.assertEqual(response.status_code, 302)
+        expected_url = (
+            f"{reverse('tutor:schedule')}?date=2024-11-05&study_group=1"
+        )
+
+        self.assertEqual(response.url, expected_url)
+
+    def test_handle_redirect_with_invalid_data(self):
+        """
+        Test that handle_redirect correctly constructs a redirect response with
+        the right URL.
+        """
+        self.client.login(username="tutor", password="password")
+        form_data = {
+            'study_group': self.study_group
+        }
+        response = self.view.handle_redirect(form_data)
+        self.assertEqual(response.status_code, 302)
+        expected_url = (
+            f"{reverse('tutor:schedule')}?date=&study_group=1"
+        )
+        self.assertEqual(response.url, expected_url)
+
+        form_data = {
+            'date': date(2024, 11, 5)
+        }
+        response = self.view.handle_redirect(form_data)
+        self.assertEqual(response.status_code, 302)
+        expected_url = (
+            f"{reverse('tutor:schedule')}?date=2024-11-05&study_group="
+        )
+
+        self.assertEqual(response.url, expected_url)
 
 
 class ScheduleViewTests(TestCase):
@@ -74,7 +189,7 @@ class ScheduleViewTests(TestCase):
             response,
             'tutor_dashboard/schedule.html'
         )
-        # Check the filter form instance
+
         self.assertIsInstance(
             response.context['form'],
             ScheduleFilterForm
@@ -88,13 +203,13 @@ class ScheduleViewTests(TestCase):
             str(self.study_group.id)
         )
         
-        # Check the schedule templates and table_empty flag
+
         self.assertIn('schedule', response.context)
         self.assertFalse(response.context['table_empty'])
 
     def test_student_view_schedule(self):
         """
-        Test that a student cannot view schedule.
+        Test that a student can view schedule.
         """
         self.client.login(username="student", password="password")
         response = self.client.get(self.url)
@@ -125,6 +240,7 @@ class ScheduleViewTests(TestCase):
         response = self.client.post(self.url, {'date': date(2024, 9, 3)})
         expected_url = f"{self.url}?date={date(2024, 9, 3)}&study_group="
         self.assertRedirects(response, expected_url)
+        messages_list = list(get_messages(response.wsgi_request))
 
     def test_get_schedule_with_valid_ids(self):
         """
@@ -135,7 +251,7 @@ class ScheduleViewTests(TestCase):
         form_data = {'date': date(2024, 9, 3), 'study_group': self.study_group}
         form = ScheduleFilterForm(data=form_data)
         
-        # Check the filter parameters
+
         filter_params = form.get_filter_params()
         schedule, table_empty = view.get_schedule(
             filter_params
@@ -144,6 +260,52 @@ class ScheduleViewTests(TestCase):
         self.assertIn(1, schedule)
         self.assertEqual(schedule[1]['details'][1]['subject'], self.subject)
 
+    def test_unauthorized_user_access(self):
+        """
+        Test that an unauthorized user (not in Tutor or Student groups) 
+        cannot access the schedule view.
+        """
+        unauthorized_user = User.objects.create_user(
+            username="unauthorized_user", password="password"
+        )
+        self.client.login(username="unauthorized_user", password="password")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_get_request_with_no_schedule(self):
+        """
+        Test that a valid GET request with no schedule available displays an
+        info message.
+        """
+        self.client.login(username="tutor", password="password")
+        response = self.client.get(self.url, {
+            'date': date(2024, 9, 10),
+            'study_group': self.study_group.id
+        })
+
+        self.assertEqual(response.status_code, 200)
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertEqual(
+            messages_list[0].message,
+            "No schedule available for the selected date and study group."
+        )
+
+    def test_get_request_with_successful_schedule_display(self):
+        """
+        Test that a valid GET request displays success messages when schedules
+        are found.
+        """
+        self.client.login(username="tutor", password="password")
+        response = self.client.get(self.url, {
+            'date': date(2024, 9, 3),
+            'study_group': self.study_group.id
+        })
+
+        self.assertEqual(response.status_code, 200)
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertEqual(
+            messages_list[0].message,
+            "Schedule displayed successfully.")
 
 
 class EditScheduleViewTests(TestCase):
@@ -203,7 +365,7 @@ class EditScheduleViewTests(TestCase):
             'tutor_dashboard/edit_schedule.html'
         )
         
-        form = response.context['form']
+        form = response.context['schedule']
         self.assertIsInstance(form, ScheduleForm)
         self.assertEqual(form.instance, self.schedule)
         
@@ -239,6 +401,11 @@ class EditScheduleViewTests(TestCase):
         )
         self.assertRedirects(response, expected_url)
         self.assertEqual(self.schedule.subject, new_subject)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertIn(
+            "Schedule updated successfully.",
+            str(messages[0])
+        )
 
     def test_post_request_with_invalid_data_displays_errors(self):
         """
@@ -260,18 +427,31 @@ class EditScheduleViewTests(TestCase):
         )
         self.assertFalse(form.is_valid())
         self.assertIn('order_number', form.errors)
-
+        
+        messages = list(get_messages(response.wsgi_request))
+        error_messages = [
+            f"Error in {field}: {error}"
+            for field, errors in form.errors.items()
+            for error in errors
+        ]
+        for error_message in error_messages:
+            self.assertTrue(any(
+                str(message) == error_message
+                for message in messages
+            ))
 
 
 class AddScheduleViewTests(TestCase):
-    """Test suite for AddScheduleView."""
+    """Test suite for the AddScheduleView functionality, verifying access,
+    data handling, permissions, and messages."""
     
     @classmethod
     def setUpTestData(cls):
         """
-        Set up initial data for testing.
+        Set up initial data for testing:
+        - Creates study group, subject, tutor user, and student user.
+        - Assigns tutor and student users to appropriate groups.
         """
-        
         cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
         cls.subject = Subject.objects.create(name="Subject1", active=True)
         cls.tutor_user = User.objects.create_user(
@@ -310,13 +490,13 @@ class AddScheduleViewTests(TestCase):
             response,
             'tutor_dashboard/edit_schedule.html'
         )
-        self.assertIsInstance(response.context['form'], ScheduleForm)
+        self.assertIsInstance(response.context['schedule'], ScheduleForm)
         self.assertEqual(
-            response.context['form'].initial['date'],
+            response.context['schedule'].initial['date'],
             date(2024, 9, 3)
         )
         self.assertEqual(
-            response.context['form'].initial['study_group'],
+            response.context['schedule'].initial['study_group'],
             str(self.study_group.id)
         )
 
@@ -344,17 +524,20 @@ class AddScheduleViewTests(TestCase):
             'order_number': 1,
             'subject': self.subject.id
         })
+        created_schedule = Schedule.objects.get(
+            date=date(2024, 9, 3),
+            study_group=self.study_group,
+            order_number=1,
+            subject=self.subject
+        )
         self.assertRedirects(
             response,
-            f"{reverse('tutor:schedule')}?date={date(2024, 9, 3)}"
-            f"&study_group={self.study_group.id}"
+            reverse('tutor:edit_schedule', args=[created_schedule.pk])
             )
-        self.assertTrue(
-            Schedule.objects.filter(
-                date=date(2024, 9, 3),
-                study_group=self.study_group,
-                order_number=1
-            ).exists()
+        messages = list(get_messages(response.wsgi_request))
+        self.assertIn(
+            "Schedule added successfully.",
+            str(messages[0])
         )
 
     def test_get_student_cannot_add_schedule(self):
@@ -390,6 +573,97 @@ class AddScheduleViewTests(TestCase):
             'subject',
             'This field is required.'
         )
+        messages = list(get_messages(response.wsgi_request))
+        self.assertIn(
+            "Error in subject: This field is required.",
+            str(messages[0])
+        )
+
+
+class DeleteScheduleViewTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Sets up initial test data for study groups, and subjects.
+        """
+        
+        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.subject = Subject.objects.create(name="Subject1", active=True)
+        
+        cls.tutor_user = User.objects.create_user(
+            username="tutor",
+            password="password"
+        )
+        cls.student_user = User.objects.create_user(
+            username="student",
+            password="password"
+        )
+        tutor_group = Group.objects.get(name="Tutor")
+        student_group = Group.objects.get(name="Student")
+        cls.tutor_user.groups.add(tutor_group)
+        cls.student_user.groups.add(student_group)
+
+    def setUp(self):
+        # Create schedule templates
+        self.schedule = Schedule.objects.create(
+            date=date(2024,9,3),
+            study_group=self.study_group,
+            order_number=1,
+            subject=self.subject
+        )
+        self.client = Client()
+        self.url = reverse(
+            'tutor:delete_schedule',
+            kwargs={'pk': self.schedule.pk}
+        )
+
+    def test_delete_schedule_success(self):
+        """
+        Test that a schedule can be successfully deleted.
+        """
+        self.client.login(username="tutor", password="password")
+        response = self.client.post(self.url)
+
+        # Check that the schedule was deleted
+        self.assertEqual(Schedule.objects.count(), 0)
+        
+        # Check for success message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]), "Schedule deleted successfully.")
+
+        # Check redirect behavior
+        expected_url = (
+            f"{reverse('tutor:schedule')}?date={self.schedule.date}&study_group"
+            f"={self.schedule.study_group.id}"
+            )
+        self.assertRedirects(response, expected_url)
+
+    def test_delete_schedule_permission_denied(self):
+        """
+        Test that a user without permission cannot delete a schedule.
+        """
+        self.client.login(username="student", password="password")
+
+        response = self.client.post(self.url)
+
+        # Check that the schedule still exists
+        self.assertEqual(Schedule.objects.count(), 1)
+        
+        # Check for permission denied message or the status code
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_schedule_not_found(self):
+        """
+        Test that a 404 is returned if the schedule does not exist.
+        """
+        self.client.login(username="tutor", password="password")
+
+        # Attempt to delete a non-existing schedule
+        invalid_url = reverse('tutor:delete_schedule', kwargs={'pk': 999})
+        response = self.client.post(invalid_url)
+
+        # Check for a 404 response
+        self.assertEqual(response.status_code, 404)
 
 
 class FillScheduleViewTests(TestCase):

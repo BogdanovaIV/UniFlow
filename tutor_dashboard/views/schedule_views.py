@@ -86,12 +86,13 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
         - A HttpResponseRedirect to the 'tutor:schedule' URL, including query
         parameters for date and study group.
         """
-        date = form.get('date')
+        date = form.get('date') if 'date' in form else ''
         study_group = (
             form.get('study_group').id 
             if isinstance(form.get('study_group'), StudyGroup) 
             else form.get('study_group')
-        )
+        ) if 'study_group' in form else ''
+        
         return redirect(
             f"{reverse('tutor:schedule')}?date={date}"
             f"&study_group={study_group}",
@@ -292,6 +293,7 @@ class EditScheduleView(ScheduleBaseView):
         users = UserProfile.objects.filter(
             study_group=schedule.study_group
             ).select_related('user')
+        
         return render(
             request,
             self.template_name,
@@ -318,6 +320,7 @@ class EditScheduleView(ScheduleBaseView):
         """
         schedule = Schedule.objects.get(pk=pk)
         form = ScheduleForm(request.POST, instance=schedule)
+        
         if form.is_valid():
             form.save()
             data = {

@@ -7,6 +7,7 @@ from .schedule_template_views import (
 )
 
 from .schedule_views import (
+    ScheduleBaseView,
     ScheduleView,
     EditScheduleView,
     AddScheduleView,
