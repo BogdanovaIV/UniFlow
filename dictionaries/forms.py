@@ -21,10 +21,12 @@ class ScheduleTemplateFilterForm(forms.Form):
     """
     term = forms.ModelChoiceField(
         queryset=Term.active_objects(),
+        required=True,
         label="Term"
     )
     study_group = forms.ModelChoiceField(
         queryset=StudyGroup.active_objects(),
+        required=True,
         label="Study Group"
     )
 

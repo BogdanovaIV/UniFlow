@@ -58,7 +58,7 @@
                             </li>
                         </a>
                         {% else %}
-                        <a href="{% url 'tutor:add_schedule_template' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}&weekday={{ weekday }}&order_number={{ order }}"
+                        <a href="{% if selection_valid %}{% url 'tutor:add_schedule_template' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}&weekday={{ weekday }}&order_number={{ order }}{% else %}#{% endif %}"
                             class="text-decoration-none text-reset"
                             aria-label="Add new schedule template for term {{ form.term.value }} and study group {{ form.study_group.value }}">
                             <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
