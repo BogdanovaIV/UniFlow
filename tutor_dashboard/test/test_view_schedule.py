@@ -240,7 +240,6 @@ class ScheduleViewTests(TestCase):
         response = self.client.post(self.url, {'date': date(2024, 9, 3)})
         expected_url = f"{self.url}?date={date(2024, 9, 3)}&study_group="
         self.assertRedirects(response, expected_url)
-        messages_list = list(get_messages(response.wsgi_request))
 
     def test_get_schedule_with_valid_ids(self):
         """
