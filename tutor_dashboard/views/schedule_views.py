@@ -133,7 +133,7 @@ class ScheduleView(PermissionRequiredMixin, View):
         )
         form = ScheduleFilterForm(request.GET)
         
-        if not form.is_valid():
+        if request.GET and not form.is_valid():
             # Display form validation errors
             for field, errors in form.errors.items():
                 for error in errors:
@@ -143,14 +143,14 @@ class ScheduleView(PermissionRequiredMixin, View):
         schedule, table_empty = self.get_schedule(
             filter_params
         )
-        if table_empty:
+        if table_empty and request.GET:
             # Display message if no schedule is available for the selected
             # filters
             messages.info(
                 request,
                 "No schedule available for the selected date and study group."
             )
-        else:
+        elif request.GET:
             # Display success message when schedule is successfully filtered
             messages.success(request, "Schedule displayed successfully.")
 
