@@ -5,14 +5,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col mt-3 text-white font-monospace fw-medium">
-            <div class="row">
-                <div class="col-2 pt-1">
-                    <a id="instructions-button" href="#" class="icon-link icon-link-hover link-info me-3"
-                        data-bs-toggle="modal" data-bs-target="#instructionModal" aria-label="Open instructions">
-                        <i class="fas fa-question-circle"></i>
-                    </a>
-                </div>
-                <div class="col-10">
+            <div class="row justify-content-md-center">
+                <div class="col-auto">
                     <div class="d-flex flex-wrap align-items-center">
                         <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
                             aria-label="Update selection">
@@ -29,8 +23,10 @@
                             <input type="hidden" name="study_group" {% if form.study_group.value %} value="{{ form.study_group.value }}" {% endif %}>
                             <button type="submit" class="btn btn-success p-2 me-2">Fill</button>
                         </form>
-                        <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
                     </div>
+                </div>
+                <div class="col-auto">
+                    <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
                 </div>
             </div>
             <div class="collapse col-10 offset-2 mt-2" id="collapseForm">
@@ -117,18 +113,27 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body bg-light">
-                <p>To use the schedule selection form:</p>
+                <p>The schedule displays the information about subjects, homeworks, students' marks.</p>
+                <p>The number of students' marks is displayed on a badge. <span class="badge text-bg-primary rounded-pill">7</span></p>
                 <ul>
                     <li>Selection
                         <ol>
                             <li>Click on the <strong>Selection</strong> button to expand the form.</li>
-                            <li>Fill out the required fields, including term, and study group.</li>
+                            <li>Fill out the required fields, including date, and study group.</li>
+                        </ol>
+                    </li>
+                    <li>Fill
+                        <ol>
+                            <li>To fill Schedule by Schedule templates, set selection.</li> 
+                            <li>Click on the <strong>Fill</strong>. The system creates a Schedule based on the Schedule template of the particular study group.</li>
+                            <li>Fill out the required fields, including date, and study group.</li>
+                            <p class="text-warning">!!! This feature is available only for an empty schedule.</p>
                         </ol>
                     </li>
                     <li>Adding and changing data
                         <ol>
                             <li>Сlick on a cell to open a form to fill out or edit</li>
-                            <li>Fill out the subject.</li>
+                            <li>Fill out the subject, homework and student' marks.</li>
                             <li>Click <strong>Save</strong> to save changes, or <strong>Cancel</strong> to go back
                                 without
                                 saving.</li>

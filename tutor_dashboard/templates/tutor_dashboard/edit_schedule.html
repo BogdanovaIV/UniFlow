@@ -265,6 +265,85 @@
         </div>
     </div>
 </div>
-
 {% endif %}
+<!-- Instruction Modal -->
+<div class="modal fade text-dark" id="instructionModal" tabindex="-1" aria-labelledby="instructionModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info-subtle">
+                <h5 class="modal-title" id="instructionModalLabel">Form Instructions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light">
+                {% if schedule.instance.pk %}
+                <ul>
+                    <li>Editing schedule data
+                        <ol>
+                            <li>Fill out the subject and/or the homework.</li>
+                            <li>Click <strong>Save</strong> to save changes, or <strong>Cancel</strong> to go back
+                                without
+                                saving.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>Editing students' marks
+                        <ol>
+                            <li>Add new student's mark
+                                <ol>
+                                    <li>Click <strong>Add</strong> to add new student's mark.</li>
+                                    <li>Fill out a student and their mark and click <strong>Add</strong>, or <strong>Cancel</strong> to go back
+                                        without adding.
+                                    </li>
+                                </ol>
+                            </li>
+                            <li>Edit a student's mark
+                                <ol>
+                                    <li>Click <strong>Edit</strong> to edit student's mark.</li>
+                                    <li>Change a student and/or their mark and click <strong>Save</strong>, or <strong>Cancel</strong> to go back
+                                        without changing.
+                                    </li>
+                                </ol>
+                            </li>
+                            <li>Delete a student's mark
+                                <ol>
+                                    <li>Click <strong>Delete</strong> to delete student's mark, or <strong>Cancel</strong> to go
+                                        back without deleting.
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </li>
+                    <li>Delete a schedule data
+                        <ol>
+                            <li>Click <strong>Delete</strong> to delete the object, or <strong>Cancel</strong> to go
+                                back without deleting.
+                            </li>
+                        </ol>
+                        <p class="text-warning">!!! When you delete a Schedule, students' marks that link with it are also deleted.</p>
+                    </li>
+                </ul>
+                {% else %}
+                <ul></ul>
+                    <li>Adding schedule data
+                        <ol>
+                            <li>Fill out the subject and/or the homework.</li>
+                            <li>Click <strong>Save</strong> to save changes, or <strong>Cancel</strong> to go back
+                                without
+                                saving.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>Adding student's marks
+                        <p class="text-warning">The feature to add students' marks is available after saving a schedule.</p>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+            <div class="modal-footer bg-body-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock table_content %}

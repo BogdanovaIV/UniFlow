@@ -5,26 +5,20 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col mt-3 text-white font-monospace fw-medium">
-            <div class="row">
-                <div class="col-2 pt-1">
-                    <a id="instructions-button" href="#" class="icon-link icon-link-hover link-info me-3"
-                        data-bs-toggle="modal" data-bs-target="#instructionModal" aria-label="Open instructions">
-                        <i class="fas fa-question-circle"></i>
+            <div class="row justify-content-md-center">
+                <div class="col-auto">
+                    <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
+                        aria-label="Update selection">
+                        <i class="fas fa-sync"></i>
                     </a>
+                    <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"
+                        aria-label="Toggle selection form">
+                        Selection
+                    </button>
                 </div>
-                <div class="col-10">
-                    <div class="d-flex flex-wrap align-items-center">
-                        <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
-                            aria-label="Update selection">
-                            <i class="fas fa-sync"></i>
-                        </a>
-                        <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"
-                            aria-label="Toggle selection form">
-                            Selection
-                        </button>
-                        <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
-                    </div>
+                <div class="col-auto">
+                    <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
                 </div>
             </div>
             <div class="collapse col-10 offset-2 mt-2" id="collapseForm">
@@ -88,7 +82,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body bg-light">
-                <p>To use the schedule selection form:</p>
+                
                 <ul>
                     <li>Selection
                         <ol>

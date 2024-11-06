@@ -103,4 +103,41 @@
     </div>
 </div>
 {% endif %}
+
+<!-- Instruction Modal -->
+<div class="modal fade text-dark" id="instructionModal" tabindex="-1" aria-labelledby="instructionModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info-subtle">
+                <h5 class="modal-title" id="instructionModalLabel">Form Instructions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light">
+                <ul>
+                    <li>Adding and changing data
+                        <ol>
+                            <li>Fill out the subject</li>
+                            <li>Click <strong>Save</strong> to save changes, or <strong>Cancel</strong> to go back
+                                without
+                                saving.</li>
+                        </ol>
+                    </li>
+                    <li>Delete data
+                        <ol>
+                            <li>Click <strong>Delete</strong> to delete the object, or <strong>Cancel</strong> to go
+                                back without
+                                deleting.
+                            </li>
+                            <p class="text-danger">!!! When you delete a Schedule, student's marks that link with it are also deleted.</p>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer bg-body-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock table_content %}
