@@ -244,6 +244,29 @@ class ScheduleFilterFormTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('date', form.errors)
 
+    def test_form_with_is_student_sets_study_group(self):
+        """
+        Tests that when 'is_student' is True, the form pre-fills and disables
+        the 'study_group' field, making it read-only.
+        """
+        test_date = date(2024, 9, 1)
+        form = ScheduleFilterForm(
+            data={'date': test_date},
+            is_student=True,
+            user_study_group=self.group1
+        )
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.fields['study_group'].initial, self.group1)
+        self.assertTrue(form.fields['study_group'].disabled)
+        filter_params = form.get_filter_params()
+        expected_week_start = test_date - timedelta(days=test_date.weekday())
+        expected_week_end = expected_week_start + timedelta(days=6)
+        self.assertEqual(filter_params['study_group'], self.group1)
+        self.assertEqual(
+            filter_params['date__range'],
+            (expected_week_start, expected_week_end)
+        )
+
 
 class ScheduleFormTests(TestCase):
     """

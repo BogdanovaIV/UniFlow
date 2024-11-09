@@ -18,7 +18,7 @@ from dictionaries.models import (
     Term,
     StudentMark
 )
-
+from users.context_processors import user_profile_parameters
 
 class ScheduleBaseView(PermissionRequiredMixin, View):
     """
@@ -109,6 +109,7 @@ class ScheduleView(PermissionRequiredMixin, View):
     and handling both GET and POST requests for schedule filtering.
     """
     template_name = 'tutor_dashboard/schedule.html'
+    url_name = 'tutor:schedule'
     permission_required = 'dictionaries.view_schedule'
 
     def get(self, request):
@@ -125,15 +126,30 @@ class ScheduleView(PermissionRequiredMixin, View):
         Shows error messages if form validation fails and displays an info
         message if no schedule matches the filter.
         """
-        
-        date = request.GET.get('date') if 'date' in request.GET else ''
+        user_profile_context = user_profile_parameters(request)
+        context_var = {
+            'user': request.user,
+            **user_profile_context
+        }
+        get_params = request.GET
+
+        date = get_params.get('date') if 'date' in get_params else ''
+        if context_var['is_student']:
+            get_params = request.GET.copy()
+            get_params['study_group'] = context_var['user_study_group']
+
         study_group_id = (
-            request.GET.get('study_group') if 'study_group' in request.GET
+            get_params.get('study_group') if 'study_group' in get_params
             else ''
         )
-        form = ScheduleFilterForm(request.GET)
         
-        if request.GET and not form.is_valid():
+        form = ScheduleFilterForm(
+            get_params,
+            is_student=context_var['is_student'],
+            user_study_group=context_var['user_study_group'],
+        )
+
+        if get_params and not form.is_valid():
             # Display form validation errors
             for field, errors in form.errors.items():
                 for error in errors:
@@ -141,16 +157,16 @@ class ScheduleView(PermissionRequiredMixin, View):
 
         filter_params = form.get_filter_params()
         schedule, table_empty = self.get_schedule(
-            filter_params
+            filter_params, context_var
         )
-        if table_empty and request.GET:
+        if table_empty and get_params:
             # Display message if no schedule is available for the selected
             # filters
             messages.info(
                 request,
                 "No schedule available for the selected date and study group."
             )
-        elif request.GET:
+        elif get_params:
             # Display success message when schedule is successfully filtered
             messages.success(request, "Schedule displayed successfully.")
 
@@ -177,19 +193,31 @@ class ScheduleView(PermissionRequiredMixin, View):
         - Redirects to the schedule view with selected date and study group as
         query parameters.
         """
-        form = ScheduleFilterForm(request.POST)
+        user_profile_context = user_profile_parameters(request)
+        context_var = {
+            'user': request.user,
+            **user_profile_context
+        }
+        form = ScheduleFilterForm(
+            request.POST,
+            is_student=context_var['is_student'],
+            user_study_group=context_var['user_study_group'],
+        )
+
         date = request.POST.get('date') if 'date' in request.POST else ''
         study_group = (
             request.POST.get('study_group') if 'study_group' in request.POST
             else ''
         )
+        if context_var['is_student']:
+            return redirect(f"{reverse(self.url_name)}?date={date}")
+        else:
+            return redirect(
+                f"{reverse(self.url_name)}?date={date}"
+                f"&study_group={study_group}"
+            )
 
-        return redirect(
-            f"{reverse('tutor:schedule')}?date={date}"
-            f"&study_group={study_group}"
-        )
-
-    def get_schedule(self, filter_params):
+    def get_schedule(self, filter_params, context_var):
         """
         Retrieves and organizes the schedule based on selected date range and
         study group.
@@ -197,6 +225,7 @@ class ScheduleView(PermissionRequiredMixin, View):
         Parameters:
         - filter_params: Dictionary containing filter parameters for date range
         and study group.
+        - context_var: context processor variables (user, user_study_group ...).
 
         Returns:
         - A tuple with:
@@ -213,11 +242,11 @@ class ScheduleView(PermissionRequiredMixin, View):
             table_empty = True
 
         return (
-            self.get_full_week_schedule(objects, filter_params),
+            self.get_full_week_schedule(objects, filter_params, context_var),
             table_empty
         )
 
-    def get_full_week_schedule(self, objects, filter_params):
+    def get_full_week_schedule(self, objects, filter_params, context_var):
         """
         Organizes schedule objects by weekdays within the selected date range.
 
@@ -226,6 +255,7 @@ class ScheduleView(PermissionRequiredMixin, View):
         and study group.
         - filter_params: Dictionary of filter parameters, specifically date
         range and study group.
+        - context_var: context processor variables (user, user_study_group ...).
 
         Returns:
         - A dictionary representing the weekly schedule, where each day
@@ -251,11 +281,20 @@ class ScheduleView(PermissionRequiredMixin, View):
         for value, label in WeekdayChoices.choices
         }
         for object in objects:
+            marks = 0
+            if context_var['is_student']:
+                student_marks = StudentMark.objects.filter(
+                    schedule=object, student=context_var['user'])
+                if student_marks.exists():
+                    marks = student_marks.first().mark
+            else:
+                marks = StudentMark.objects.filter(schedule=object).count()
+
             schedule[object.date.weekday()]['details'][object.order_number] = {
                 'id': object.id,
                 'subject': object.subject,
                 'homework': object.homework,
-                'marks': StudentMark.objects.filter(schedule=object).count(),
+                'marks': marks,
             }
         return schedule
 

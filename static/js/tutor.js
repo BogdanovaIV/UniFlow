@@ -68,7 +68,7 @@ function areAllFieldsFilled(form) {
 function updateSelectionDescription(form, selectionDescription, dataTemplateName) {
     let selectedFirstText;
     let labelFirstSelect = 'Term';
-    if (dataTemplateName == 'schedule') {
+    if (dataTemplateName == 'schedule' || dataTemplateName == 'student-schedule') {
         const firstSelect = form.querySelector("[name='date']");
         selectedFirstText = firstSelect.value;
         labelFirstSelect = 'Date';

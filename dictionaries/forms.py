@@ -7,7 +7,7 @@ from .models import (
     Subject,
     WeekdayChoices,
     Schedule,
-    StudentMark)  
+    StudentMark)
 
 class ScheduleTemplateFilterForm(forms.Form):
     """
@@ -118,6 +118,26 @@ class ScheduleFilterForm(forms.Form):
         required=True,
         label="Study Group"
     )
+
+    def __init__(self, *args, **kwargs):
+        """
+        Initializes the ScheduleFilterForm with optional customization for
+        students.
+
+        Args:
+            is_student (bool, optional): Indicates if the form is being used by
+            a student. Defaults to False. When True, the 'study_group' field is 
+            pre-filled with the student's study group and made read-only.
+            user_study_group (str, optional): The study group assigned to the 
+            student user, if applicable. Defaults to an empty string.
+
+        """
+        is_student = kwargs.pop('is_student', False)
+        user_study_group = kwargs.pop('user_study_group', '')
+        super().__init__(*args, **kwargs)
+        if is_student:
+            self.fields['study_group'].initial = user_study_group
+            self.fields['study_group'].disabled = True
 
     def get_filter_params(self):
         """

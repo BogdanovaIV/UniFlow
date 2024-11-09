@@ -2,50 +2,55 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const form = document.getElementById('selection-schedule');
-    const schedule = document.getElementById('schedule');
-    const dataTemplateName = schedule.getAttribute('data-template-name')
-    const fillForm = document.getElementById('fill-form')
-    // Attach change event to all input and select elements in the form
-    const upadateSelection = function () {
-        updateSelectionDescription(form, selectionDescription, dataTemplateName);
-        if (fillForm) {
-            console.log(schedule.getAttribute('data-empty'));
-            if (schedule.getAttribute('data-empty') == "False") {
-                if (!fillForm.hasAttribute('hidden')) {
-                    fillForm.setAttribute('hidden', '');
-                }
-            } else if (areAllFieldsFilled(form)) {
-                if (fillForm.hasAttribute('hidden')) {
-                    fillForm.removeAttribute('hidden');
-                }
-            } else {
-                if (!fillForm.hasAttribute('hidden')) {
-                    fillForm.setAttribute('hidden', '');
-                }
-            }
-        }
-        if (areAllFieldsFilled(form) ||
-            schedule.getAttribute('data-empty') == "False") {
-            form.submit();
-        }
-    }
-
-    const inputElements = form.querySelectorAll('input, select');
-    inputElements.forEach(input => {
-        input.addEventListener('change', upadateSelection);
-    });
-    document.getElementById('update-selection').addEventListener(
-        'click', upadateSelection
-    );
-    updateSelectionDescription(form, selectionDescription, dataTemplateName)
-
     //Add event for toast messages
     var toastElements = document.querySelectorAll('.toast');
     toastElements.forEach(function (toastElement) {
         var toast = new bootstrap.Toast(toastElement);
         toast.show();
     });
+
+    const form = document.getElementById('selection-schedule');
+    const schedule = document.getElementById('schedule');
+    if (form) {
+        const dataTemplateName = schedule.getAttribute('data-template-name')
+        const fillForm = document.getElementById('fill-form')
+        // Attach change event to all input and select elements in the form
+        const upadateSelection = function () {
+            updateSelectionDescription(form, selectionDescription, dataTemplateName);
+            if (fillForm) {
+                console.log(schedule.getAttribute('data-empty'));
+                if (schedule.getAttribute('data-empty') == "False") {
+                    if (!fillForm.hasAttribute('hidden')) {
+                        fillForm.setAttribute('hidden', '');
+                    }
+                } else if (areAllFieldsFilled(form)) {
+                    if (fillForm.hasAttribute('hidden')) {
+                        fillForm.removeAttribute('hidden');
+                    }
+                } else {
+                    if (!fillForm.hasAttribute('hidden')) {
+                        fillForm.setAttribute('hidden', '');
+                    }
+                }
+            }
+            if (areAllFieldsFilled(form) ||
+                schedule.getAttribute('data-empty') == "False") {
+                form.submit();
+            }
+        }
+
+        const inputElements = form.querySelectorAll('input, select');
+        inputElements.forEach(input => {
+            input.addEventListener('change', upadateSelection);
+        });
+
+        const updateSelection = document.getElementById('update-selection');
+        if (updateSelection) {
+            updateSelection.addEventListener('click', upadateSelection);
+        }
+
+        updateSelectionDescription(form, selectionDescription, dataTemplateName)
+    }
 
 });
 
@@ -63,7 +68,7 @@ function areAllFieldsFilled(form) {
 function updateSelectionDescription(form, selectionDescription, dataTemplateName) {
     let selectedFirstText;
     let labelFirstSelect = 'Term';
-    if (dataTemplateName == 'schedule') {
+    if (dataTemplateName == 'schedule' || dataTemplateName == 'student-schedule') {
         const firstSelect = form.querySelector("[name='date']");
         selectedFirstText = firstSelect.value;
         labelFirstSelect = 'Date';

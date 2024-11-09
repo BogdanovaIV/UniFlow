@@ -12,6 +12,7 @@ from dictionaries.models import (
     )
 from dictionaries.forms import ScheduleFilterForm, ScheduleForm
 from tutor_dashboard.views import ScheduleView, ScheduleBaseView
+from users.models import UserProfile
 
 
 class ScheduleBaseViewTests(TestCase):
@@ -162,7 +163,11 @@ class ScheduleViewTests(TestCase):
         student_group = Group.objects.get(name="Student")
         cls.tutor_user.groups.add(tutor_group)
         cls.student_user.groups.add(student_group)
-
+        UserProfile.objects.create(
+            user=cls.student_user,
+            study_group=cls.study_group,
+            checked=True
+        )
 
     def setUp(self):
         """
@@ -214,6 +219,10 @@ class ScheduleViewTests(TestCase):
         self.client.login(username="student", password="password")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context['form'].data['study_group'],
+            self.study_group
+        )
 
     def test_post_request_redirects_with_filter_params(self):
         """
@@ -248,12 +257,14 @@ class ScheduleViewTests(TestCase):
         """
         view = ScheduleView()
         form_data = {'date': date(2024, 9, 3), 'study_group': self.study_group}
-        form = ScheduleFilterForm(data=form_data)
-        
-
+        form = ScheduleFilterForm(
+            data=form_data,
+            is_student=False,
+            user_study_group=self.study_group,
+        )
         filter_params = form.get_filter_params()
         schedule, table_empty = view.get_schedule(
-            filter_params
+            filter_params, { 'is_student': False }
         )
         self.assertFalse(table_empty)
         self.assertIn(1, schedule)

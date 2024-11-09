@@ -100,6 +100,17 @@
     color: var(--light-color);
 }
 
+/* Student dushboard*/
+.accordion-button.collapsed .fa-chevron-down {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
+
+.accordion-button .fa-chevron-down {
+    transform: rotate(-180deg);
+    transition: transform 0.3s ease;
+}
+
 /* Dashboard*/
 
 .bg-image-dashboard-info {
@@ -123,4 +134,9 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+/* The feild created by DJango*/
+#id_homework {
+    width: 100%;
+    height: 100px;
 }

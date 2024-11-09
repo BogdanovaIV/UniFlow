@@ -86,7 +86,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'users.context_processors.user_groups',
+                'users.context_processors.user_profile_parameters',
                 'main.context_processors.current_year',
             ],
         },

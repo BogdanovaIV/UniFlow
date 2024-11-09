@@ -56,15 +56,15 @@
                             href="{% url 'contact' %}" aria-label="Contact Page">Contact</a>
                     </li>
                     {% if user.is_authenticated %}
-                    {% for group in user_groups %}
-                    {% if group.name == 'Student' %}
+                    {% if is_student %}
                     <li class="nav-item"></li>
                         <a class="nav-link {% if request.path == url_dashboard %}fw-bolder{% endif %}"
                             href="{% url 'student:dashboard' %}">
                             Dashboard
                         </a>
                     </li>
-                    {% elif group.name == 'Tutor' %}
+                    {% endif %}
+                    {% if is_tutor %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == url_schedule or request.path == url_schedule_templates %}fw-bolder{% endif %}"
                             href="{% url 'tutor:schedule' %}">
@@ -72,7 +72,6 @@
                         </a>
                     </li>
                     {% endif %}
-                    {% endfor %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == logout_url %}fw-bolder{% endif %}"
                             href="{% url 'account_logout' %}" aria-label="Logout Page">Logout</a>

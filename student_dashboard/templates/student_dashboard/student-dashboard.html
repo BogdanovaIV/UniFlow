@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-
+{% if not user_checked %}
 <section class="masthead py-4 text-center text-light bg-image-dashboard-info">
     <div class="container">
         <div class="row text-center">
@@ -11,6 +11,104 @@
         </div>
     </div>
 </section>
+{% else %}
+<section class="masthead py-4 text-light bg-image-dashboard-info">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col mt-3 text-white font-monospace fw-medium">
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="d-flex flex-wrap align-items-center">
+                            <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
+                                aria-label="Update selection">
+                                <i class="fas fa-sync"></i>
+                            </a>
+                            <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"
+                                aria-label="Toggle selection form">
+                                Selection
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
+                    </div>
+                </div>
+                <div class="collapse col-auto mt-2" id="collapseForm">
+                    <form method="post" id="selection-schedule" aria-label="Selection schedule form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" id="schedule" data-empty="{{ table_empty }}" data-template-name="student-schedule">
+            <div class="row">
+                {% for weekday, weekday_info in schedule.items %}
+                <div class="col-12 col-md-4 col-lg-3 col-xl px-0">
+                    <div class="card bg-transparent mt-3 border-light">
+                        <h6
+                            class="card-header {% if weekday < 5 %}text-bg-info{% else %}text-bg-danger{% endif %} text-light bg-opacity-50 text-uppercase">
+                            <div class="container"></div>
+                            <div class="row">{{ weekday_info.label_weekday }}</div>
+                            <div class="row">{{ weekday_info.date }}</div>
+                        </h6>
+                        <ul class="list-group list-group-flush bg-transparent">
+                            {% for order, row_detail in weekday_info.details.items %}
+                            <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
+                                <div class="row m-0">
+                                    <div class="row m-0 p-0">
+                                        <div
+                                            class="col-2 text-center p-0 m-0 border-end border-bottom border-secondary">
+                                            {{ order }}
+                                        </div>
+                                        <div class="col-10 px-1 m-0 border-bottom border-secondary">
+                                            {{ row_detail.subject }}
+                                        </div>
+                                    </div>
+                                    <div class="row m-0 p-0 {% if order < 10 %}border-bottom border-light{% endif %}">
+                                        <div class="accordion-item p-0">
+                                            <div class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapse{{row_detail.id}}" aria-expanded="true"
+                                                    aria-controls="collapse{{row_detail.id}}">
+                                                    <div class="col-2 text-center p-0 m-0 border-end border-secondary">
+                                                        <i class="fas fa-chevron-down ms-auto"></i>
+                                                    </div>
+                                                    <div class="col-10 px-1 position-relative text-truncate">
+                                                        {{ row_detail.homework }}
+                                                        {% if row_detail.marks != 0 %}
+                                                        <span
+                                                            class="badge text-bg-primary rounded-pill position-absolute end-0">
+                                                            {{row_detail.marks|default_if_none:'' }}
+                                                        </span>
+                                                        {% endif %}
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            <div id="collapse{{row_detail.id}}" class="accordion-collapse collapse border-top border-secondary"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body p-1">
+                                                    {{ row_detail.homework }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
 
-
+{% endif %}
 {% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/tutor.js' %}" defer></script>
+{% endblock scripts %}
