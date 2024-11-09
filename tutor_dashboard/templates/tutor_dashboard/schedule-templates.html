@@ -30,9 +30,9 @@
         </div>
     </div>
     <div class="container-fluid" id="schedule" data-empty="{{ table_empty }}" data-template-name="schedule-templates">
-        <div class="row">
+        <div class="row row-cols-1 row-cols-md-4 row-cols-lg-7">
             {% for weekday, details in schedule_templates.items %}
-            <div class="col-12 col-md-4 col-lg-3 col-xl px-0">
+            <div class="col px-0">
                 <div class="card bg-transparent mt-3">
                     <h6
                         class="card-header {% if weekday < 5 %}text-bg-info{% else %}text-bg-danger{% endif %} text-light bg-opacity-50 text-uppercase">
@@ -47,7 +47,7 @@
                             <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
                                 <div class="row px-3">
                                     <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
-                                    <div class="col-10 px-1">{{ subject_detail.subject }}</div>
+                                    <div class="col-10 px-1 text-truncate">{{ subject_detail.subject }}</div>
                                 </div>
                             </li>
                         </a>
