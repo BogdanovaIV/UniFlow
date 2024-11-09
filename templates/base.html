@@ -58,10 +58,10 @@
                     {% if user.is_authenticated %}
                     {% if is_student %}
                     <li class="nav-item"></li>
-                        <a class="nav-link {% if request.path == url_dashboard %}fw-bolder{% endif %}"
-                            href="{% url 'student:dashboard' %}">
-                            Dashboard
-                        </a>
+                    <a class="nav-link {% if request.path == url_dashboard %}fw-bolder{% endif %}"
+                        href="{% url 'student:dashboard' %}">
+                        Dashboard
+                    </a>
                     </li>
                     {% endif %}
                     {% if is_tutor %}
@@ -104,8 +104,9 @@
                 <div class="col-auto">
                     <ul class="list-inline text-center mb-0">
                         <li class="list-inline-item me-3">
-                            <a href="mailto:info@medicaluniversity.com">
-                                <span class="fa-stack fa-sm red-color">
+                            <a class="red-color footer-link" href="mailto:info@medicaluniversity.com"
+                                aria-label="Send e-mail">
+                                <span class="fa-stack fa-sm">
                                     <i class="fas fa-circle fa-stack-2x"></i>
                                     <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
                                 </span>
