@@ -19,6 +19,11 @@
                 <div class="row">
                     <div class="col-auto">
                         <div class="d-flex flex-wrap align-items-center">
+                            <a id="instructions-button" href="#" class="icon-link icon-link-hover link-info me-3"
+                                data-bs-toggle="modal" data-bs-target="#instructionModal"
+                                aria-label="Open instructions">
+                                <i class="fas fa-question-circle"></i>
+                            </a>
                             <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
                                 aria-label="Update selection">
                                 <i class="fas fa-sync"></i>
@@ -86,7 +91,8 @@
                                                     </div>
                                                 </button>
                                             </div>
-                                            <div id="collapse{{row_detail.id}}" class="accordion-collapse collapse border-top border-secondary"
+                                            <div id="collapse{{row_detail.id}}"
+                                                class="accordion-collapse collapse border-top border-secondary"
                                                 data-bs-parent="#accordionExample">
                                                 <div class="accordion-body p-1">
                                                     {{ row_detail.homework }}
@@ -106,6 +112,34 @@
     </div>
 </section>
 
+<!-- Instruction Modal -->
+<div class="modal fade text-dark" id="instructionModal" tabindex="-1" aria-labelledby="instructionModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info-subtle">
+                <h5 class="modal-title" id="instructionModalLabel">Form Instructions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light">
+                <p>The schedule displays the information about subjects, homeworks, your marks.</p>
+                <p>Your mark is displayed on a badge. <span class="badge text-bg-primary rounded-pill">70</span></p>
+                <p>Click on <i class="fas fa-chevron-down ms-auto"></i> or the text next to it to expand the homework.</p>
+                <ul>
+                    <li>Selection
+                        <ol>
+                            <li>Click on the <strong>Selection</strong> button to expand the form.</li>
+                            <li>Fill out the required fields, including date.</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer bg-body-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endif %}
 {% endblock content %}
 
