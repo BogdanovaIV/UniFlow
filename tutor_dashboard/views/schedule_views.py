@@ -1,15 +1,13 @@
-from django.views.generic import View
-from django.shortcuts import render, redirect, reverse, get_object_or_404
-from django.contrib import messages
 from datetime import timedelta, datetime
-from django.db.models import Q
+
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from users.models import UserProfile
-from dictionaries.forms import (
-    ScheduleFilterForm,
-    ScheduleForm
-)
+from django.db.models import Q
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from django.views.generic import View
+
+from dictionaries.forms import ScheduleFilterForm, ScheduleForm
 from dictionaries.models import (
     Schedule,
     WeekdayChoices,
@@ -17,8 +15,11 @@ from dictionaries.models import (
     StudyGroup,
     Term,
     StudentMark
-)
+    )
+
 from users.context_processors import user_profile_parameters
+from users.models import UserProfile
+
 
 class ScheduleBaseView(PermissionRequiredMixin, View):
     """
@@ -30,12 +31,13 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
     standardized redirection upon form submission.
     """
     template_name = 'tutor_dashboard/edit_schedule.html'
+
     def parse_date(self, date_request):
         """
         Parses a date string into a date object.
 
         Parameters:
-        - date_request: A date string in 'YYYY-MM-DD' format or a date object. 
+        - date_request: A date string in 'YYYY-MM-DD' format or a date object.
 
         Returns:
         - A date object if the input is a valid date string, or the original
@@ -48,7 +50,7 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
             parsed_date = date_request
 
         return parsed_date
-    
+
     def get_initial_data(self, request):
         """
         Extracts initial data from the request for form pre-population.
@@ -88,11 +90,11 @@ class ScheduleBaseView(PermissionRequiredMixin, View):
         """
         date = form.get('date') if 'date' in form else ''
         study_group = (
-            form.get('study_group').id 
-            if isinstance(form.get('study_group'), StudyGroup) 
+            form.get('study_group').id
+            if isinstance(form.get('study_group'), StudyGroup)
             else form.get('study_group')
         ) if 'study_group' in form else ''
-        
+
         return redirect(
             f"{reverse('tutor:schedule')}?date={date}"
             f"&study_group={study_group}",
@@ -142,7 +144,7 @@ class ScheduleView(PermissionRequiredMixin, View):
             get_params.get('study_group') if 'study_group' in get_params
             else ''
         )
-        
+
         form = ScheduleFilterForm(
             get_params,
             is_student=context_var['is_student'],
@@ -225,7 +227,7 @@ class ScheduleView(PermissionRequiredMixin, View):
         Parameters:
         - filter_params: Dictionary containing filter parameters for date range
         and study group.
-        - context_var: context processor variables (user, user_study_group ...).
+        - context_var: context processor variables (user, user_study_group...).
 
         Returns:
         - A tuple with:
@@ -255,7 +257,7 @@ class ScheduleView(PermissionRequiredMixin, View):
         and study group.
         - filter_params: Dictionary of filter parameters, specifically date
         range and study group.
-        - context_var: context processor variables (user, user_study_group ...).
+        - context_var: context processor variables (user, user_study_group...).
 
         Returns:
         - A dictionary representing the weekly schedule, where each day
@@ -264,21 +266,23 @@ class ScheduleView(PermissionRequiredMixin, View):
         student marks.
         """
         schedule = {
-        value: {
-            'label_weekday': label,
-            'date': filter_params['date__range'][0] + timedelta(days=(value))
-            if filter_params['date__range'][0] else '',
-            'date_str': str(
-                filter_params['date__range'][0] + timedelta(days=(value))
-                ) if filter_params['date__range'][0] else '',
-            'details': {order: {
-                'id': '',
-                'subject': '',
-                'homework': '',
-                'marks': 0
-                } for order in range(1, 11)}
-        }
-        for value, label in WeekdayChoices.choices
+            value: {
+                'label_weekday': label,
+                'date': filter_params['date__range'][0] + timedelta(
+                    days=(value)
+                    )
+                if filter_params['date__range'][0] else '',
+                'date_str': str(
+                    filter_params['date__range'][0] + timedelta(days=(value))
+                    ) if filter_params['date__range'][0] else '',
+                'details': {order: {
+                    'id': '',
+                    'subject': '',
+                    'homework': '',
+                    'marks': 0
+                    } for order in range(1, 11)}
+            }
+            for value, label in WeekdayChoices.choices
         }
         for object in objects:
             marks = 0
@@ -309,7 +313,7 @@ class EditScheduleView(ScheduleBaseView):
     update the Schedule with the submitted form data.
     """
     permission_required = 'dictionaries.change_schedule'
-    
+
     def get(self, request, pk):
         """
         Renders the form with the existing Schedule instance for editing.
@@ -332,7 +336,7 @@ class EditScheduleView(ScheduleBaseView):
         users = UserProfile.objects.filter(
             study_group=schedule.study_group
             ).select_related('user')
-        
+
         return render(
             request,
             self.template_name,
@@ -359,12 +363,12 @@ class EditScheduleView(ScheduleBaseView):
         """
         schedule = Schedule.objects.get(pk=pk)
         form = ScheduleForm(request.POST, instance=schedule)
-        
+
         if form.is_valid():
             form.save()
             data = {
-                'date':form.cleaned_data.get('date'),
-                'study_group':form.cleaned_data.get('study_group'),
+                'date': form.cleaned_data.get('date'),
+                'study_group': form.cleaned_data.get('study_group'),
             }
             messages.success(request, "Schedule updated successfully.")
             return self.handle_redirect(data)
@@ -387,7 +391,7 @@ class AddScheduleView(ScheduleBaseView):
     POST requests, which process the form submission.
     """
     permission_required = 'dictionaries.add_schedule'
-    
+
     def get(self, request):
         """
         Renders the form to add a new Schedule, pre-filled with initial data if
@@ -425,12 +429,11 @@ class AddScheduleView(ScheduleBaseView):
 
         if form.is_valid():
             schedule = form.save()
-            
             messages.success(request, "Schedule added successfully.")
             return redirect(
                 reverse('tutor:edit_schedule', args=[schedule.pk])
             )
-        
+
         # Form validation error message
         for field, errors in form.errors.items():
             for error in errors:
@@ -448,7 +451,7 @@ class DeleteScheduleView(ScheduleBaseView):
     instance and provides feedback messages based on the outcome.
     """
     permission_required = 'dictionaries.delete_schedule'
-    
+
     def post(self, request, pk):
         """
         Processes the deletion of a specified Schedule entry.
@@ -463,8 +466,8 @@ class DeleteScheduleView(ScheduleBaseView):
         """
         schedule = get_object_or_404(Schedule, pk=pk)
         data = {
-                'date':schedule.date,
-                'study_group':schedule.study_group,
+                'date': schedule.date,
+                'study_group': schedule.study_group,
         }
         schedule.delete()
         messages.success(request, "Schedule deleted successfully.")
@@ -504,7 +507,8 @@ class FillScheduleView(ScheduleBaseView):
 
             # Check if Schedule entries already exist
             if self.schedule_exists(
-                study_group_request, start_of_week, end_of_week):
+                study_group_request, start_of_week, end_of_week
+            ):
                 messages.error(
                     request,
                     'Schedule entries already exist for the specified study '
@@ -541,7 +545,7 @@ class FillScheduleView(ScheduleBaseView):
         return self.handle_redirect(data)
 
     def get_week_range(self, date_template):
-        """ 
+        """
         Calculates the start and end dates of the week for the given date.
 
         Parameters:
@@ -557,8 +561,8 @@ class FillScheduleView(ScheduleBaseView):
         return start_of_week, end_of_week
 
     def schedule_exists(self, study_group_request, start_of_week, end_of_week):
-        """ 
-        Checks if Schedule entries already exist for the specified study group 
+        """
+        Checks if Schedule entries already exist for the specified study group
         within the given date range.
 
         Parameters:
@@ -576,7 +580,7 @@ class FillScheduleView(ScheduleBaseView):
         ).exists()
 
     def get_terms(self, start_of_week, end_of_week):
-        """ 
+        """
         Retrieves active terms that overlap with the specified week range.
 
         Parameters:
@@ -591,7 +595,7 @@ class FillScheduleView(ScheduleBaseView):
         ).order_by('date_from')
 
     def create_combinations(self, start_of_week, terms):
-        """ 
+        """
         Creates a list of combinations of weekdays and active terms within the
         week.
 
@@ -600,7 +604,7 @@ class FillScheduleView(ScheduleBaseView):
         - terms: A QuerySet of active Term instances.
 
         Returns:
-        - A list of dictionaries, each containing a `weekday` and `term` for 
+        - A list of dictionaries, each containing a `weekday` and `term` for
         the dates in the specified week.
         """
         combinations = []
@@ -638,7 +642,7 @@ class FillScheduleView(ScheduleBaseView):
         return query
 
     def fill_schedule(self, templates, start_of_week):
-        """ 
+        """
         Populates the Schedule by creating entries based on ScheduleTemplate
         instances.
 

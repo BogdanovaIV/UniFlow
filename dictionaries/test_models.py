@@ -1,7 +1,9 @@
-from django.test import TestCase
 from datetime import date
+
+from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+
 from .models import (
     StudyGroup,
     Term,
@@ -10,8 +12,7 @@ from .models import (
     ScheduleTemplate,
     Schedule,
     StudentMark
-    )
-
+)
 
 
 class TestStudyGroupModel(TestCase):
@@ -26,7 +27,7 @@ class TestStudyGroupModel(TestCase):
     def test_str_representation(self):
         """Test the string representation of StudyGroup."""
         self.assertEqual(str(self.study_group), "101")
-    
+
     def test_study_group_name_cannot_be_empty(self):
         """
         Test if a StudyGroup cannot be created with an empty name.
@@ -130,7 +131,7 @@ class TestSubjectModel(TestCase):
     def test_str_representation(self):
         """Test the string representation of Subject."""
         self.assertEqual(str(self.subject), "subject1")
-    
+
     def subject_name_cannot_be_empty(self):
         """
         Test if a subject cannot be created with an empty name.
@@ -159,7 +160,7 @@ class WeekdayChoicesTests(TestCase):
     Tests for the WeekdayChoices IntegerChoices class.
     Verifies the labels and values for each choice in WeekdayChoices.
     """
-    
+
     def test_weekday_choices(self):
         """Test that each choice in WeekdayChoices has the correct label."""
         self.assertEqual(WeekdayChoices.MONDAY.label, 'Monday')
@@ -186,7 +187,8 @@ class WeekdayChoicesTests(TestCase):
 class ScheduleTemplateTests(TestCase):
     """
     Tests for the ScheduleTemplate model.
-    Covers model field validation, unique constraints, and string representation.
+    Covers model field validation, unique constraints, and string
+    representation.
     """
 
     def setUp(self):
@@ -238,7 +240,7 @@ class ScheduleTemplateTests(TestCase):
             "1. - "
             f"{self.subject}"
         )
-        
+
         self.assertEqual(str(schedule), expected_str)
 
     def test_order_number_validation(self):
@@ -402,14 +404,14 @@ class ScheduleTests(TestCase):
             subject=self.subject,
             homework='Homework'
         )
-        
+
         expected_str = (
             f"{self.study_group} - "
             f"{schedule.date} - "
             "1. - "
             f"{self.subject}"
         )
-        
+
         self.assertEqual(str(schedule), expected_str)
 
     def test_order_number_validation(self):
@@ -447,7 +449,7 @@ class ScheduleTests(TestCase):
             subject=self.subject,
             homework='Homework'
         )
-        
+
         # Attempt to create a duplicate entry
         with self.assertRaises(ValidationError):
             duplicate_schedule = Schedule(
@@ -457,7 +459,8 @@ class ScheduleTests(TestCase):
                 subject=self.subject,
                 homework='Homework'
             )
-            duplicate_schedule.full_clean()  # This should raise a ValidationError
+            # This should raise a ValidationError
+            duplicate_schedule.full_clean()
 
     def test_study_group_field_null(self):
         """
@@ -479,7 +482,8 @@ class ScheduleTests(TestCase):
         """
         schedule = Schedule(
             study_group=self.study_group,
-            date=None, # Invalid
+            # Invalid
+            date=None,
             order_number=1,
             subject=self.subject,
             homework='Homework'
@@ -535,7 +539,12 @@ class ScheduleTests(TestCase):
 
 
 class StudentMarkModelTests(TestCase):
-   
+    """
+    Tests for the StudentMark model.
+    Covers model field validation, unique constraints, and string
+    representation.
+    """
+
     def setUp(self):
         """Set up test instances for foreign key fields."""
         self.student = User.objects.create_user(
@@ -567,7 +576,10 @@ class StudentMarkModelTests(TestCase):
 
     def test_mark_within_valid_range(self):
         """Test that the mark value is within the valid range (0-100)."""
-        student_mark = StudentMark(student=self.student, schedule=self.schedule)
+        student_mark = StudentMark(
+            student=self.student,
+            schedule=self.schedule
+        )
 
         # Test valid marks
         student_mark.mark = 0
@@ -577,8 +589,13 @@ class StudentMarkModelTests(TestCase):
         student_mark.full_clean()
 
     def test_mark_out_of_range(self):
-        """Test that a ValidationError is raised if the mark is out of range."""
-        student_mark = StudentMark(student=self.student, schedule=self.schedule)
+        """
+        Test that a ValidationError is raised if the mark is out of range.
+        """
+        student_mark = StudentMark(
+            student=self.student,
+            schedule=self.schedule
+        )
 
         # Test mark below 0
         student_mark.mark = -1

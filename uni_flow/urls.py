@@ -20,17 +20,29 @@ from django.conf.urls import handler403
 from django.shortcuts import render
 from django.urls import path, include
 
+
 def custom_permission_denied_view(request, exception):
+    """
+    Custom view to handle permission denied errors (HTTP 403).
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        exception (Exception): The exception raised when permission is denied.
+
+    Returns:
+        HttpResponse: A rendered 403.html template with a 403 status code.
+    """
     return render(request, '403.html', status=403)
+
 
 handler403 = custom_permission_denied_view
 
 urlpatterns = [
-    path('accounts/logout/', LogoutView.as_view(), name='account_logout'), 
+    path('accounts/logout/', LogoutView.as_view(), name='account_logout'),
     path("accounts/", include("allauth.urls")),
     path('admin/', admin.site.urls),
     path('student/', include('student_dashboard.urls')),
-    path('tutor/', include('tutor_dashboard.urls')), 
-    path('', include("main.urls"), name="main-urls"), 
-    path('', include("users.urls"), name="users-urls"), 
+    path('tutor/', include('tutor_dashboard.urls')),
+    path('', include("main.urls"), name="main-urls"),
+    path('', include("users.urls"), name="users-urls"),
 ]

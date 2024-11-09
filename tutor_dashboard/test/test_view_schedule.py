@@ -1,17 +1,21 @@
 from datetime import date
+
 from django.test import TestCase, Client
 from django.contrib.messages import get_messages
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
+
 from dictionaries.models import (
     Term,
     StudyGroup,
     Schedule,
     Subject,
     ScheduleTemplate
-    )
+)
 from dictionaries.forms import ScheduleFilterForm, ScheduleForm
+
 from tutor_dashboard.views import ScheduleView, ScheduleBaseView
+
 from users.models import UserProfile
 
 
@@ -25,7 +29,10 @@ class ScheduleBaseViewTests(TestCase):
         """
         Sets up initial test data for testing purposes.
         """
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
         cls.client = Client()
         cls.view = ScheduleBaseView()
@@ -53,7 +60,8 @@ class ScheduleBaseViewTests(TestCase):
 
     def test_parse_date_with_date_object(self):
         """
-        Test that parse_date returns the same date object if a date is provided.
+        Test that parse_date returns the same date object if a date is
+        provided.
         """
         parsed_date = self.view.parse_date(date(2024, 11, 5))
         self.assertEqual(parsed_date, date(2024, 11, 5))
@@ -140,13 +148,16 @@ class ScheduleViewTests(TestCase):
         """
         Sets up initial test data for study groups, and subjects.
         """
-        
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
-        
+
         # Create schedule templates
         cls.schedule = Schedule.objects.create(
-            date=date(2024,9,3),
+            date=date(2024, 9, 3),
             study_group=cls.study_group,
             order_number=1,
             subject=cls.subject
@@ -207,7 +218,6 @@ class ScheduleViewTests(TestCase):
             response.context['form'].data['study_group'],
             str(self.study_group.id)
         )
-        
 
         self.assertIn('schedule', response.context)
         self.assertFalse(response.context['table_empty'])
@@ -226,8 +236,8 @@ class ScheduleViewTests(TestCase):
 
     def test_post_request_redirects_with_filter_params(self):
         """
-        Test that a POST request with valid form data redirects to the view with
-        appropriate query parameters.
+        Test that a POST request with valid form data redirects to the view
+        with appropriate query parameters.
         """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
@@ -264,7 +274,7 @@ class ScheduleViewTests(TestCase):
         )
         filter_params = form.get_filter_params()
         schedule, table_empty = view.get_schedule(
-            filter_params, { 'is_student': False }
+            filter_params, {'is_student': False}
         )
         self.assertFalse(table_empty)
         self.assertIn(1, schedule)
@@ -272,7 +282,7 @@ class ScheduleViewTests(TestCase):
 
     def test_unauthorized_user_access(self):
         """
-        Test that an unauthorized user (not in Tutor or Student groups) 
+        Test that an unauthorized user (not in Tutor or Student groups)
         cannot access the schedule view.
         """
         unauthorized_user = User.objects.create_user(
@@ -328,10 +338,13 @@ class EditScheduleViewTests(TestCase):
         """
         Set up initial data for testing.
         """
-        
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
-        
+
         # Schedule template instance to be edited
         cls.schedule = Schedule.objects.create(
             date=date(2024, 9, 3),
@@ -374,11 +387,11 @@ class EditScheduleViewTests(TestCase):
             response,
             'tutor_dashboard/edit_schedule.html'
         )
-        
+
         form = response.context['schedule']
         self.assertIsInstance(form, ScheduleForm)
         self.assertEqual(form.instance, self.schedule)
-        
+
     def test_student_cannot_edit_schedule(self):
         """
         Test that a student cannot edit schedule.
@@ -419,7 +432,8 @@ class EditScheduleViewTests(TestCase):
 
     def test_post_request_with_invalid_data_displays_errors(self):
         """
-        Test that a POST request with invalid data renders the form with errors.
+        Test that a POST request with invalid data renders the form with
+        errors.
         """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
@@ -429,7 +443,7 @@ class EditScheduleViewTests(TestCase):
             'subject': self.subject.pk
         })
         form = response.context['form']
-        
+
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
             response,
@@ -437,7 +451,7 @@ class EditScheduleViewTests(TestCase):
         )
         self.assertFalse(form.is_valid())
         self.assertIn('order_number', form.errors)
-        
+
         messages = list(get_messages(response.wsgi_request))
         error_messages = [
             f"Error in {field}: {error}"
@@ -454,7 +468,7 @@ class EditScheduleViewTests(TestCase):
 class AddScheduleViewTests(TestCase):
     """Test suite for the AddScheduleView functionality, verifying access,
     data handling, permissions, and messages."""
-    
+
     @classmethod
     def setUpTestData(cls):
         """
@@ -462,7 +476,10 @@ class AddScheduleViewTests(TestCase):
         - Creates study group, subject, tutor user, and student user.
         - Assigns tutor and student users to appropriate groups.
         """
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
         cls.tutor_user = User.objects.create_user(
             username="tutor",
@@ -596,10 +613,13 @@ class DeleteScheduleViewTests(TestCase):
         """
         Sets up initial test data for study groups, and subjects.
         """
-        
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
-        
+
         cls.tutor_user = User.objects.create_user(
             username="tutor",
             password="password"
@@ -616,7 +636,7 @@ class DeleteScheduleViewTests(TestCase):
     def setUp(self):
         # Create schedule templates
         self.schedule = Schedule.objects.create(
-            date=date(2024,9,3),
+            date=date(2024, 9, 3),
             study_group=self.study_group,
             order_number=1,
             subject=self.subject
@@ -636,15 +656,15 @@ class DeleteScheduleViewTests(TestCase):
 
         # Check that the schedule was deleted
         self.assertEqual(Schedule.objects.count(), 0)
-        
+
         # Check for success message
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "Schedule deleted successfully.")
 
         # Check redirect behavior
         expected_url = (
-            f"{reverse('tutor:schedule')}?date={self.schedule.date}&study_group"
-            f"={self.schedule.study_group.id}"
+            f"{reverse('tutor:schedule')}?date={self.schedule.date}&"
+            f"study_group={self.schedule.study_group.id}"
             )
         self.assertRedirects(response, expected_url)
 
@@ -658,7 +678,7 @@ class DeleteScheduleViewTests(TestCase):
 
         # Check that the schedule still exists
         self.assertEqual(Schedule.objects.count(), 1)
-        
+
         # Check for permission denied message or the status code
         self.assertEqual(response.status_code, 403)
 
@@ -684,10 +704,10 @@ class FillScheduleViewTests(TestCase):
             name="Group A", active=True
             )
         self.subject = Subject.objects.create(name="Subject1", active=True)
-        
+
         # Create schedule templates
         self.schedule = Schedule.objects.create(
-            date=date(2024,9,3),
+            date=date(2024, 9, 3),
             study_group=self.study_group,
             order_number=1,
             subject=self.subject
@@ -718,7 +738,7 @@ class FillScheduleViewTests(TestCase):
         self.tutor_user.groups.add(tutor_group)
         self.student_user.groups.add(student_group)
         self.date = '2024-10-15'
-        
+
         self.client = Client()
         self.url = reverse('tutor:fill_schedule')
 
@@ -730,13 +750,13 @@ class FillScheduleViewTests(TestCase):
             'date': self.date
         })
 
-        self.assertEqual(response.status_code, 302) 
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(
             Schedule.objects.filter(study_group=self.study_group).exists()
             )
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn('Schedule filled successfully from template.', messages)
-    
+
     def test_post_schedule_exists(self):
         """Test when schedule entries already exist."""
         self.client.login(username='tutor', password='password')
@@ -768,7 +788,7 @@ class FillScheduleViewTests(TestCase):
             'date': self.date
         })
 
-        self.assertEqual(response.status_code, 302) 
+        self.assertEqual(response.status_code, 302)
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn(
             'No active terms found for the specified date range.',
@@ -778,7 +798,7 @@ class FillScheduleViewTests(TestCase):
     def test_post_no_template_found(self):
         """Test when no schedule templates are found."""
         self.client.login(username='tutor', password='password')
-        ScheduleTemplate.objects.all().delete()  
+        ScheduleTemplate.objects.all().delete()
 
         response = self.client.post(self.url, {
             'study_group': self.study_group.id,

@@ -22,14 +22,14 @@ class TestCustomSignupForm(TestCase):
             'password1': 'Password123!',
             'password2': 'Password123!',
             'first_name': '',  # Invalid: empty
-            'last_name': 'User', 
+            'last_name': 'User',
         }
 
         self.invalid_data_last_name = {
             'email': 'testuser@example.com',
             'password1': 'Password123!',
             'password2': 'Password123!',
-            'first_name': 'Test', 
+            'first_name': 'Test',
             'last_name': '',  # Invalid: empty
         }
 

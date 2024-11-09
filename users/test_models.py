@@ -40,7 +40,7 @@ class TestUserProfileModel(TestCase):
         if checked is True but study_group is empty.
         """
         profile = UserProfile(user=self.user, checked=True)
-        
+
         with self.assertRaises(ValidationError):
             # This should raise a ValidationError since study_group is None
             profile.clean()

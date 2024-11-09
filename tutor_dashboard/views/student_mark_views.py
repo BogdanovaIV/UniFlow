@@ -1,9 +1,10 @@
-from django.views.generic import View
-from django.shortcuts import get_object_or_404, redirect
-from django.db.models import Q
-from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
+from django.views.generic import View
+
 from dictionaries.forms import StudentMarkForm
 from dictionaries.models import Schedule, StudentMark
 
@@ -11,20 +12,20 @@ from dictionaries.models import Schedule, StudentMark
 class EditStudentMarkView(PermissionRequiredMixin, View):
     """
     View to edit an existing StudentMark entry.
-    
+
     Ensures the user has permission to change student marks, checks for
-    duplicate entries, validates the form, and provides feedback messages 
+    duplicate entries, validates the form, and provides feedback messages
     based on success or failure.
     """
     permission_required = 'dictionaries.change_studentmark'
-    
+
     def post(self, request, schedule_pk, mark_pk):
         """
         Handles POST requests to update a StudentMark entry.
-        
-        Retrieves the StudentMark instance, validates the form data, 
+
+        Retrieves the StudentMark instance, validates the form data,
         checks for duplicates, and saves updates if valid.
-        
+
         Parameters:
         - request: The HTTP request object containing POST data.
         - schedule_pk: Primary key of the schedule associated with the
@@ -43,7 +44,7 @@ class EditStudentMarkView(PermissionRequiredMixin, View):
             duplicate_exists = StudentMark.objects.filter(
                 Q(schedule=schedule_pk) & Q(student=student)
             ).exclude(pk=mark_pk).exists()
-            
+
             if duplicate_exists:
                 # Display duplicate error message
                 messages.error(
@@ -54,7 +55,7 @@ class EditStudentMarkView(PermissionRequiredMixin, View):
                 # Save and display success message
                 form.save()
                 messages.success(request, "Student mark updated successfully.")
-                
+
             return redirect(
                 reverse('tutor:edit_schedule',
                         args=[student_mark.schedule.pk])
@@ -64,24 +65,24 @@ class EditStudentMarkView(PermissionRequiredMixin, View):
         for field, errors in form.errors.items():
             for error in errors:
                 messages.error(request, f"Error in {field}: {error}")
-        
+
         return redirect(reverse('tutor:edit_schedule', args=[schedule_pk]))
 
 
 class AddStudentMarkView(PermissionRequiredMixin, View):
     """
     View to add a new StudentMark entry.
-    
+
     This view checks for the required permission, validates the form input,
     verifies if a duplicate mark exists, and provides feedback messages
     based on the outcome.
     """
     permission_required = 'dictionaries.add_studentmark'
-    
+
     def post(self, request, schedule_pk):
         """
         Handles POST requests to create a new StudentMark entry.
-        
+
         Parameters:
         - request: The HTTP request object containing POST data.
         - schedule_pk: Primary key of the schedule to which the mark will be
@@ -133,7 +134,7 @@ class DeleteStudentMarkView(PermissionRequiredMixin, View):
     feedback to the user upon successful deletion.
     """
     permission_required = 'dictionaries.delete_studentmark'
-    
+
     def post(self, request, schedule_pk, mark_pk):
         """
         Handles POST requests to delete a specific StudentMark entry.

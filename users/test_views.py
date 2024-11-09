@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
-from django.urls import reverse
 from django.contrib.auth.models import User, Group
-from django.test import Client
+from django.test import TestCase, Client
+from django.urls import reverse
 
 
 class CustomAuthViewTests(TestCase):
@@ -34,12 +33,11 @@ class CustomAuthViewTests(TestCase):
         # Assign groups to users
         self.student_user.groups.add(self.student_group)
         self.student_user.save()
-        
+
         self.tutor_user.groups.add(self.tutor_group)
         self.tutor_user.save()
         # Set up the client for testing
         self.client = Client()
-
 
     def test_student_login_redirect(self):
         """
@@ -52,7 +50,7 @@ class CustomAuthViewTests(TestCase):
         )
         if response.status_code == 200:
             print(response.context['form'].errors)
-        
+
         # Check for the redirect to student dashboard
         self.assertRedirects(response, reverse('student:dashboard'))
 
@@ -67,7 +65,7 @@ class CustomAuthViewTests(TestCase):
         )
         if response.status_code == 200:
             print(response.context['form'].errors)
-        
+
         # Check for the redirect to student dashboard
         self.assertRedirects(response, reverse('tutor:schedule'))
 
@@ -88,4 +86,3 @@ class CustomAuthViewTests(TestCase):
             print(response.context['form'].errors)
 
         self.assertRedirects(response, reverse('student:dashboard'))
-

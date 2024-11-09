@@ -1,7 +1,7 @@
 
 from tutor_dashboard.views import ScheduleView
 
-# Create your views here.
+
 class StudentScheduleView(ScheduleView):
     """
     View for displaying and filtering the schedule based on user-selected date.

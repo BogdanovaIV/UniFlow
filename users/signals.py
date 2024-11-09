@@ -1,7 +1,6 @@
 from django.contrib.auth.models import Group, Permission
 from dictionaries.models import StudyGroup
 
-
 GROUPS = {
     'Tutor': [
         'view_studygroup',
@@ -29,7 +28,17 @@ GROUPS = {
         ]
 }
 
+
 def create_groups(sender, **kwargs):
+    """
+    Creates groups with predefined permissions in the Django system.
+
+    Args:
+        sender: The sender of the signal (e.g., a model or app registry).
+        **kwargs: Additional keyword arguments passed to the signal (unused
+        here, but included for compatibility).
+    """
+
     for group_name, perms in GROUPS.items():
         group, created = Group.objects.get_or_create(name=group_name)
         if created:

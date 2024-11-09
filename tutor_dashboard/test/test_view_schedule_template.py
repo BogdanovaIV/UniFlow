@@ -1,17 +1,20 @@
+from datetime import date
+
 from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 from django.contrib.messages import get_messages
 from django.urls import reverse
+
 from dictionaries.models import Term, StudyGroup, ScheduleTemplate, Subject
 from dictionaries.forms import (
     ScheduleTemplateFilterForm,
     ScheduleTemplateForm
 )
+
 from tutor_dashboard.views import (
     ScheduleTemplateView,
     ScheduleTemplateBaseView
 )
-from datetime import date
 
 
 class ScheduleTemplateBaseViewTests(TestCase):
@@ -31,8 +34,11 @@ class ScheduleTemplateBaseViewTests(TestCase):
             date_to=date(2024, 5, 31),
             active=True
         )
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
-        
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
+
         cls.tutor_user = User.objects.create_user(
             username="tutor",
             password="password"
@@ -45,7 +51,7 @@ class ScheduleTemplateBaseViewTests(TestCase):
         student_group = Group.objects.get(name="Student")
         cls.tutor_user.groups.add(tutor_group)
         cls.student_user.groups.add(student_group)
-        
+
     def setUp(self):
         """
         Set up the request factory and view instance for each test.
@@ -58,16 +64,16 @@ class ScheduleTemplateBaseViewTests(TestCase):
         Test that get_initial_data retrieves correct initial data with valid
         GET parameters.
         """
-        
+
         self.client.login(username="tutor", password="password")
-        request =  self.client.get(reverse('tutor:schedule_templates'), {
+        request = self.client.get(reverse('tutor:schedule_templates'), {
             'term': str(self.term.id),
             'study_group': str(self.study_group.id),
             'weekday': '1',
             'order_number': '1'
         })
         initial_data = self.view.get_initial_data(request.wsgi_request.GET)
-        
+
         self.assertEqual(initial_data['term'], str(self.term.id))
         self.assertEqual(initial_data['study_group'], str(self.study_group.id))
         self.assertEqual(initial_data['weekday'], '1')
@@ -78,11 +84,11 @@ class ScheduleTemplateBaseViewTests(TestCase):
         Test that get_initial_data correctly sets missing parameters to None.
         """
         self.client.login(username="tutor", password="password")
-        request =  self.client.get(reverse('tutor:schedule_templates'), {
+        request = self.client.get(reverse('tutor:schedule_templates'), {
             'term': str(self.term.id)
         })
         initial_data = self.view.get_initial_data(request.wsgi_request.GET)
-        
+
         self.assertEqual(initial_data['term'], str(self.term.id))
         self.assertIsNone(initial_data['study_group'])
         self.assertIsNone(initial_data['weekday'])
@@ -95,13 +101,13 @@ class ScheduleTemplateBaseViewTests(TestCase):
         data = {'term': self.term, 'study_group': self.study_group}
 
         response = self.view.handle_redirect(data)
-        
+
         # Expected redirect URL
         expected_url = (
             f"{reverse('tutor:schedule_templates')}?term={self.term.id}"
             f"&study_group={self.study_group.id}"
         )
-        
+
         # Verify the redirect URL
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, expected_url)
@@ -112,7 +118,7 @@ class ScheduleTemplateBaseViewTests(TestCase):
         fields to None.
         """
         self.client.login(username="tutor", password="password")
-        request =  self.client.get(reverse('tutor:schedule_templates'))
+        request = self.client.get(reverse('tutor:schedule_templates'))
         initial_data = self.view.get_initial_data(request.wsgi_request.GET)
 
         self.assertIsNone(initial_data['term'])
@@ -137,9 +143,12 @@ class ScheduleTemplateViewTests(TestCase):
             date_to=date(2024, 5, 31),
             active=True
         )
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
-        
+
         # Create schedule templates
         cls.schedule_template = ScheduleTemplate.objects.create(
             term=cls.term,
@@ -160,7 +169,6 @@ class ScheduleTemplateViewTests(TestCase):
         student_group = Group.objects.get(name="Student")
         cls.tutor_user.groups.add(tutor_group)
         cls.student_user.groups.add(student_group)
-
 
     def setUp(self):
         """
@@ -184,7 +192,7 @@ class ScheduleTemplateViewTests(TestCase):
             response,
             'tutor_dashboard/schedule-templates.html'
         )
-        
+
         # Check the filter form instance
         self.assertIsInstance(
             response.context['form'],
@@ -198,7 +206,7 @@ class ScheduleTemplateViewTests(TestCase):
             response.context['form'].data['study_group'],
             str(self.study_group.id)
         )
-        
+
         # Check the schedule templates and table_empty flag
         self.assertIn('schedule_templates', response.context)
         self.assertFalse(response.context['table_empty'])
@@ -215,11 +223,11 @@ class ScheduleTemplateViewTests(TestCase):
         self.client.login(username="student", password="password")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 403)
-        
+
     def test_post_request_redirects_with_filter_params(self):
         """
-        Test that a POST request with valid form data redirects to the view with
-        appropriate query parameters.
+        Test that a POST request with valid form data redirects to the view
+        with appropriate query parameters.
         """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
@@ -230,11 +238,11 @@ class ScheduleTemplateViewTests(TestCase):
             f"{self.url}?term={self.term.id}&study_group={self.study_group.id}"
         )
         self.assertRedirects(response, expected_url)
-        
+
     def test_post_request_with_invalid_data(self):
         """
-        Test that a POST request with invalid data (e.g., missing required fields)
-        redirects with only the provided term or study group ID.
+        Test that a POST request with invalid data (e.g., missing required
+        fields) redirects with only the provided term or study group ID.
         """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {'term': self.term.id})
@@ -243,19 +251,19 @@ class ScheduleTemplateViewTests(TestCase):
 
     def test_get_schedule_templates_with_valid_ids(self):
         """
-        Test get_schedule_templates returns a schedule with templates organized by
-        weekday and table_empty=False for valid term and study group IDs.
+        Test get_schedule_templates returns a schedule with templates organized
+        by weekday and table_empty=False for valid term and study group IDs.
         """
         view = ScheduleTemplateView()
         schedule_templates, table_empty = view.get_schedule_templates(
             self.term.id,
             self.study_group.id
         )
-        
+
         self.assertFalse(table_empty)
         self.assertIn(1, schedule_templates)
         self.assertEqual(schedule_templates[1][1][1]['subject'], self.subject)
-        
+
     def test_get_schedule_templates_with_empty_ids(self):
         """
         Test get_schedule_templates returns an empty schedule and
@@ -266,12 +274,13 @@ class ScheduleTemplateViewTests(TestCase):
             None,
             None
         )
-        
+
         self.assertTrue(table_empty)
         self.assertEqual(
             schedule_templates,
             view.get_full_week_schedule(ScheduleTemplate.objects.none())
         )
+
     def test_get_full_week_schedule(self):
         """
         Test that get_full_week_schedule organizes schedule templates correctly
@@ -283,7 +292,7 @@ class ScheduleTemplateViewTests(TestCase):
         # Check that weekday=1 contains the subject in order_number=1
         self.assertEqual(schedule[1][1][1]['subject'], self.subject)
         self.assertEqual(schedule[1][1][1]['id'], self.schedule_template.id)
-        
+
         # Verify that other slots are empty
         for weekday, (_, orders) in schedule.items():
             for order in range(1, 11):
@@ -319,9 +328,12 @@ class EditScheduleTemplateViewTests(TestCase):
             date_to=date(2024, 5, 31),
             active=True
         )
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
-        
+
         # Schedule template instance to be edited
         cls.schedule_template = ScheduleTemplate.objects.create(
             term=cls.term,
@@ -364,11 +376,11 @@ class EditScheduleTemplateViewTests(TestCase):
             response,
             'tutor_dashboard/edit_schedule_template.html'
         )
-        
+
         form = response.context['form']
         self.assertIsInstance(form, ScheduleTemplateForm)
         self.assertEqual(form.instance, self.schedule_template)
-        
+
     def test_student_cannot_edit_schedule_templates(self):
         """
         Test that a student cannot edit schedule templates.
@@ -410,7 +422,8 @@ class EditScheduleTemplateViewTests(TestCase):
 
     def test_post_request_with_invalid_data_displays_errors(self):
         """
-        Test that a POST request with invalid data renders the form with errors.
+        Test that a POST request with invalid data renders the form with
+        errors.
         """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
@@ -421,7 +434,7 @@ class EditScheduleTemplateViewTests(TestCase):
             'subject': self.subject.pk
         })
         form = response.context['form']
-        
+
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
             response,
@@ -435,9 +448,10 @@ class EditScheduleTemplateViewTests(TestCase):
                 for message in messages)
         )
 
+
 class AddScheduleTemplateViewTests(TestCase):
     """Test suite for AddScheduleTemplateView."""
-    
+
     @classmethod
     def setUpTestData(cls):
         """
@@ -449,7 +463,10 @@ class AddScheduleTemplateViewTests(TestCase):
             date_to=date(2024, 5, 31),
             active=True
         )
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
         cls.tutor_user = User.objects.create_user(
             username="tutor",
@@ -648,7 +665,10 @@ class DeleteScheduleTemplateViewTests(TestCase):
         Test trying to delete a non-existent schedule template raises a 404.
         """
         self.client.login(username="tutor", password="password")
-        non_existent_url = reverse('tutor:delete_schedule_template', args=[999])
+        non_existent_url = reverse(
+            'tutor:delete_schedule_template',
+            args=[999]
+        )
         response = self.client.post(non_existent_url)
         self.assertEqual(response.status_code, 404)
 

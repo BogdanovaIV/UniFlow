@@ -13,6 +13,7 @@ from .views import (
     AddStudentMarkView,
     DeleteStudentMarkView
     )
+
 app_name = 'tutor'
 urlpatterns = [
     path(

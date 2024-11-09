@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from dictionaries.models import StudyGroup
 
-# Create your models here.
 
 class UserProfile(models.Model):
     """Model representing a user profile linked to the User model.
@@ -15,7 +14,7 @@ class UserProfile(models.Model):
         checked (BooleanField): Indicates if the profile has been verified;
         defaults to False.
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True) 
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     study_group = models.ForeignKey(
         StudyGroup,
         on_delete=models.SET_NULL,
@@ -25,7 +24,7 @@ class UserProfile(models.Model):
 
     class Meta:
         ordering = ["user"]
-        
+
     def clean(self):
         """
         Validates the UserProfile instance before saving.

@@ -3,9 +3,9 @@ from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.urls import reverse
+
 from dictionaries.models import ScheduleTemplate, WeekdayChoices
-from dictionaries.forms import ScheduleTemplateFilterForm
-from dictionaries.forms import ScheduleTemplateForm
+from dictionaries.forms import ScheduleTemplateFilterForm, ScheduleTemplateForm
 
 
 class ScheduleTemplateBaseView(PermissionRequiredMixin, View):
@@ -24,9 +24,9 @@ class ScheduleTemplateBaseView(PermissionRequiredMixin, View):
         Parameters:
             request (HttpRequest): The HTTP request object containing GET
             parameters.
-        
+
         Returns:
-            dict: Initial form data, including term, study_group, weekday, 
+            dict: Initial form data, including term, study_group, weekday,
             and order_number fields, based on request parameters.
         """
         def get_first_value(key):
@@ -77,13 +77,13 @@ class ScheduleTemplateView(PermissionRequiredMixin, View):
 
     def get(self, request):
         """
-        Handles GET requests to display the schedule templates filter form 
+        Handles GET requests to display the schedule templates filter form
         and the filtered schedule templates, if selected.
 
         Parameters:
             request (HttpRequest): The HTTP request object containing GET
             parameters.
-        
+
         Returns:
             HttpResponse: Rendered template with the filter form, schedule
             templates, and messages indicating success or errors.
@@ -104,14 +104,14 @@ class ScheduleTemplateView(PermissionRequiredMixin, View):
             term_id,
             study_group_id
         )
-        
+
         if table_empty and request.GET:
             # Display message if no schedule template is available for the
             # selected filters
             messages.info(
                 request,
-                "No schedule template available for the selected date and study"
-                " group."
+                "No schedule template available for the selected date and "
+                "study group."
             )
         elif request.GET:
             # Display success message when schedule template is successfully
@@ -138,7 +138,7 @@ class ScheduleTemplateView(PermissionRequiredMixin, View):
         Parameters:
             request (HttpRequest): The HTTP request object containing POST
             parameters.
-        
+
         Returns:
             HttpResponseRedirect: Redirects to the same view with term and
             study_group as URL query parameters.
@@ -157,12 +157,13 @@ class ScheduleTemplateView(PermissionRequiredMixin, View):
 
     def get_schedule_templates(self, term_id, study_group_id):
         """
-        Retrieve and organize schedule templates based on selected term and study group.
+        Retrieve and organize schedule templates based on selected term and
+        study group.
 
         Parameters:
             term_id (str): ID of the selected term.
             study_group_id (str): ID of the selected study group.
-        
+
         Returns:
             tuple: A tuple containing:
             - dict: Organized schedule templates for the week.
@@ -187,7 +188,7 @@ class ScheduleTemplateView(PermissionRequiredMixin, View):
         Parameters:
             templates (QuerySet): ScheduleTemplate queryset filtered by term
             and study group.
-        
+
         Returns:
             dict: A dictionary organizing schedule templates by weekday, with
             keys as weekday values and each containing a dictionary of subjects
@@ -219,15 +220,15 @@ class EditScheduleTemplateView(ScheduleTemplateBaseView):
         templates.
     """
     permission_required = 'dictionaries.change_scheduletemplate'
-    
+
     def get(self, request, pk):
         """
         Render the form with the existing ScheduleTemplate instance.
-        
+
         Parameters:
             request (HttpRequest): The HTTP request object.
             pk (int): Primary key of the ScheduleTemplate.
-            
+
         Returns:
             HttpResponse: Rendered template with the form.
         """
@@ -239,11 +240,11 @@ class EditScheduleTemplateView(ScheduleTemplateBaseView):
         """
         Save the updated ScheduleTemplate and redirect or reload the form
         on error.
-        
+
         Parameters:
             request (HttpRequest): The HTTP request object.
             pk (int): Primary key of the ScheduleTemplate.
-            
+
         Returns:
             HttpResponse: Redirects on success or renders form on failure.
         """
@@ -253,10 +254,13 @@ class EditScheduleTemplateView(ScheduleTemplateBaseView):
         if form.is_valid():
             form.save()
             data = {
-                'term':form.cleaned_data.get('term'),
-                'study_group':form.cleaned_data.get('study_group'),
+                'term': form.cleaned_data.get('term'),
+                'study_group': form.cleaned_data.get('study_group'),
             }
-            messages.success(request, "Schedule template updated successfully.")
+            messages.success(
+                request,
+                "Schedule template updated successfully."
+            )
             return self.handle_redirect(data)
 
         # Form validation error message
@@ -269,7 +273,8 @@ class EditScheduleTemplateView(ScheduleTemplateBaseView):
 
 class AddScheduleTemplateView(ScheduleTemplateBaseView):
     """
-    View to add a new ScheduleTemplate. Uses initial data from query parameters.
+    View to add a new ScheduleTemplate. Uses initial data from query
+    parameters.
 
     Attributes:
         template_name (str): The template used for rendering the schedule
@@ -278,7 +283,7 @@ class AddScheduleTemplateView(ScheduleTemplateBaseView):
         templates.
     """
     permission_required = 'dictionaries.add_scheduletemplate'
-    
+
     def get(self, request):
         """
         Renders the form to add a new ScheduleTemplate.
@@ -286,7 +291,7 @@ class AddScheduleTemplateView(ScheduleTemplateBaseView):
         Parameters:
             request (HttpRequest): The HTTP request object containing GET
             parameters.
-        
+
         Returns:
             HttpResponse: Rendered template with an empty form for adding a new
             ScheduleTemplate.
@@ -297,13 +302,14 @@ class AddScheduleTemplateView(ScheduleTemplateBaseView):
 
     def post(self, request):
         """
-        Processes form submission to add a new ScheduleTemplate instance. 
+        Processes form submission to add a new ScheduleTemplate instance.
         Validates form data and saves if valid; otherwise, reloads form with
         errors.
 
         Parameters:
-            request (HttpRequest): The HTTP request object containing POST data.
-        
+            request (HttpRequest): The HTTP request object containing POST
+            data.
+
         Returns:
             HttpResponse: Redirects on successful submission or re-renders form
             with errors.
@@ -315,8 +321,8 @@ class AddScheduleTemplateView(ScheduleTemplateBaseView):
         if form.is_valid():
             form.save()
             data = {
-                'term':form.cleaned_data.get('term'),
-                'study_group':form.cleaned_data.get('study_group'),
+                'term': form.cleaned_data.get('term'),
+                'study_group': form.cleaned_data.get('study_group'),
             }
             messages.success(request, "Schedule template added successfully.")
             return self.handle_redirect(data)
@@ -338,24 +344,25 @@ class DeleteScheduleTemplateView(ScheduleTemplateBaseView):
         templates.
     """
     permission_required = 'dictionaries.delete_scheduletemplate'
-    
+
     def post(self, request, pk):
         """
-        Handles the POST request to delete the specified ScheduleTemplate 
+        Handles the POST request to delete the specified ScheduleTemplate
         and redirects to the schedule templates list.
 
         Parameters:
-            request (HttpRequest): The HTTP request object containing POST data.
+            request (HttpRequest): The HTTP request object containing POST
+            data.
             pk (int): Primary key of the ScheduleTemplate to be deleted.
-        
+
         Returns:
             HttpResponse: Redirects to the schedule templates list after
             successful deletion.
         """
         schedule_template = get_object_or_404(ScheduleTemplate, pk=pk)
         data = {
-                'term':schedule_template.term,
-                'study_group':schedule_template.study_group,
+                'term': schedule_template.term,
+                'study_group': schedule_template.study_group,
         }
         schedule_template.delete()
         messages.success(request, "Schedule template deleted successfully.")

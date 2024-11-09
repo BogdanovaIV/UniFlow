@@ -20,6 +20,6 @@ class ContextProcessorsTests(TestCase):
         """
         request = self.factory.get('/')
         context = current_year(request)
-        
+
         self.assertIn('current_year', context)
         self.assertEqual(context['current_year'], datetime.now().year)

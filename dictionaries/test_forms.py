@@ -1,12 +1,15 @@
-from django.test import TestCase
 from datetime import date, timedelta
+
+from django.test import TestCase
 from django.contrib.auth.models import User
+
 from .forms import (
     ScheduleTemplateFilterForm,
     ScheduleTemplateForm,
     ScheduleFilterForm,
     ScheduleForm,
-    StudentMarkForm)
+    StudentMarkForm
+)
 from .models import (
     Term,
     StudyGroup,
@@ -16,6 +19,7 @@ from .models import (
     Schedule
 )
 
+
 class ScheduleTemplateFilterFormTests(TestCase):
     """
     Test suite for ScheduleTemplateFilterForm to ensure form fields,
@@ -24,7 +28,7 @@ class ScheduleTemplateFilterFormTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         """
-        Sets up initial test data by creating active and inactive terms 
+        Sets up initial test data by creating active and inactive terms
         and study groups for validating form filtering and field behavior.
         """
         cls.term1 = Term.objects.create(
@@ -44,7 +48,7 @@ class ScheduleTemplateFilterFormTests(TestCase):
 
     def test_form_fields(self):
         """
-        Validates that the form includes 'term' and 'study_group' fields 
+        Validates that the form includes 'term' and 'study_group' fields
         and confirms that their labels are correctly set.
         """
         form = ScheduleTemplateFilterForm()
@@ -57,7 +61,7 @@ class ScheduleTemplateFilterFormTests(TestCase):
 
     def test_queryset_for_term_field(self):
         """
-        Checks that the 'term' field's queryset includes only active terms 
+        Checks that the 'term' field's queryset includes only active terms
         by verifying that inactive terms are excluded.
         """
         form = ScheduleTemplateFilterForm()
@@ -67,7 +71,7 @@ class ScheduleTemplateFilterFormTests(TestCase):
 
     def test_queryset_for_study_group_field(self):
         """
-        Confirms that the 'study_group' field's queryset includes only active 
+        Confirms that the 'study_group' field's queryset includes only active
         study groups and excludes inactive ones.
         """
         form = ScheduleTemplateFilterForm()
@@ -77,7 +81,7 @@ class ScheduleTemplateFilterFormTests(TestCase):
 
     def test_form_is_valid_with_correct_data(self):
         """
-        Ensures that the form is valid when provided with data for both 
+        Ensures that the form is valid when provided with data for both
         'term' and 'study_group' fields.
         """
         form_data = {'term': self.term1.id, 'study_group': self.group1.id}
@@ -86,7 +90,7 @@ class ScheduleTemplateFilterFormTests(TestCase):
 
     def test_form_is_invalid_with_missing_data(self):
         """
-        Tests that the form is invalid if required fields are missing, 
+        Tests that the form is invalid if required fields are missing,
         such as when only the 'term' field is provided.
         """
         form_data = {'term': self.term1.id}
@@ -113,7 +117,7 @@ class ScheduleTemplateFormTests(TestCase):
             name="Group A",
             active=True
         )
-        
+
         # Create active and inactive subjects
         self.active_subject = Subject.objects.create(
             name="Subject1",
@@ -123,7 +127,7 @@ class ScheduleTemplateFormTests(TestCase):
             name="Subject2",
             active=False
         )
-        
+
         # Create a ScheduleTemplate instance for edit testing
         self.schedule_template = ScheduleTemplate.objects.create(
             term=self.term,
@@ -179,7 +183,7 @@ class ScheduleFilterFormTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         """
-        Sets up initial test data by creating active and inactive terms 
+        Sets up initial test data by creating active and inactive terms
         and study groups for validating form filtering and field behavior.
         """
         cls.group1 = StudyGroup.objects.create(name="Group A", active=True)
@@ -187,7 +191,7 @@ class ScheduleFilterFormTests(TestCase):
 
     def test_form_fields(self):
         """
-        Validates that the form includes 'term' and 'study_group' fields 
+        Validates that the form includes 'term' and 'study_group' fields
         and confirms that their labels are correctly set.
         """
         form = ScheduleFilterForm()
@@ -200,7 +204,7 @@ class ScheduleFilterFormTests(TestCase):
 
     def test_queryset_for_study_group_field(self):
         """
-        Confirms that the 'study_group' field's queryset includes only active 
+        Confirms that the 'study_group' field's queryset includes only active
         study groups and excludes inactive ones.
         """
         form = ScheduleFilterForm()
@@ -210,19 +214,19 @@ class ScheduleFilterFormTests(TestCase):
 
     def test_form_is_valid_with_correct_data(self):
         """
-        Ensures that the form is valid when provided with data for both 
+        Ensures that the form is valid when provided with data for both
         'term' and 'study_group' fields.
         """
         test_date = date(2024, 9, 1)
         form_data = {'date': test_date, 'study_group': self.group1.id}
         form = ScheduleFilterForm(data=form_data)
         self.assertTrue(form.is_valid(), msg=f"Form errors: {form.errors}")
-        
+
         # Check the filter parameters
         filter_params = form.get_filter_params()
         expected_week_start = test_date - timedelta(days=test_date.weekday())
         expected_week_end = expected_week_start + timedelta(days=6)
-        
+
         self.assertEqual(filter_params['study_group'], self.group1)
         self.assertEqual(
             filter_params['date__range'],
@@ -231,7 +235,7 @@ class ScheduleFilterFormTests(TestCase):
 
     def test_form_is_invalid_with_missing_data(self):
         """
-        Tests that the form is invalid if required fields are missing, 
+        Tests that the form is invalid if required fields are missing,
         such as when only the 'term' field is provided.
         """
         form_data = {'date': date(2024, 9, 1)}
@@ -280,7 +284,7 @@ class ScheduleFormTests(TestCase):
             name="Group A",
             active=True
         )
-        
+
         # Create active and inactive subjects
         self.active_subject = Subject.objects.create(
             name="Subject1",
@@ -290,7 +294,7 @@ class ScheduleFormTests(TestCase):
             name="Subject2",
             active=False
         )
-        
+
         # Create a ScheduleTemplate instance for edit testing
         self.schedule = Schedule.objects.create(
             date=date(2024, 9, 3),

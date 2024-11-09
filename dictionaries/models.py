@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
+
 class StudyGroup(models.Model):
     """
     Represents a study group.
@@ -19,7 +19,7 @@ class StudyGroup(models.Model):
     """
     name = models.CharField(max_length=100, unique=True, null=False)
     active = models.BooleanField(default=True)
-    
+
     class Meta:
         ordering = ["name"]
 
@@ -27,7 +27,6 @@ class StudyGroup(models.Model):
     def active_objects(cls):
         """Returns a queryset of active study groups."""
         return cls.objects.filter(active=True)
-
 
     def __str__(self):
         """
@@ -53,7 +52,8 @@ class Term(models.Model):
         Defaults to True.
 
     Meta:
-        ordering (list): The default ordering of Term instances is by date_from.
+        ordering (list): The default ordering of Term instances is by
+        date_from.
         constraints (list): Enforces uniqueness of date_from
         and date_to fields together.
     """
@@ -126,7 +126,7 @@ class Subject(models.Model):
     """
     name = models.CharField(max_length=100, unique=True, null=False)
     active = models.BooleanField(default=True)
-    
+
     class Meta:
         ordering = ["name"]
 
@@ -134,6 +134,7 @@ class Subject(models.Model):
     def active_objects(cls):
         """Returns a queryset of active subjects."""
         return cls.objects.filter(active=True)
+
     def __str__(self):
         """
         Returns the string representation of the Subject instance.
@@ -142,6 +143,7 @@ class Subject(models.Model):
             str: The name of the subject.
         """
         return self.name
+
 
 class WeekdayChoices(models.IntegerChoices):
     """
@@ -170,7 +172,8 @@ class ScheduleTemplate(models.Model):
         weekday (IntegerField): The day of the week for the schedule.
         order_number (PositiveIntegerField): The order of the class
         for the day (1-10).
-        subject (ForeignKey): The subject associated with the schedule template.
+        subject (ForeignKey): The subject associated with the schedule
+        template.
 
     Meta:
         ordering (list): The default ordering of ScheduleTemplate instances
@@ -179,7 +182,7 @@ class ScheduleTemplate(models.Model):
         study_group, weekday, order_number.
         indexes (list): Indexes for optimizing queries by term and study group.
     """
-    term = models.ForeignKey(Term, on_delete=models.CASCADE, null=False) 
+    term = models.ForeignKey(Term, on_delete=models.CASCADE, null=False)
     study_group = models.ForeignKey(
         StudyGroup,
         on_delete=models.CASCADE,
@@ -188,7 +191,7 @@ class ScheduleTemplate(models.Model):
     weekday = models.IntegerField(choices=WeekdayChoices.choices, null=False)
     order_number = models.PositiveIntegerField(
         validators=[
-            MinValueValidator(1),      
+            MinValueValidator(1),
             MaxValueValidator(10)
         ],
         null=False
@@ -209,7 +212,7 @@ class ScheduleTemplate(models.Model):
                 ], name='unique_schedule_template_row'
             ),
         ]
-    
+
         indexes = [
             models.Index(
                 fields=['term', 'study_group'],
@@ -232,6 +235,7 @@ class ScheduleTemplate(models.Model):
             f"{self.order_number}. - "
             f"{self.subject}"
         )
+
 
 class Schedule(models.Model):
     """
@@ -261,7 +265,7 @@ class Schedule(models.Model):
     date = models.DateField(null=False)
     order_number = models.PositiveIntegerField(
         validators=[
-            MinValueValidator(1),      
+            MinValueValidator(1),
             MaxValueValidator(10)
         ],
         null=False
@@ -282,7 +286,7 @@ class Schedule(models.Model):
                 ], name='unique_schedule_row'
             ),
         ]
-    
+
         indexes = [
             models.Index(
                 fields=['study_group', 'date'],
@@ -334,7 +338,7 @@ class StudentMark(models.Model):
     )
     mark = models.PositiveIntegerField(
         validators=[
-            MinValueValidator(0),      
+            MinValueValidator(0),
             MaxValueValidator(100)
         ],
         null=False
@@ -352,7 +356,7 @@ class StudentMark(models.Model):
                 ], name='unique_student_mark_row'
             ),
         ]
-    
+
         indexes = [
             models.Index(
                 fields=['student', 'schedule'],

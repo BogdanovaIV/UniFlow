@@ -1,16 +1,18 @@
+from datetime import date
+
 from django.test import TestCase, Client
 from django.urls import reverse
-from datetime import date
 from django.contrib.auth.models import User, Group
 from django.contrib.messages import get_messages
-from dictionaries.models import (StudyGroup, Subject, StudentMark, Schedule)
+
+from dictionaries.models import StudyGroup, Subject, StudentMark, Schedule
 from dictionaries.forms import StudentMarkForm
 
 
 class StudentMarkViewTests(TestCase):
     """
-    Tests for the StudentMark views, including creating, editing, 
-    and permission checks for StudentMark entries.
+    Tests for the StudentMark views, including creating, editing, and
+    permission checks for StudentMark entries.
     """
     @classmethod
     def setUpTestData(cls):
@@ -20,12 +22,15 @@ class StudentMarkViewTests(TestCase):
         - Create users with Tutor and Student roles.
         - Create a tutor and two students.
         """
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
-        
+
         # Create schedule templates
         cls.schedule = Schedule.objects.create(
-            date=date(2024,9,3),
+            date=date(2024, 9, 3),
             study_group=cls.study_group,
             order_number=1,
             subject=cls.subject
@@ -49,12 +54,11 @@ class StudentMarkViewTests(TestCase):
         cls.tutor_user.groups.add(tutor_group)
         cls.student_user.groups.add(student_group)
         cls.student_user2.groups.add(student_group)
-        
 
     def setUp(self):
         """
-        Sets up the test client, initial StudentMark entry, 
-        and the URL for the 'edit_student_mark' view.
+        Sets up the test client, initial StudentMark entry, and the URL for
+        the 'edit_student_mark' view.
         """
         self.student_mark = StudentMark.objects.create(
             student=self.student_user, schedule=self.schedule, mark=90)
@@ -63,18 +67,18 @@ class StudentMarkViewTests(TestCase):
             'tutor:edit_student_mark',
             args=[self.schedule.pk, self.student_mark.pk]
         )
-        
+
     def test_edit_student_mark_with_permission(self):
         """
-        Tests that a tutor with the correct permission can successfully 
-        edit a StudentMark entry and receives a success message.
+        Tests that a tutor with the correct permission can successfully edit
+        a StudentMark entry and receives a success message.
         """
         self.client.login(username='tutor', password='password')
         data = {
             'student': self.student_user.pk,
             'mark': 95,
         }
-        
+
         response = self.client.post(self.url, data)
         self.student_mark.refresh_from_db()
 
@@ -90,17 +94,17 @@ class StudentMarkViewTests(TestCase):
         )
         self.assertRedirects(
             response,
-            reverse('tutor:edit_schedule',args=[self.schedule.pk])
+            reverse('tutor:edit_schedule', args=[self.schedule.pk])
         )
 
     def test_edit_student_mark_duplicate_error(self):
         """
-        Tests that a duplicate error message appears when attempting 
-        to edit a StudentMark with a student who already has a mark 
-        for the same schedule.
+        Tests that a duplicate error message appears when attempting to edit
+        a StudentMark with a student who already has a mark for the same
+        schedule.
         """
         self.client.login(username='tutor', password='password')
-        
+
         StudentMark.objects.create(
             schedule=self.schedule,
             student=self.student_user2,
@@ -121,7 +125,7 @@ class StudentMarkViewTests(TestCase):
 
     def test_edit_student_mark_permission_denied(self):
         """
-        Tests that a student without the required permissions receives 
+        Tests that a student without the required permissions receives
         a 403 Forbidden response when attempting to edit a StudentMark.
         """
         self.client.login(username='student', password='password')
@@ -129,10 +133,11 @@ class StudentMarkViewTests(TestCase):
 
         self.assertEqual(response.status_code, 403)
 
+
 class AddStudentMarkView(TestCase):
     """
-    Tests for the AddStudentMark view, including permissions, 
-    duplicate handling, and success messaging for adding StudentMark entries.
+    Tests for the AddStudentMark view, including permissions, duplicate
+    handling, and success messaging for adding StudentMark entries.
     """
     @classmethod
     def setUpTestData(cls):
@@ -142,12 +147,15 @@ class AddStudentMarkView(TestCase):
         - Create users with Tutor and Student roles.
         - Create a tutor and two students.
         """
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
-        
+
         # Create schedule templates
         cls.schedule = Schedule.objects.create(
-            date=date(2024,9,3),
+            date=date(2024, 9, 3),
             study_group=cls.study_group,
             order_number=1,
             subject=cls.subject
@@ -171,12 +179,11 @@ class AddStudentMarkView(TestCase):
         cls.tutor_user.groups.add(tutor_group)
         cls.student_user.groups.add(student_group)
         cls.student_user2.groups.add(student_group)
-        
 
     def setUp(self):
         """
-        Sets up the test client, an initial StudentMark entry, 
-        and the URL for the 'add_student_mark' view.
+        Sets up the test client, an initial StudentMark entry, and the URL
+        for the 'add_student_mark' view.
         """
         self.student_mark = StudentMark.objects.create(
             student=self.student_user, schedule=self.schedule, mark=90)
@@ -187,15 +194,15 @@ class AddStudentMarkView(TestCase):
 
     def test_add_student_mark_with_permission(self):
         """
-        Tests that a tutor with the correct permission can successfully 
-        add a new StudentMark entry and receives a success message.
+        Tests that a tutor with the correct permission can successfully add
+        a new StudentMark entry and receives a success message.
         """
         self.client.login(username='tutor', password='password')
         data = {
             'student': self.student_user2.pk,
             'mark': 75,
         }
-        
+
         response = self.client.post(self.url, data)
         new_mark = StudentMark.objects.get(
             schedule=self.schedule,
@@ -214,9 +221,9 @@ class AddStudentMarkView(TestCase):
 
     def test_add_student_mark_duplicate_error(self):
         """
-        Tests that a duplicate error message appears when attempting 
-        to add a StudentMark entry for a student who already has a mark 
-        for the same schedule.
+        Tests that a duplicate error message appears when attempting to add
+        a StudentMark entry for a student who already has a mark for the same
+        schedule.
         """
         self.client.login(username='tutor', password='password')
         data = {
@@ -234,7 +241,7 @@ class AddStudentMarkView(TestCase):
 
     def test_edit_student_mark_permission_denied(self):
         """
-        Tests that a student without the required permissions receives 
+        Tests that a student without the required permissions receives
         a 403 Forbidden response when attempting to add a StudentMark.
         """
         self.client.login(username='student', password='password')
@@ -242,10 +249,11 @@ class AddStudentMarkView(TestCase):
 
         self.assertEqual(response.status_code, 403)
 
+
 class DeleteStudentMarkView(TestCase):
     """
-    Tests for the DeleteStudentMark view, including permissions 
-    and success messaging for deleting StudentMark entries.
+    Tests for the DeleteStudentMark view, including permissions and success
+    messaging for deleting StudentMark entries.
     """
     @classmethod
     def setUpTestData(cls):
@@ -255,12 +263,15 @@ class DeleteStudentMarkView(TestCase):
         - Create users with Tutor and Student roles.
         - Create a tutor and two students.
         """
-        cls.study_group = StudyGroup.objects.create(name="Group A", active=True)
+        cls.study_group = StudyGroup.objects.create(
+            name="Group A",
+            active=True
+        )
         cls.subject = Subject.objects.create(name="Subject1", active=True)
-        
+
         # Create schedule templates
         cls.schedule = Schedule.objects.create(
-            date=date(2024,9,3),
+            date=date(2024, 9, 3),
             study_group=cls.study_group,
             order_number=1,
             subject=cls.subject
@@ -284,12 +295,11 @@ class DeleteStudentMarkView(TestCase):
         cls.tutor_user.groups.add(tutor_group)
         cls.student_user.groups.add(student_group)
         cls.student_user2.groups.add(student_group)
-        
 
     def setUp(self):
         """
-        Sets up the test client, an initial StudentMark entry, 
-        and the URL for the 'delete_student_mark' view.
+        Sets up the test client, an initial StudentMark entry, and the URL for
+        the 'delete_student_mark' view.
         """
         self.student_mark = StudentMark.objects.create(
             student=self.student_user, schedule=self.schedule, mark=90)
@@ -298,23 +308,26 @@ class DeleteStudentMarkView(TestCase):
             'tutor:delete_student_mark',
             args=[self.schedule.pk, self.student_mark.pk]
         )
-        
+
     def test_delete_student_mark_with_permission(self):
         """
-        Tests that a tutor with the correct permission can successfully 
-        delete a StudentMark entry and receives a success message.
+        Tests that a tutor with the correct permission can successfully delete
+        a StudentMark entry and receives a success message.
         """
         self.client.login(username='tutor', password='password')
-        
+
         response = self.client.post(self.url)
-        
+
         # Check if the mark was deleted
         with self.assertRaises(StudentMark.DoesNotExist):
             StudentMark.objects.get(pk=self.student_mark.pk)
 
         # Check for success message
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), "Student mark deleted successfully.")
+        self.assertEqual(
+            str(messages[0]),
+            "Student mark deleted successfully."
+        )
         self.assertRedirects(
             response,
             reverse('tutor:edit_schedule', args=[self.schedule.pk])
@@ -322,7 +335,7 @@ class DeleteStudentMarkView(TestCase):
 
     def test_delete_student_mark_permission_denied(self):
         """
-        Tests that a student without the required permissions receives 
+        Tests that a student without the required permissions receives
         a 403 Forbidden response when attempting to delete a StudentMark entry.
         """
         self.client.login(username='student', password='password')

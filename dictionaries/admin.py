@@ -1,15 +1,16 @@
-from django.core.exceptions import ValidationError
 from django.contrib import admin
-from django.contrib.auth.models import User
 from django.contrib.admin import SimpleListFilter
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
 from .models import (
-    StudyGroup,
-    Term,
-    Subject,
-    ScheduleTemplate,
     Schedule,
-    StudentMark
-    )
+    ScheduleTemplate,
+    StudentMark,
+    StudyGroup,
+    Subject,
+    Term,
+)
 
 
 @admin.register(StudyGroup)
@@ -25,7 +26,7 @@ class StudyGroupAdmin(admin.ModelAdmin):
 
     # Display the name and active status
     list_display = ('name', 'active')
-    # Add a serach for the name 
+    # Add a serach for the name
     search_fields = ['name']
     # Add a filter for the active field
     list_filter = ('active',)
@@ -45,7 +46,7 @@ class TermAdmin(admin.ModelAdmin):
 
     # Display the name, date_from, date_to, and active status
     list_display = ('name', 'date_from', 'date_to', 'active')
-    # Add a serach for the name 
+    # Add a serach for the name
     search_fields = ['name']
     # Add a filter for the active field
     list_filter = ('active',)
@@ -64,7 +65,7 @@ class SubjectAdmin(admin.ModelAdmin):
 
     # Display the name and active status
     list_display = ('name', 'active')
-    # Add a serach for the name 
+    # Add a serach for the name
     search_fields = ['name']
     # Add a filter for the active field
     list_filter = ('active',)
@@ -76,11 +77,11 @@ class ScheduleTemplateAdmin(admin.ModelAdmin):
     Admin interface for managing ScheduleTemplate instances.
 
     Attributes:
-        list_display (tuple): Fields to display in the list view of 
+        list_display (tuple): Fields to display in the list view of
         ScheduleTemplate instances.
         list_filter (tuple): Fields that can be used to filter the list view.
     """
-    
+
     # Display the term, study_group, weekday, order_number and subject
     list_display = (
         'term',
@@ -91,7 +92,7 @@ class ScheduleTemplateAdmin(admin.ModelAdmin):
     )
 
     # Add a filter for the weekday field
-    list_filter = ('weekday','term', 'study_group')
+    list_filter = ('weekday', 'term', 'study_group')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "term":
@@ -109,11 +110,11 @@ class ScheduleAdmin(admin.ModelAdmin):
     Admin interface for managing Schedule instances.
 
     Attributes:
-        list_display (tuple): Fields to display in the list view of 
+        list_display (tuple): Fields to display in the list view of
         Schedule instances.
         list_filter (tuple): Fields that can be used to filter the list view.
     """
-    
+
     # Display the term, study_group, weekday, order_number and subject
     list_display = (
         'study_group',
@@ -133,13 +134,14 @@ class ScheduleAdmin(admin.ModelAdmin):
             kwargs["queryset"] = Subject.active_objects()
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+
 @admin.register(StudentMark)
 class StudentMarkAdmin(admin.ModelAdmin):
     """
     Admin interface for managing StudentMark instances.
 
     Attributes:
-        list_display (tuple): Fields to display in the list view of 
+        list_display (tuple): Fields to display in the list view of
         StudentMark instances.
         list_filter (tuple): Fields that can be used to filter the list view.
     """

@@ -1,5 +1,7 @@
-from django import forms
 from datetime import timedelta, datetime
+
+from django import forms
+
 from .models import (
     Term,
     StudyGroup,
@@ -9,14 +11,15 @@ from .models import (
     Schedule,
     StudentMark)
 
+
 class ScheduleTemplateFilterForm(forms.Form):
     """
     A form to filter schedule templates based on selected term and study group.
 
     Fields:
-        - term: A ModelChoiceField that allows the user to select a term 
+        - term: A ModelChoiceField that allows the user to select a term
         from the active terms available in the database.
-        - study_group: A ModelChoiceField that allows the user to select 
+        - study_group: A ModelChoiceField that allows the user to select
         a study group from the active study groups available in the database.
     """
     term = forms.ModelChoiceField(
@@ -30,10 +33,11 @@ class ScheduleTemplateFilterForm(forms.Form):
         label="Study Group"
     )
 
+
 class ScheduleTemplateForm(forms.ModelForm):
     """
     A form for editing ScheduleTemplate instances with restricted field access.
-    
+
     - Fields 'term', 'study_group', 'weekday', and 'order_number' are disabled,
     leaving only 'subject' editable when an instance exists.
     - Filters 'subject' to display only active subjects.
@@ -41,18 +45,19 @@ class ScheduleTemplateForm(forms.ModelForm):
     term_name = forms.CharField(
         label='Term',
         required=False,
-        widget=forms.TextInput(attrs={'readonly':'readonly'})
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
     )
     study_group_name = forms.CharField(
         label='Study group',
         required=False,
-        widget=forms.TextInput(attrs={'readonly':'readonly'})
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
     )
     weekday_name = forms.CharField(
         label='Weekday',
         required=False,
-        widget=forms.TextInput(attrs={'readonly':'readonly'})
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
     )
+
     class Meta:
         model = ScheduleTemplate
         fields = [
@@ -87,13 +92,15 @@ class ScheduleTemplateForm(forms.ModelForm):
         if 'study_group' in self.initial:
             self.fields['study_group_name'].initial = StudyGroup.objects.get(
                 pk=self.initial['study_group']
-        )
+            )
 
         if 'weekday' in self.initial:
             weekday_value = int(self.initial['weekday'])
 
         if weekday_value is not None:
-            self.fields['weekday_name'].initial = WeekdayChoices(weekday_value).label
+            self.fields['weekday_name'].initial = WeekdayChoices(
+                weekday_value
+            ).label
 
         self.fields['subject'].queryset = Subject.active_objects()
 
@@ -105,7 +112,7 @@ class ScheduleFilterForm(forms.Form):
     Fields:
         - week (DateField): A date input field for selecting a week, used to
         filter data within the specified week period.
-        - study_group: A ModelChoiceField that allows the user to select 
+        - study_group: A ModelChoiceField that allows the user to select
         a study group from the active study groups available in the database.
     """
     date = forms.DateField(
@@ -126,9 +133,9 @@ class ScheduleFilterForm(forms.Form):
 
         Args:
             is_student (bool, optional): Indicates if the form is being used by
-            a student. Defaults to False. When True, the 'study_group' field is 
+            a student. Defaults to False. When True, the 'study_group' field is
             pre-filled with the student's study group and made read-only.
-            user_study_group (str, optional): The study group assigned to the 
+            user_study_group (str, optional): The study group assigned to the
             student user, if applicable. Defaults to an empty string.
 
         """
@@ -141,12 +148,13 @@ class ScheduleFilterForm(forms.Form):
 
     def get_filter_params(self):
         """
-        Generates a dictionary of filtering parameters based on the form inputs.
-        
-        The week start date is extended to a full week range (Monday to Sunday), 
-        allowing the schedule data to be filtered by the chosen study group 
-        and date range.
-        
+        Generates a dictionary of filtering parameters based on the form
+        inputs.
+
+        The week start date is extended to a full week range (Monday to
+        Sunday), allowing the schedule data to be filtered by the chosen study
+        group and date range.
+
         Returns:
             dict: Filter parameters including study group and date range for
             the selected week.
@@ -155,7 +163,7 @@ class ScheduleFilterForm(forms.Form):
         week_end = None
         study_group = None
         if self.is_valid():
-            
+
             week_start = (
                 self.cleaned_data.get('date')
                 if 'date' in self.cleaned_data else None
@@ -177,7 +185,7 @@ class ScheduleFilterForm(forms.Form):
 class ScheduleForm(forms.ModelForm):
     """
     A form for editing Schedule instances with restricted field access.
-    
+
     - Fields 'date', 'study_group', and 'order_number' are disabled,
     leaving only 'homework' editable when an instance exists.
     - Filters 'homework' to display only active subjects.
@@ -185,17 +193,17 @@ class ScheduleForm(forms.ModelForm):
     date_str = forms.CharField(
         label='Date (str)',
         required=False,
-        widget=forms.TextInput(attrs={'readonly':'readonly'})
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
     )
     study_group_name = forms.CharField(
         label='Study group',
         required=False,
-        widget=forms.TextInput(attrs={'readonly':'readonly'})
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
     )
     weekday_name = forms.CharField(
         label='Weekday',
         required=False,
-        widget=forms.TextInput(attrs={'readonly':'readonly'})
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
     )
     weekday_value = forms.IntegerField(
         label='Weekday (value)',

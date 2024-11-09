@@ -2,6 +2,7 @@ from django.contrib.auth import login
 from django.shortcuts import redirect
 from allauth.account.views import LoginView, SignupView
 
+
 class CustomAuthMixin:
     """
     Mixin to handle redirection based on the user's group.
@@ -12,7 +13,7 @@ class CustomAuthMixin:
             return redirect('student:dashboard')
         elif user.groups.filter(name='Tutor').exists():
             return redirect('tutor:schedule')
-        
+
         return redirect('home')  # Default redirect
 
 
