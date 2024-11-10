@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('selection-schedule');
     const schedule = document.getElementById('schedule');
     if (form) {
-        const dataTemplateName = schedule.getAttribute('data-template-name')
-        const fillForm = document.getElementById('fill-form')
+        const dataTemplateName = schedule.getAttribute('data-template-name');
+        const fillForm = document.getElementById('fill-form');
         // Attach change event to all input and select elements in the form
         const upadateSelection = function () {
             updateSelectionDescription(form, selectionDescription, dataTemplateName);
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schedule.getAttribute('data-empty') == "False") {
                 form.submit();
             }
-        }
+        };
 
         const inputElements = form.querySelectorAll('input, select');
         inputElements.forEach(input => {
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
             updateSelection.addEventListener('click', upadateSelection);
         }
 
-        updateSelectionDescription(form, selectionDescription, dataTemplateName)
+        updateSelectionDescription(form, selectionDescription, dataTemplateName);
     }
 
 });
