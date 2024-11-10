@@ -29,7 +29,6 @@
 </head>
 
 <body class="d-flex flex-column h-100 main-bg">
-
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
@@ -47,19 +46,23 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == home_url %}fw-bolder{% endif %}"
-                            href="{% url 'home' %}" aria-label="Home Page">Home</a>
+                            href="{% url 'home' %}" aria-label="Home Page">
+                            Home
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == contact_url %}fw-bolder{% endif %}"
-                            href="{% url 'contact' %}" aria-label="Contact Page">Contact</a>
+                            href="{% url 'contact' %}" aria-label="Contact Page">
+                            Contact
+                        </a>
                     </li>
                     {% if user.is_authenticated %}
                     {% if is_student %}
-                    <li class="nav-item"></li>
-                    <a class="nav-link {% if request.path == url_dashboard %}fw-bolder{% endif %}"
-                        href="{% url 'student:dashboard' %}">
-                        Dashboard
-                    </a>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == url_dashboard %}fw-bolder{% endif %}"
+                            href="{% url 'student:dashboard' %}">
+                            Dashboard
+                        </a>
                     </li>
                     {% endif %}
                     {% if is_tutor %}
@@ -72,16 +75,22 @@
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == logout_url %}fw-bolder{% endif %}"
-                            href="{% url 'account_logout' %}" aria-label="Logout Page">Logout</a>
+                            href="{% url 'account_logout' %}" aria-label="Logout Page">
+                            Logout
+                        </a>
                     </li>
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == signup_url %}fw-bolder{% endif %}"
-                            href="{% url 'account_signup' %}" aria-label="Register Page">Register</a>
+                            href="{% url 'account_signup' %}" aria-label="Register Page">
+                            Register
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == login_url %}fw-bolder{% endif %}"
-                            href="{% url 'account_login' %}" aria-label="Login Page">Login</a>
+                            href="{% url 'account_login' %}" aria-label="Login Page">
+                            Login
+                        </a>
                     </li>
                     {% endif %}
                 </ul>
@@ -140,7 +149,9 @@
                     </ul>
                 </div>
                 <div class="col-auto">
-                    <div class="copyright text-muted">Copyright &copy; Irina Bogdanova {{ current_year }}</div>
+                    <div class="copyright text-muted">
+                        Copyright &copy; Irina Bogdanova {{ current_year }}
+                    </div>
                 </div>
             </div>
         </div>

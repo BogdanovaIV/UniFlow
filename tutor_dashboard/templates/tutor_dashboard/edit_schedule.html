@@ -10,35 +10,35 @@
                 <div
                     class="row {% if schedule.weekday_value.value < 5 %}text-info{% else %}text-danger{% endif %} fw-bold">
                     <div class="col-3 col-md-2">
-                        <label for="id_date">Date:</label>
+                        <p>Date:</p>
                     </div>
                     <div class="col-9 col-md-10">
-                        <p id="id_date">{{ schedule.date.value }} ({{ schedule.weekday_name.value }})</p>
+                        <p>{{ schedule.date.value }} ({{ schedule.weekday_name.value }})</p>
                         <p hidden>{{ schedule.date }}</p>
                     </div>
                 </div>
                 <div class="row mb-2 mb-md-0">
                     <div class="col-4">
-                        <label for="id_study_group">Study Group:</label>
+                        <p>Study Group:</p>
                     </div>
                     <div class="col-8">
-                        <p id="id_study_group">{{ schedule.study_group_name.value }}</p>
+                        <p>{{ schedule.study_group_name.value }}</p>
                         <p hidden>{{ schedule.study_group }}</p>
                     </div>
                 </div>
 
                 <div class="row mb-2 mb-md-0">
                     <div class="col-4">
-                        <label for="id_order_number">Order Number:</label>
+                        <p>Order Number:</p>
                     </div>
                     <div class="col-8">
-                        <p id="id_order_number">{{ schedule.order_number.value }}</p>
+                        <p>{{ schedule.order_number.value }}</p>
                         <p hidden>{{ schedule.order_number }}</p>
                     </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-4">
-                        <label for="subject">Subject:</label>
+                        <label for="id_subject">Subject:</label>
                     </div>
                     <div class="col-8">
                         {{ schedule.subject }}
@@ -46,7 +46,7 @@
                 </div>
                 <div class="row mb-2">
                     <div class="col-4">
-                        <label for="homework">Homework:</label>
+                        <label for="id_homework">Homework:</label>
                     </div>
                     <div class="col-8">
                         {{ schedule.homework }}
@@ -100,7 +100,7 @@
                             </button>
                             <!-- Delete Button -->
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal-{{ student_mark.pk }}">
+                                data-bs-target="#deleteModal-{{ mark.student.pk }}">
                                 Delete
                             </button>
                         </td>
@@ -124,10 +124,12 @@
                                     <div class="modal-body">
                                         <div class="row mb-3">
                                             <div class="col-3 col-md-2">
-                                                <label for="student" class="form-label">Student</label>
+                                                <label for="student-{{ forloop.counter }}"
+                                                    class="form-label">Student</label>
                                             </div>
                                             <div class="col-9 col-md-10">
-                                                <select name="student" id="student" class="form-select">
+                                                <select name="student" id="student-{{ forloop.counter }}"
+                                                    class="form-select">
                                                     {% for user_profile in users %}
                                                     <option value="{{ user_profile.user.pk }}" {% if user_profile.user.pk == mark.student.pk %}selected{% endif %}>
                                                         {{ user_profile.user.get_full_name }}
@@ -137,11 +139,11 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-3 col-md-2">
-                                                <label for="mark" class="form-label">Mark</label>
+                                                <label for="mark-{{ forloop.counter }}" class="form-label">Mark</label>
                                             </div>
                                             <div class="col-9 col-md-10">
-                                                <input type="number" name="mark" id="mark" class="form-control"
-                                                    value="{{ mark.mark }}" required>
+                                                <input type="number" name="mark" id="mark-{{ forloop.counter }}"
+                                                    class="form-control" value="{{ mark.mark }}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -156,12 +158,12 @@
                     </div>
 
                     <!-- Delete Student Mark Modal for each mark -->
-                    <div class="modal fade text-dark" id="deleteModal-{{ student_mark.pk }}" tabindex="-1"
-                        aria-labelledby="deleteModalLabel-{{ student_mark.pk }}" aria-hidden="true">
+                    <div class="modal fade text-dark" id="deleteModal-{{ mark.student.pk }}" tabindex="-1"
+                        aria-labelledby="deleteModalLabel-{{ mark.student.pk }}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header bg-info-subtle">
-                                    <h5 class="modal-title" id="deleteModalLabel-{{ student_mark.pk }}">Confirm Delete
+                                    <h5 class="modal-title" id="deleteModalLabel-{{ mark.student.pk }}">Confirm Delete
                                     </h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
@@ -245,7 +247,7 @@
 {% if schedule.instance.pk %}
 <!-- Delete Schedule Modal -->
 <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog text-dark">
         <div class="modal-content">
             <div class="modal-header">
@@ -292,7 +294,8 @@
                             <li>Add new student's mark
                                 <ol>
                                     <li>Click <strong>Add</strong> to add new student's mark.</li>
-                                    <li>Fill out a student and their mark and click <strong>Add</strong>, or <strong>Cancel</strong> to go back
+                                    <li>Fill out a student and their mark and click <strong>Add</strong>, or
+                                        <strong>Cancel</strong> to go back
                                         without adding.
                                     </li>
                                 </ol>
@@ -300,14 +303,16 @@
                             <li>Edit a student's mark
                                 <ol>
                                     <li>Click <strong>Edit</strong> to edit student's mark.</li>
-                                    <li>Change a student and/or their mark and click <strong>Save</strong>, or <strong>Cancel</strong> to go back
+                                    <li>Change a student and/or their mark and click <strong>Save</strong>, or
+                                        <strong>Cancel</strong> to go back
                                         without changing.
                                     </li>
                                 </ol>
                             </li>
                             <li>Delete a student's mark
                                 <ol>
-                                    <li>Click <strong>Delete</strong> to delete student's mark, or <strong>Cancel</strong> to go
+                                    <li>Click <strong>Delete</strong> to delete student's mark, or
+                                        <strong>Cancel</strong> to go
                                         back without deleting.
                                     </li>
                                 </ol>
@@ -320,11 +325,13 @@
                                 back without deleting.
                             </li>
                         </ol>
-                        <p class="text-warning">!!! When you delete a Schedule, students' marks that link with it are also deleted.</p>
+                        <p class="text-warning">
+                            !!! When you delete a Schedule, students' marks that link with it are also deleted.
+                        </p>
                     </li>
                 </ul>
                 {% else %}
-                <ul></ul>
+                <ul>
                     <li>Adding schedule data
                         <ol>
                             <li>Fill out the subject and/or the homework.</li>
@@ -335,7 +342,9 @@
                         </ol>
                     </li>
                     <li>Adding student's marks
-                        <p class="text-warning">The feature to add students' marks is available after saving a schedule.</p>
+                        <p class="text-warning">
+                            The feature to add students' marks is available after saving a schedule.
+                        </p>
                     </li>
                 </ul>
                 {% endif %}

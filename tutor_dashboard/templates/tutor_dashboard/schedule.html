@@ -42,48 +42,54 @@
             {% for weekday, weekday_info in schedule.items %}
             <div class="col px-0">
                 <div class="card bg-transparent mt-3 border-light">
-                    <h6
+                    <div
                         class="card-header {% if weekday < 5 %}text-bg-info{% else %}text-bg-danger{% endif %} text-light bg-opacity-50 text-uppercase">
                         <div class="container"></div>
                         <div class="row">{{ weekday_info.label_weekday }}</div>
                         <div class="row">{{ weekday_info.date }}</div>
-                    </h6>
+                    </div>
                     <ul class="list-group list-group-flush bg-transparent">
                         {% for order, row_detail in weekday_info.details.items %}
                         {% if row_detail.id %}
-                        <a href="{% url 'tutor:edit_schedule' pk=row_detail.id %}"
-                            class="text-decoration-none text-reset"
-                            aria-label="Edit schedule for {{ row_detail.subject }}">
-                            <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
+                        <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
+                            <a href="{% url 'tutor:edit_schedule' pk=row_detail.id %}"
+                                class="text-decoration-none text-reset"
+                                aria-label="Edit schedule for {{ row_detail.subject }}">
                                 <div class="row m-0">
                                     <div class="row m-0 p-0">
                                         <div
                                             class="col-2 text-center p-0 m-0 border-end border-bottom border-secondary">
-                                            {{ order }}</div>
-                                        <div class="col-10 px-1 m-0 border-bottom border-secondary">{{ row_detail.subject }}</div>
+                                            {{ order }}
+                                        </div>
+                                        <div class="col-10 px-1 m-0 border-bottom border-secondary">
+                                            {{ row_detail.subject }}
+                                        </div>
                                     </div>
                                     <div class="row m-0 p-0 {% if order < 10 %}border-bottom border-light{% endif %}">
                                         <div class="col-2 text-center p-0 m-0 border-end border-secondary">H</div>
                                         <div class="col-10 px-1 position-relative text-truncate">
                                             {{ row_detail.homework }}
                                             {% if row_detail.marks != 0 %}
-                                                <span class="badge text-bg-primary rounded-pill position-absolute end-0">{{ row_detail.marks|default_if_none:'' }}</span>
+                                            <span class="badge text-bg-primary rounded-pill position-absolute end-0">
+                                                {{ row_detail.marks|default_if_none:'' }}
+                                            </span>
                                             {% endif %}
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                        </a>
+                            </a>
+                        </li>
                         {% else %}
-                        <a href="{% if selection_valid %}{% url 'tutor:add_schedule' %}?date={{ weekday_info.date_str }}&study_group={{ form.study_group.value }}&order_number={{ order }}{% else %}#{% endif %}"
-                            class="text-decoration-none text-reset"
-                            aria-label="Add new schedule for date {{ weekday_info.date }} and study group {{ form.study_group.value }}">
-                            <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
+                        <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
+                            <a href="{% if selection_valid %}{% url 'tutor:add_schedule' %}?date={{ weekday_info.date_str }}&study_group={{ form.study_group.value }}&order_number={{ order }}{% else %}#{% endif %}"
+                                class="text-decoration-none text-reset"
+                                aria-label="Add new schedule for date {{ weekday_info.date }} and study group {{ form.study_group.value }}">
                                 <div class="row m-0">
                                     <div class="row m-0 p-0">
                                         <div
                                             class="col-2 text-center p-0 m-0 border-end border-bottom border-secondary">
-                                            {{ order }}</div>
+                                            {{ order }}
+                                        </div>
                                         <div class="col-10 p-0 m-0 border-bottom border-secondary"></div>
                                     </div>
                                     <div class="row m-0 p-0 {% if order < 10 %}border-bottom border-light{% endif %}">
@@ -91,8 +97,8 @@
                                         <div class="col-10"></div>
                                     </div>
                                 </div>
-                            </li>
-                        </a>
+                            </a>
+                        </li>
                         {% endif %}
                         {% endfor %}
                     </ul>
@@ -113,8 +119,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body bg-light">
-                <p>The schedule displays the information about subjects, homeworks, students' marks.</p>
-                <p>The number of students' marks is displayed on a badge. <span class="badge text-bg-primary rounded-pill">7</span></p>
+                <p>
+                    The schedule displays the information about subjects, homeworks, students' marks.
+                </p>
+                <p>
+                    The number of students' marks is displayed on a badge.
+                    <span class="badge text-bg-primary rounded-pill">7</span>
+                </p>
                 <ul>
                     <li>Selection
                         <ol>
@@ -124,11 +135,12 @@
                     </li>
                     <li>Fill
                         <ol>
-                            <li>To fill Schedule by Schedule templates, set selection.</li> 
-                            <li>Click on the <strong>Fill</strong>. The system creates a Schedule based on the Schedule template of the particular study group.</li>
+                            <li>To fill Schedule by Schedule templates, set selection.</li>
+                            <li> Click on the <strong>Fill</strong>. The system creates a Schedule based on the Schedule
+                                template of the particular study group.</li>
                             <li>Fill out the required fields, including date, and study group.</li>
-                            <p class="text-warning">!!! This feature is available only for an empty schedule.</p>
                         </ol>
+                        <p class="text-warning">!!! This feature is available only for an empty schedule.</p>
                     </li>
                     <li>Adding and changing data
                         <ol>

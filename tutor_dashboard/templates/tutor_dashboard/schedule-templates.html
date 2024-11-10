@@ -36,32 +36,39 @@
                 <div class="card bg-transparent mt-3">
                     <h6
                         class="card-header {% if weekday < 5 %}text-bg-info{% else %}text-bg-danger{% endif %} text-light bg-opacity-50 text-uppercase">
-                        {{ details|first }}</h6>
+                        {{ details|first }}
+                    </h6>
                     <ul class="list-group list-group-flush bg-transparent">
                         {% for detail in details|slice:":2" %}
                         {% for order, subject_detail in detail.items %}
                         {% if subject_detail.id %}
-                        <a href="{% url 'tutor:edit_schedule_template' pk=subject_detail.id %}"
-                            class="text-decoration-none text-reset"
-                            aria-label="Edit schedule template for {{ subject_detail.subject }}">
-                            <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
+                        <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
+                            <a href="{% url 'tutor:edit_schedule_template' pk=subject_detail.id %}"
+                                class="text-decoration-none text-reset"
+                                aria-label="Edit schedule template for {{ subject_detail.subject }}">
                                 <div class="row px-3">
-                                    <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
-                                    <div class="col-10 px-1 text-truncate">{{ subject_detail.subject }}</div>
+                                    <div class="col-2 px-0 ps-1 border-end border-secondary">
+                                        {{ order }}
+                                    </div>
+                                    <div class="col-10 px-1 text-truncate">
+                                        {{ subject_detail.subject }}
+                                    </div>
                                 </div>
-                            </li>
-                        </a>
+                            </a>
+                        </li>
                         {% else %}
-                        <a href="{% if selection_valid %}{% url 'tutor:add_schedule_template' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}&weekday={{ weekday }}&order_number={{ order }}{% else %}#{% endif %}"
-                            class="text-decoration-none text-reset"
-                            aria-label="Add new schedule template for term {{ form.term.value }} and study group {{ form.study_group.value }}">
-                            <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
+                        <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
+                            <a href="{% if selection_valid %}{% url 'tutor:add_schedule_template' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}&weekday={{ weekday }}&order_number={{ order }}{% else %}#{% endif %}"
+                                class="text-decoration-none text-reset"
+                                aria-label="Add new schedule template for term {{ form.term.value }} and study group {{ form.study_group.value }}">
                                 <div class="row px-3">
-                                    <div class="col-2 px-0 ps-1 border-end border-secondary">{{ order }}</div>
+                                    <div class="col-2 px-0 ps-1 border-end border-secondary">
+                                        {{ order }}
+                                    </div>
                                     <div class="col-10 px-1"></div>
                                 </div>
-                            </li>
-                        </a>
+                            </a>
+                        </li>
                         {% endif %}
                         {% endfor %}
                         {% endfor %}
@@ -74,7 +81,8 @@
 </div>
 
 <!-- Instruction Modal -->
-<div class="modal fade text-dark" id="instructionModal" tabindex="-1" aria-labelledby="instructionModalLabel" aria-hidden="true">
+<div class="modal fade text-dark" id="instructionModal" tabindex="-1" aria-labelledby="instructionModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-info-subtle">
@@ -82,7 +90,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body bg-light">
-                
+
                 <ul>
                     <li>Selection
                         <ol>
@@ -102,7 +110,8 @@
                     <li>Delete data
                         <ol>
                             <li>Click on a cell to open a form</li>
-                            <li>Click <strong>Delete</strong> to delete the object, or <strong>Cancel</strong> to go back without
+                            <li>Click <strong>Delete</strong> to delete the object, or <strong>Cancel</strong> to go
+                                back without
                                 deleting.</li>
                         </ol>
                     </li>

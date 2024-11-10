@@ -10,46 +10,46 @@
 
                 <div class="row">
                     <div class="col-3 col-md-2">
-                        <label for="id_term">Term:</label>
+                        <p>Term:</p>
                     </div>
                     <div class="col-9 col-md-10">
-                        <p id="id_term">{{ form.term_name.value }}</p>
+                        <p>{{ form.term_name.value }}</p>
                         <p hidden>{{ form.term }}</p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-3 col-md-2">
-                        <label for="id_study_group">Study Group:</label>
+                        <p>Study Group:</p>
                     </div>
                     <div class="col-9 col-md-10">
-                        <p id="id_study_group">{{ form.study_group_name.value }}</p>
+                        <p>{{ form.study_group_name.value }}</p>
                         <p hidden>{{ form.study_group }}</p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-3 col-md-2">
-                        <label for="id_weekday">Weekday:</label>
+                        <p>Weekday:</p>
                     </div>
                     <div class="col-9 col-md-10">
-                        <p id="id_weekday">{{ form.weekday_name.value }}</p>
+                        <p>{{ form.weekday_name.value }}</p>
                         <p hidden>{{ form.weekday }}</p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-3 col-md-2">
-                        <label for="id_order_number">Order Number:</label>
+                        <p>Order Number:</p>
                     </div>
                     <div class="col-9 col-md-10">
-                        <p id="id_order_number">{{ form.order_number.value }}</p>
+                        <p>{{ form.order_number.value }}</p>
                         <p hidden>{{ form.order_number }}</p>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-3 col-md-2">
-                        <label for="id_order_number">Subject:</label>
+                        <label for="id_subject">Subject:</label>
                     </div>
                     <div class="col-9 col-md-10">
                         {{ form.subject }}
@@ -81,7 +81,7 @@
 {% if form.instance.pk %}
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog text-dark">
         <div class="modal-content">
             <div class="modal-header">
