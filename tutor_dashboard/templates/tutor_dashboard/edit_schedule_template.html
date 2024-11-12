@@ -115,7 +115,7 @@
             </div>
             <div class="modal-body bg-light">
                 <ul>
-                    <li>Adding and changing data
+                    <li>{% if form.instance.pk %}Changing {% else %}Adding{% endif %} data
                         <ol>
                             <li>Fill out the subject</li>
                             <li>Click <strong>Save</strong> to save changes, or <strong>Cancel</strong> to go back
@@ -123,6 +123,7 @@
                                 saving.</li>
                         </ol>
                     </li>
+                    {% if form.instance.pk %}
                     <li>Delete data
                         <ol>
                             <li>Click <strong>Delete</strong> to delete the object, or <strong>Cancel</strong> to go
@@ -131,6 +132,7 @@
                             </li>
                         </ol>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
             <div class="modal-footer bg-body-secondary">
