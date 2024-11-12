@@ -22,7 +22,7 @@ class CustomSignupForm(SignupForm):
     )
     last_name = forms.CharField(
         max_length=30,
-        label='Lasr Name',
+        label='Last Name',
         required=True,
         widget=forms.TextInput(attrs={'placeholder': 'Your last name'})
         )
