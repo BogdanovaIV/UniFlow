@@ -59,6 +59,14 @@
     opacity: 75%;
 }
 
+/* Custom styling for Django's login error messages */
+.errorlist.nonfield {
+    background-color: var(--red-color);
+    color: var(--light-color);
+    border-radius: 5px;
+    list-style-type: none;
+}
+
 /* Home page */
 .bg-image-home {
     background-image: url('https://c.pxhere.com/images/fd/75/25e0b91093d48d1f365fd43c7cc2-1571983.jpg!d');
