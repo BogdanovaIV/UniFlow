@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
-from django.conf.urls import handler403
+from django.conf.urls import handler403, handler404
 from django.shortcuts import render
 from django.urls import path, include
 
@@ -36,6 +36,24 @@ def custom_permission_denied_view(request, exception):
 
 
 handler403 = custom_permission_denied_view
+
+
+def custom_page_not_found(request, exception):
+    """
+    Custom view to handle the page is not found (HTTP 404).
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        exception (Exception): The exception raised when the page is not found.
+
+    Returns:
+        HttpResponse: A rendered 404.html template with a 404 status code.
+    """
+    return render(request, '404.html', status=404)
+
+
+handler404 = custom_page_not_found
+
 
 urlpatterns = [
     path('accounts/logout/', LogoutView.as_view(), name='account_logout'),
