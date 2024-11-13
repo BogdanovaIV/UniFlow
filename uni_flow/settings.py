@@ -26,12 +26,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    'django-insecure-hyl3h(rp%#q6x+d^lj&gwnrgg_^2=(47+cd23+&sfjwo57o%#g'
-)
+SECRET_KEY = (os.environ.get("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG") == "True"
 
 ALLOWED_HOSTS = [
     '8000-bogdanovaiv-uniflow-gsgyxmccay7.ws.codeinstitute-ide.net',
