@@ -56,7 +56,6 @@ handler404 = custom_page_not_found
 
 
 urlpatterns = [
-    path('accounts/logout/', LogoutView.as_view(), name='account_logout'),
     path("accounts/", include("allauth.urls")),
     path('admin/', admin.site.urls),
     path('student/', include('student_dashboard.urls')),
