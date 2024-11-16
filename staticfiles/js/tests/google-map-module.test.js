@@ -1,6 +1,7 @@
+/* jshint esversion: 11, sub:true */
 /**
  * @jest-environment jsdom
- */
+*/
 
 const { initMap } = require('../google-map-module');
 

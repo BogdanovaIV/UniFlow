@@ -1,12 +1,14 @@
 /* jshint esversion: 11, sub:true */
 
 (g => {
-    var h, a, k, p = "The Google Maps JavaScript API",
+    var h, a, p = "The Google Maps JavaScript API",
         c = "google", l = "importLibrary", q = "__ib__", m = document,
         b = window;
     b = b[c] || (b[c] = {});
-    var d = b.maps || (b.maps = {}), r = new Set,
-        e = new URLSearchParams, u = () => h || (
+    var d = b.maps || (b.maps = {});
+    var r = new Set();
+    var e = new URLSearchParams();
+    var u = () => h || (
             h = new Promise(async (f, n) => {
                 await (a = m.createElement("script"));
                 e.set("libraries", [...r] + "");
@@ -19,9 +21,12 @@
                 m.head.append(a);
             })
         );
-    d[l] ? console.warn(
-        p + " only loads once. Ignoring:", g
-    ) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n));
+    if (d[l]) {
+        console.warn(p + " only loads once. Ignoring:", g);
+    } else {
+        d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n));
+    }
+
 })({
     v: "weekly",
 });

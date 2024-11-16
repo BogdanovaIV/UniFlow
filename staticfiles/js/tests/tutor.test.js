@@ -1,6 +1,7 @@
+/* jshint esversion: 11, sub:true */
 /**
  * @jest-environment jsdom
- */
+*/
 
 const { areAllFieldsFilled, updateSelectionDescription } = require("../tutor");
 
@@ -23,7 +24,7 @@ const htmlSheduleTemplates = `
 
 const htmlShedule = `
     <form id="selection-shedule-templates">
-        <input type="date" name="date" required">
+        <input type="date" name="date" required>
         <select name="study_group" required>
             <option value=""></option>
             <option value="1">Group A</option>
@@ -93,7 +94,7 @@ describe('Schedule Template Selection Form', () => {
 
 
 describe('Schedule Selection Form', () => {
-    let form, selectionDescription;
+    let form, selectionDescription, dataTemplateName;
 
     beforeEach(() => {
         document.body.innerHTML = htmlShedule;
@@ -102,7 +103,7 @@ describe('Schedule Selection Form', () => {
         form = document.getElementById('selection-shedule-templates');
         selectionDescription = document.getElementById('selection-description');
         const schedule = document.getElementById('schedule');
-        dataTemplateName = schedule.getAttribute('data-template-name')
+        dataTemplateName = schedule.getAttribute('data-template-name');
     });
 
     // Test case for description update
