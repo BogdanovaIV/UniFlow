@@ -118,6 +118,17 @@ select[disabled] {
     color: var(--light-color);
 }
 
+.list-group-item > a {
+    display: block;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.list-group-item > a:hover {
+    background-color: #40ac765a;
+    transform: scale(1.02);
+    text-decoration: none; 
+}
+
 /* Student dushboard*/
 .accordion-button.collapsed .fa-chevron-down {
     transform: rotate(0deg);
@@ -127,6 +138,12 @@ select[disabled] {
 .accordion-button .fa-chevron-down {
     transform: rotate(-180deg);
     transition: transform 0.3s ease;
+}
+
+.accordion-button:hover {
+    background-color: #40ac765a;
+    transform: scale(1.02);
+    text-decoration: none; 
 }
 
 /* Dashboard*/
