@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col mt-3 text-white font-monospace fw-medium">
-            <div class="row justify-content-md-center">
+            <div class="row">
                 <div class="col-auto">
                     <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
                         aria-label="Refresh the schedule templates with updated selections">
@@ -21,11 +21,16 @@
                     <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
                 </div>
             </div>
-            <div class="collapse col-10 offset-2 mt-2" id="collapseForm">
-                <form method="post" id="selection-schedule" aria-label="Schedule selection form for templates">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                </form>
+            <div class="row">
+                <div class="collapse col-auto mt-2" id="collapseForm">
+                    <form method="post" id="selection-schedule" aria-label="Schedule selection form for templates">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button id="submit-selection" class="btn btn-primary" aria-label="Apply the selection">
+                            Apply
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

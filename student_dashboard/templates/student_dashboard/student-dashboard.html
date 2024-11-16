@@ -12,6 +12,27 @@
 {% endblock extra_links %}
 
 {% block content %}
+
+<!--Toast messages-->
+{% if messages %}
+<div aria-live="polite" aria-atomic="true" class="position-relative top-0">
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+        {% for message in messages %}
+        <div class="toast align-items-center {% if message.tags == 'error' %} text-bg-danger {% else %} text-bg-{{ message.tags }} {% endif %} border-0"
+            role="alert" aria-live="{% if message.tags == 'error' %}assertive{% else %}polite{% endif %}" aria-atomic="true" data-bs-delay="10000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close toast notification"></button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
 {% if not user_checked %}
 <section class="masthead py-4 text-center text-light bg-image-dashboard-info">
     <div class="container">
@@ -61,6 +82,9 @@
                     <form method="post" id="selection-schedule" aria-label="Selection schedule form">
                         {% csrf_token %}
                         {{ form.as_p }}
+                        <button id="submit-selection" class="btn btn-primary" aria-label="Apply the selection">
+                            Apply
+                        </button>
                     </form>
                 </div>
             </div>
@@ -169,5 +193,5 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="{% static 'js/tutor.js' %}" defer></script>
+<script src="{% static 'js/dashboard.js' %}" defer></script>
 {% endblock scripts %}

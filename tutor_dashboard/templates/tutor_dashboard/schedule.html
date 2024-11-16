@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col mt-3 text-white font-monospace fw-medium">
-            <div class="row justify-content-md-center">
+            <div class="row">
                 <div class="col-auto">
                     <div class="d-flex flex-wrap align-items-center">
                         <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
@@ -20,8 +20,7 @@
                         <form method="post" action="{% url 'tutor:fill_schedule' %}" {% if not table_empty %} hidden {% endif %}>
                             {% csrf_token %}
                             <input type="hidden" name="date" {% if form.date.value %} value="{{ form.date.value }}" {% endif %}>
-                            <input type="hidden" name="study_group" {% if form.study_group.value %}
-                                value="{{ form.study_group.value }}" {% endif %}>
+                            <input type="hidden" name="study_group" {% if form.study_group.value %} value="{{ form.study_group.value }}" {% endif %}>
                             <button type="submit" class="btn btn-success p-2 me-2"
                                 aria-label="Automatically fill the schedule using templates for the selected date and study group. This option is only available for an empty schedule.">
                                 Fill
@@ -33,11 +32,16 @@
                     <p id="selectionDescription" class="text-light flex-grow-1 mt-2 mt-md-0"></p>
                 </div>
             </div>
-            <div class="collapse col-10 offset-2 mt-2" id="collapseForm">
-                <form method="post" id="selection-schedule" aria-label="Selection schedule form">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                </form>
+            <div class="row">
+                <div class="collapse col-auto mt-2" id="collapseForm">
+                    <form method="post" id="selection-schedule" aria-label="Selection schedule form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button id="submit-selection" class="btn btn-primary" aria-label="Apply the selection">
+                            Apply
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

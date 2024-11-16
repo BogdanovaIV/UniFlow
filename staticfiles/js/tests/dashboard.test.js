@@ -3,7 +3,7 @@
  * @jest-environment jsdom
 */
 
-const { areAllFieldsFilled, updateSelectionDescription } = require("../tutor");
+const { areAllFieldsFilled, updateSelectionDescription } = require("../dashboard");
 
 const htmlSheduleTemplates = `
     <form id="selection-shedule-templates">

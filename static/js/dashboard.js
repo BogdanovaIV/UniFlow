@@ -33,16 +33,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             }
-            if (areAllFieldsFilled(form) ||
-                schedule.getAttribute('data-empty') == "False") {
+            if (areAllFieldsFilled(form)) {
                 form.submit();
             }
         };
 
-        const inputElements = form.querySelectorAll('input, select');
-        inputElements.forEach(input => {
-            input.addEventListener('change', upadateSelection);
-        });
+        const submitSelection = document.getElementById('submit-selection');
+        if (submitSelection) {
+            submitSelection.addEventListener('click', upadateSelection);
+        }
 
         const updateSelection = document.getElementById('update-selection');
         if (updateSelection) {

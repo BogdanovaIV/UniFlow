@@ -151,24 +151,18 @@ class ScheduleView(PermissionRequiredMixin, View):
             user_study_group=context_var['user_study_group'],
         )
 
-        if get_params and not form.is_valid():
-            # Display form validation errors
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"Error in {field}: {error}")
-
         filter_params = form.get_filter_params()
         schedule, table_empty = self.get_schedule(
             filter_params, context_var
         )
-        if table_empty and get_params:
+        if table_empty and len(get_params) == 2:
             # Display message if no schedule is available for the selected
             # filters
             messages.info(
                 request,
                 "No schedule available for the selected date and study group."
             )
-        elif get_params:
+        elif len(get_params) == 2:
             # Display success message when schedule is successfully filtered
             messages.success(request, "Schedule displayed successfully.")
 
