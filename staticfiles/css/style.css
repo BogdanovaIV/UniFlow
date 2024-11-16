@@ -28,6 +28,14 @@
     opacity: 60%;
 }
 
+/* Fix appearence for disabled objects*/
+select[disabled] {
+    -webkit-appearance: none;  /* Safari */
+    -moz-appearance: none;     /* Firefox */
+    appearance: none;          /* Modern browsers */
+    background-color: #f0f0f0; 
+}
+
 /* Customization of Bootstrap */
 
 .navbar .nav-link:hover {
