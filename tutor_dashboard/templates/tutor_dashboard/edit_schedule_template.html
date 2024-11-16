@@ -3,7 +3,7 @@
 {% block table_content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-10 mt-3 offset-md-3 text-white font-monospace fw-medium">
+        <div class="col-md-10 mt-3 offset-md-2 text-white font-monospace fw-medium">
             <h2 id="scheduleTemplateTitle">{% if form.instance.pk %}Edit{% else %}Add{% endif %} Schedule Template</h2>
             <form method="post" aria-labelledby="scheduleTemplateTitle">
                 {% csrf_token %}
