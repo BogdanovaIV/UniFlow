@@ -19,13 +19,14 @@
     <div class="toast-container position-absolute top-0 end-0 p-3">
         {% for message in messages %}
         <div class="toast align-items-center {% if message.tags == 'error' %} text-bg-danger {% else %} text-bg-{{ message.tags }} {% endif %} border-0"
-            role="alert" aria-live="{% if message.tags == 'error' %}assertive{% else %}polite{% endif %}" aria-atomic="true" data-bs-delay="10000">
+            role="alert" aria-live="{% if message.tags == 'error' %}assertive{% else %}polite{% endif %}"
+            aria-atomic="true" data-bs-delay="10000">
             <div class="d-flex">
                 <div class="toast-body">
                     {{ message }}
                 </div>
                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
-                aria-label="Close toast notification"></button>
+                    aria-label="Close toast notification"></button>
             </div>
         </div>
         {% endfor %}
@@ -61,16 +62,21 @@
                             <a id="instructions-button" href="#" class="icon-link icon-link-hover link-info me-3"
                                 data-bs-toggle="modal" data-bs-target="#instructionModal"
                                 aria-label="Open instructions modal for dashboard usage tips">
-                                <i class="fas fa-question-circle"></i>
+                                <span data-bs-toggle="tooltip" title="Open instructions modal for dashboard usage tips">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>            
                             </a>
                             <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
-                                aria-label="Refresh the schedule with updated selections">
+                                aria-label="Refresh the schedule with updated selections" data-bs-toggle="tooltip"
+                                title="Refresh the schedule">
                                 <i class="fas fa-sync"></i>
                             </a>
                             <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"
                                 aria-label="Expand or collapse the schedule selection form">
-                                Selection
+                                <span data-bs-toggle="tooltip" title="Expand or collapse the selection form">
+                                    Selection
+                                </span>
                             </button>
                         </div>
                     </div>

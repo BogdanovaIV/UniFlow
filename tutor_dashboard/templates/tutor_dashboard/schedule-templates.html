@@ -8,13 +8,16 @@
             <div class="row">
                 <div class="col-auto">
                     <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
-                        aria-label="Refresh the schedule templates with updated selections">
+                        aria-label="Refresh the schedule templates with updated selections" data-bs-toggle="tooltip"
+                        title="Refresh the schedule">
                         <i class="fas fa-sync"></i>
                     </a>
                     <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"
                         aria-label="Expand or collapse the schedule selection form">
-                        Selection
+                        <span data-bs-toggle="tooltip" title="Expand or collapse the selection form">
+                            Selection
+                        </span>
                     </button>
                 </div>
                 <div class="col-auto">
@@ -26,7 +29,8 @@
                     <form method="post" id="selection-schedule" aria-label="Schedule selection form for templates">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button id="submit-selection" class="btn btn-primary" aria-label="Apply the selection">
+                        <button id="submit-selection" class="btn btn-primary" aria-label="Apply the selection"
+                            data-bs-toggle="tooltip" title="Automatically fill the schedule">
                             Apply
                         </button>
                     </form>

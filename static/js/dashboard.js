@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', function () {
         toast.show();
     });
 
+    //Add event for tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
     const form = document.getElementById('selection-schedule');
     const schedule = document.getElementById('schedule');
     if (form) {
