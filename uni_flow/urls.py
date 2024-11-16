@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
-from django.conf.urls import handler403, handler404
+from django.conf.urls import handler403, handler404, handler500
 from django.shortcuts import render
 from django.urls import path, include
 
@@ -54,6 +54,21 @@ def custom_page_not_found(request, exception):
 
 handler404 = custom_page_not_found
 
+
+def custom_page_internal_server_error(request):
+    """
+    Custom view to handle the page gets 'Internal Server Error' (HTTP 500).
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: A rendered 500.html template with a 500 status code.
+    """
+    return render(request, '500.html', status=500)
+
+
+handler500 = custom_page_internal_server_error
 
 urlpatterns = [
     path("accounts/", include("allauth.urls")),

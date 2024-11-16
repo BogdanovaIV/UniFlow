@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_links %}
+<style>
+    :root {
+        --bg-image-error-url: url("{% static 'images/error-page.webp' %}");
+        --bg-image-error-tablet-url: url("{% static 'images/error-page-tablet.webp' %}");
+        --bg-image-error-mobile-url: url("{% static 'images/error-page-mobile.webp' %}");
+    }
+</style>
+{% endblock extra_links %}
+
+{% block content %}
+
+<section class="masthead py-4 text-center text-light bg-image-403">
+    <div class="container">
+        <div class="row text-center">
+            <h1>500 - Internal Server Error</h1>
+            <p class="fs-2">Oops! Something went wrong on our end. Please try again later or contact the administrator if the problem persists.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
