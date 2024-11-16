@@ -1,6 +1,17 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% load i18n %}
+
+{% block extra_links %}
+<style>
+    :root {
+        --bg-image-sign-up-url: url("{% static 'images/sign-up-page.webp' %}");
+        --bg-image-sign-up-tablet-url: url("{% static 'images/sign-up-page-tablet.webp' %}");
+        --bg-image-sign-up-mobile-url: url("{% static 'images/sign-up-page-mobile.webp' %}");
+    }
+</style>
+{% endblock extra_links %}
 
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 

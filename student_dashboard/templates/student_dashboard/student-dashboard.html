@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_links %}
+<style>
+    :root {
+        --bg-image-dashboard-url: url("{% static 'images/dashboard-page.webp' %}");
+        --bg-image-dashboard-tablet-url: url("{% static 'images/dashboard-page-tablet.webp' %}");
+        --bg-image-dashboard-mobile-url: url("{% static 'images/dashboard-page-mobile.webp' %}");
+    }
+</style>
+{% endblock extra_links %}
+
 {% block content %}
 {% if not user_checked %}
 <section class="masthead py-4 text-center text-light bg-image-dashboard-info">

@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_links %}
+<style>
+    :root {
+        --bg-image-home-url: url("{% static 'images/home-page.webp' %}");
+        --bg-image-home-tablet-url: url("{% static 'images/home-page-tablet.webp' %}");
+        --bg-image-home-mobile-url: url("{% static 'images/home-page-mobile.webp' %}");
+    }
+</style>
+{% endblock extra_links %}
+
 {% block content %}
 
 <section class="masthead py-4 text-center bg-image-home">

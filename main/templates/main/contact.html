@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
+{% block extra_links %}
+<style>
+    :root {
+        --bg-image-contact-url: url("{% static 'images/contact-page.webp' %}");
+        --bg-image-contact-tablet-url: url("{% static 'images/contact-page-tablet.webp' %}");
+        --bg-image-contact-mobile-url: url("{% static 'images/contact-page-mobile.webp' %}");
+    }
+</style>
+{% endblock extra_links %}
 
+{% block content %}
 <section class="masthead py-4 text-center bg-image-contact text-light">
     <div class="container">
         <h1 class="display-4 fw-bold">

@@ -55,7 +55,8 @@
     color: var(--dark-color);
 }
 
-.link-light:hover, .link-light:focus {
+.link-light:hover,
+.link-light:focus {
     opacity: 75%;
 }
 
@@ -68,8 +69,9 @@
 }
 
 /* Home page */
+
 .bg-image-home {
-    background-image: url('https://c.pxhere.com/images/fd/75/25e0b91093d48d1f365fd43c7cc2-1571983.jpg!d');
+    background-image: var(--bg-image-home-mobile-url);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -77,11 +79,10 @@
 
 /* Contact page */
 .bg-image-contact {
-    background-image: url('https://c.pxhere.com/photos/b2/9f/sackcloth_sackcloth_textured_laptop_ipad_brown_fabric_organic_natural-1046485.jpg!d');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-contact-mobile-url);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    position: relative;
 }
 
 #map {
@@ -90,20 +91,18 @@
 
 /* Sign in page */
 .bg-image-sign-in {
-    background-image: url('https://c.pxhere.com/photos/2a/0f/analysis_biochemistry_biologist_biology_biotechnology_chemistry_clinic_clinical-1192482.jpg!d');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-sign-in-mobile-url);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    position: relative;
 }
 
 /* Sign up page */
 .bg-image-sign-up {
-    background-image: url('https://c.pxhere.com/images/23/8c/f2d0f23376af9e9237d32b6daa02-1430845.jpg!d');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-sign-up-mobile-url);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    position: relative;
 }
 
 /* Tutor dushboard*/
@@ -125,7 +124,7 @@
 /* Dashboard*/
 
 .bg-image-dashboard-info {
-    background-image: url('https://c.pxhere.com/photos/c1/e2/black_board_chalk_traces_school_learn_education_smeared_writing_board-1057578.jpg!d');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-dashboard-mobile-url);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -139,33 +138,12 @@
     font-size: 200%;
 }
 
-/* 403 page*/
-.bg-image-403 {
-    background-image: url('https://c.pxhere.com/photos/41/73/advertisement_advertising_background_billboard_black_blackboard_blank_board-1177338.jpg!d');
+/* 403/404 page*/
+.bg-image-error {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-error-mobile-url);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-}
-
-/* Semi-Transparent Overlay */
-.bg-image-contact::before,
-.bg-image-sign-in::before,
-.bg-image-sign-up::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-}
-
-.bg-image-contact .container,
-.bg-image-sign-in .container,
-.bg-image-sign-up .container {
-    position: relative;
-    z-index: 2;
 }
 
 /* The feild created by DJango*/
@@ -179,5 +157,72 @@
     .row-cols-lg-7>* {
         flex: 0 0 auto;
         width: 14.28571428%;
+    }
+}
+
+/* For larger mobile devices and tablets */
+@media (min-width: 768px) {
+
+    /* Home page */
+    .bg-image-home {
+        background-image: var(--bg-image-home-tablet-url);
+    }
+
+    /* Contact page */
+    .bg-image-contact {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-contact-tablet-url);
+    }
+
+    /* Sign in page */
+    .bg-image-sign-in {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-sign-in-tablet-url);
+    }
+
+    /* Sign up page */
+    .bg-image-sign-up {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-sign-up-tablet-url);
+    }
+
+    /* Dashboard page */
+    .bg-image-dashboard-info {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-dashboard-tablet-url);
+    }
+
+    /* 403/404 page*/
+    .bg-image-error {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-error-tablet-url);
+    }
+}
+
+/* For larger screens (Desktop) */
+@media (min-width: 1024px) {
+
+    /* Home page */
+    .bg-image-home {
+        background-image: var(--bg-image-home-url);
+    }
+
+    /* Contact page */
+    .bg-image-contact {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-contact-url);
+    }
+
+    /* Sign in page */
+    .bg-image-sign-in {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-sign-in-url);
+    }
+
+    /* Sign up page */
+    .bg-image-sign-up {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-sign-up-url);
+    }
+
+    .bg-image-dashboard-info {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-dashboard-url);
+    }
+
+    /* 403/404 page*/
+    .bg-image-error {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image-error-url);
     }
 }

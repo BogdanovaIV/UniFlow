@@ -1,6 +1,18 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% load i18n %}
+
+{% block extra_links %}
+<style>
+    :root {
+        --bg-image-sign-in-url: url("{% static 'images/sign-in-page.webp' %}");
+        --bg-image-sign-in-tablet-url: url("{% static 'images/sign-in-page-tablet.webp' %}");
+        --bg-image-sign-in-mobile-url: url("{% static 'images/sign-in-page-mobile.webp' %}");
+    }
+</style>
+{% endblock extra_links %}
+
 
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
