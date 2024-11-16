@@ -21,7 +21,7 @@
 
     <div class="row">
       <div class="col-md-12 mt-3 text-white font-monospace fw-medium">
-        <form class="login" method="POST" action="{% url 'account_login' %}" aria-labelledby="sign-in-form">
+        <form class="login" method="POST" action="{% url 'account_login' %}">
           {% csrf_token %}
           {{ form.as_p }}
           {% if redirect_field_value %}

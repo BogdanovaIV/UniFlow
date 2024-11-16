@@ -84,22 +84,6 @@
     position: relative;
 }
 
-.bg-image-contact::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-}
-
-.bg-image-contact .container {
-    position: relative;
-    z-index: 2;
-}
-
 #map {
     min-height: 360px;
 }
@@ -110,6 +94,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    position: relative;
 }
 
 /* Sign up page */
@@ -118,6 +103,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    position: relative;
 }
 
 /* Tutor dushboard*/
@@ -160,6 +146,28 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+/* Semi-Transparent Overlay */
+.bg-image-contact::before,
+.bg-image-sign-in::before,
+.bg-image-sign-up::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.bg-image-contact .container,
+.bg-image-sign-in .container,
+.bg-image-sign-up .container {
+    position: relative;
+    z-index: 2;
+}
+
 /* The feild created by DJango*/
 #id_homework {
     width: 100%;

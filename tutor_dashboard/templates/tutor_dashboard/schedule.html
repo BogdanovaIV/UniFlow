@@ -48,9 +48,10 @@
                 <div class="card bg-transparent mt-3 border-light">
                     <div
                         class="card-header {% if weekday < 5 %}text-bg-info{% else %}text-bg-danger{% endif %} text-light bg-opacity-50 text-uppercase">
-                        <div class="container"></div>
-                        <div class="row">{{ weekday_info.label_weekday }}</div>
-                        <div class="row">{{ weekday_info.date }}</div>
+                        <div class="container">
+                            <div class="row">{{ weekday_info.label_weekday }}</div>
+                            <div class="row">{{ weekday_info.date }}</div>
+                        </div>
                     </div>
                     <ul class="list-group list-group-flush bg-transparent">
                         {% for order, row_detail in weekday_info.details.items %}
