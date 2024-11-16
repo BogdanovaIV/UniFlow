@@ -29,16 +29,16 @@
                         <div class="d-flex flex-wrap align-items-center">
                             <a id="instructions-button" href="#" class="icon-link icon-link-hover link-info me-3"
                                 data-bs-toggle="modal" data-bs-target="#instructionModal"
-                                aria-label="Open instructions">
+                                aria-label="Open instructions modal for dashboard usage tips">
                                 <i class="fas fa-question-circle"></i>
                             </a>
                             <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
-                                aria-label="Update selection">
+                                aria-label="Refresh the schedule with updated selections">
                                 <i class="fas fa-sync"></i>
                             </a>
                             <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"
-                                aria-label="Toggle selection form">
+                                aria-label="Expand or collapse the schedule selection form">
                                 Selection
                             </button>
                         </div>
@@ -86,7 +86,8 @@
                                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                                     data-bs-target="#collapse-{{ weekday }}-{{ order }}"
                                                     aria-expanded="true"
-                                                    aria-controls="collapse-{{ weekday }}-{{ order }}">
+                                                    aria-controls="collapse-{{ weekday }}-{{ order }}"
+                                                    aria-label="View homework details for {{ row_detail.subject }} on {{ weekday_info.label_weekday }}">
                                                     <span class="col-2 text-center p-0 m-0 border-end border-secondary">
                                                         <i class="fas fa-chevron-down ms-auto"></i>
                                                     </span>
@@ -94,7 +95,8 @@
                                                         {{ row_detail.homework }}
                                                         {% if row_detail.marks != 0 %}
                                                         <span
-                                                            class="badge text-bg-primary rounded-pill position-absolute end-0">
+                                                            class="badge text-bg-primary rounded-pill position-absolute end-0"
+                                                            aria-label="Your mark: {{row_detail.marks}} for {{ row_detail.subject }}">
                                                             {{row_detail.marks|default_if_none:'' }}
                                                         </span>
                                                         {% endif %}
@@ -129,7 +131,7 @@
         <div class="modal-content">
             <div class="modal-header bg-info-subtle">
                 <h5 class="modal-title" id="instructionModalLabel">Form Instructions</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close Instruction"></button>
             </div>
             <div class="modal-body bg-light">
                 <p>The schedule displays the information about subjects, homeworks, your marks.</p>
@@ -146,7 +148,9 @@
                 </ul>
             </div>
             <div class="modal-footer bg-body-secondary">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close Instruction">
+                    Close
+                </button>
             </div>
         </div>
     </div>

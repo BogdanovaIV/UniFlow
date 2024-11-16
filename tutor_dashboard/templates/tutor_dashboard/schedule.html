@@ -9,19 +9,23 @@
                 <div class="col-auto">
                     <div class="d-flex flex-wrap align-items-center">
                         <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
-                            aria-label="Update selection">
+                            aria-label="Refresh the schedule with updated selections">
                             <i class="fas fa-sync"></i>
                         </a>
                         <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"
-                            aria-label="Toggle selection form">
+                            aria-label="Expand or collapse the schedule selection form">
                             Selection
                         </button>
                         <form method="post" action="{% url 'tutor:fill_schedule' %}" {% if not table_empty %} hidden {% endif %}>
                             {% csrf_token %}
                             <input type="hidden" name="date" {% if form.date.value %} value="{{ form.date.value }}" {% endif %}>
-                            <input type="hidden" name="study_group" {% if form.study_group.value %} value="{{ form.study_group.value }}" {% endif %}>
-                            <button type="submit" class="btn btn-success p-2 me-2">Fill</button>
+                            <input type="hidden" name="study_group" {% if form.study_group.value %}
+                                value="{{ form.study_group.value }}" {% endif %}>
+                            <button type="submit" class="btn btn-success p-2 me-2"
+                                aria-label="Automatically fill the schedule using templates for the selected date and study group. This option is only available for an empty schedule.">
+                                Fill
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -54,7 +58,7 @@
                         <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
                             <a href="{% url 'tutor:edit_schedule' pk=row_detail.id %}"
                                 class="text-decoration-none text-reset"
-                                aria-label="Edit schedule for {{ row_detail.subject }}">
+                                aria-label="Edit schedule for {{ row_detail.subject }} and order {{ order }} on {{ weekday_info.label_weekday }}, {{ weekday_info.date }}">
                                 <div class="row m-0">
                                     <div class="row m-0 p-0">
                                         <div
@@ -70,7 +74,8 @@
                                         <div class="col-10 px-1 position-relative text-truncate">
                                             {{ row_detail.homework }}
                                             {% if row_detail.marks != 0 %}
-                                            <span class="badge text-bg-primary rounded-pill position-absolute end-0">
+                                            <span class="badge text-bg-primary rounded-pill position-absolute end-0"
+                                                aria-label="Number of marks for this subject">
                                                 {{ row_detail.marks|default_if_none:'' }}
                                             </span>
                                             {% endif %}
@@ -83,7 +88,7 @@
                         <li class="list-group-item p-0 text-bg-secondary bg-opacity-50 border-0">
                             <a href="{% if selection_valid %}{% url 'tutor:add_schedule' %}?date={{ weekday_info.date_str }}&study_group={{ form.study_group.value }}&order_number={{ order }}{% else %}#{% endif %}"
                                 class="text-decoration-none text-reset"
-                                aria-label="Add new schedule for date {{ weekday_info.date }} and study group {{ form.study_group.value }}">
+                                aria-label="Add a schedule on {{ weekday_info.label_weekday }}, {{ weekday_info.date }} for group {{ form.study_group.value }} and oreder {{ order }}">
                                 <div class="row m-0">
                                     <div class="row m-0 p-0">
                                         <div
@@ -116,7 +121,7 @@
         <div class="modal-content">
             <div class="modal-header bg-info-subtle">
                 <h5 class="modal-title" id="instructionModalLabel">Form Instructions</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close Instruction"></button>
             </div>
             <div class="modal-body bg-light">
                 <p>
@@ -162,7 +167,9 @@
                 </ul>
             </div>
             <div class="modal-footer bg-body-secondary">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close Instruction">
+                    Close
+                </button>
             </div>
         </div>
     </div>

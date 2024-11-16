@@ -22,7 +22,7 @@
             </div>
             <div class="col-auto ms-auto">
                 <a id="instructions-button" href="#" class="icon-link icon-link-hover link-info" data-bs-toggle="modal"
-                    data-bs-target="#instructionModal" aria-label="Open instructions">
+                    data-bs-target="#instructionModal" aria-label="Open instructions modal for dashboard usage tips">
                     <i class="fas fa-question-circle"></i>
                 </a>
             </div>
@@ -31,13 +31,13 @@
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link nav-link-tutor {% if url_schedule in request.path %}active{% endif %}"
-                href="{% url 'tutor:schedule' %}">
+                href="{% url 'tutor:schedule' %}" aria-label="Navigate to the schedule tab">
                 Schedule
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link nav-link-tutor {% if url_schedule_templates in request.path %}active{% endif %}"
-                href="{% url 'tutor:schedule_templates' %}">
+                href="{% url 'tutor:schedule_templates' %}" aria-label="Navigate to the schedule templates tab">
                 Schedule templates
             </a>
         </li>
@@ -48,13 +48,13 @@
         <div class="toast-container position-absolute top-0 end-0 p-3">
             {% for message in messages %}
             <div class="toast align-items-center {% if message.tags == 'error' %} text-bg-danger {% else %} text-bg-{{ message.tags }} {% endif %} border-0"
-                role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+                role="alert" aria-live="{% if message.tags == 'error' %}assertive{% else %}polite{% endif %}" aria-atomic="true" data-bs-delay="10000">
                 <div class="d-flex">
                     <div class="toast-body">
                         {{ message }}
                     </div>
                     <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
+                    aria-label="Close toast notification"></button>
                 </div>
             </div>
             {% endfor %}

@@ -11,22 +11,25 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12 mt-3 text-white">
-        <h2>{% trans "Sign In" %}</h2>
-        <p class="fs-5 fw-normal">{% blocktrans %}Welcome back to Medical University. If you have not created an account yet, then <a
-            class="link" href="{{ signup_url }}">sign up</a>
-          first.{% endblocktrans %}</p>
+        <h1>{% trans "Sign In" %}</h1>
+        <p class="fs-5 fw-normal">{% blocktrans %}Welcome back to Medical University. If you have not created an account
+          yet, then <a class="link" href="{{ signup_url }}" aria-label="Go to the Sign-Up Page">sign up</a>
+          first.{% endblocktrans %}
+        </p>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-12 mt-3 text-white font-monospace fw-medium">
-        <form class="login" method="POST" action="{% url 'account_login' %}">
+        <form class="login" method="POST" action="{% url 'account_login' %}" aria-labelledby="sign-in-form">
           {% csrf_token %}
           {{ form.as_p }}
           {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
           {% endif %}
-          <button class="btn btn-secondary" type="submit">{% trans "Sign In" %}</button>
+          <button class="btn btn-secondary" type="submit" aria-label="Submit Sign-In Form">
+            {% trans "Sign In" %}
+          </button>
         </form>
       </div>
     </div>

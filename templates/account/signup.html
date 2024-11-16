@@ -10,12 +10,14 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12 mt-3 text-center text-white">
-        <h2>{% trans "Sign Up" %}</h2>
+        <h2 id="signup_heading">{% trans "Sign Up" %}</h2>
 
         <p class="fs-5 fw-normal">{% blocktrans %}
           Welcome back to Medical University.
           Do you already have an account? Then please
-          <a class="link" href="{{ login_url }}">sign in</a>
+          <a class="link" href="{{ login_url }}" aria-label="Click here to sign in if you already have an account">
+            sign in
+          </a>
           instead.
           {% endblocktrans %}
         </p>
@@ -25,13 +27,14 @@
 
     <div class="row">
       <div class="col-md-8 mt-3 offset-md-3 text-white font-monospace fw-medium">
-        <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}"
+          aria-labelledby="signup_heading">
           {% csrf_token %}
           {{ form.as_p }}
           {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
           {% endif %}
-          <button class="btn btn-secondary" type="submit">
+          <button class="btn btn-secondary" type="submit" aria-label="Create your account">
             {% trans "Sign Up" %} &raquo;</button>
         </form>
       </div>

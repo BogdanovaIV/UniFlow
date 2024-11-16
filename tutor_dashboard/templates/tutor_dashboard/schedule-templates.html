@@ -8,12 +8,12 @@
             <div class="row justify-content-md-center">
                 <div class="col-auto">
                     <a id="update-selection" class="icon-link link-light icon-link-hover me-3" href="#"
-                        aria-label="Update selection">
+                        aria-label="Refresh the schedule templates with updated selections">
                         <i class="fas fa-sync"></i>
                     </a>
                     <button class="btn-custom me-2" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"
-                        aria-label="Toggle selection form">
+                        aria-label="Expand or collapse the schedule selection form">
                         Selection
                     </button>
                 </div>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="collapse col-10 offset-2 mt-2" id="collapseForm">
-                <form method="post" id="selection-schedule" aria-label="Selection schedule templates form">
+                <form method="post" id="selection-schedule" aria-label="Schedule selection form for templates">
                     {% csrf_token %}
                     {{ form.as_p }}
                 </form>
@@ -45,7 +45,7 @@
                         <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
                             <a href="{% url 'tutor:edit_schedule_template' pk=subject_detail.id %}"
                                 class="text-decoration-none text-reset"
-                                aria-label="Edit schedule template for {{ subject_detail.subject }}">
+                                aria-label="Edit schedule template for weekday {{ details|first }}, order {{ order }}, and subject {{ subject_detail.subject }}">
                                 <div class="row px-3">
                                     <div class="col-2 px-0 ps-1 border-end border-secondary">
                                         {{ order }}
@@ -60,7 +60,7 @@
                         <li class="list-group-item p-0 border-secondary text-bg-secondary bg-opacity-50">
                             <a href="{% if selection_valid %}{% url 'tutor:add_schedule_template' %}?term={{ form.term.value }}&study_group={{ form.study_group.value }}&weekday={{ weekday }}&order_number={{ order }}{% else %}#{% endif %}"
                                 class="text-decoration-none text-reset"
-                                aria-label="Add new schedule template for term {{ form.term.value }} and study group {{ form.study_group.value }}">
+                                aria-label="Add new schedule template for term {{ form.term.value }}, study group {{ form.study_group.value }}, weekday {{ details|first }}, and  order {{ order }}">
                                 <div class="row px-3">
                                     <div class="col-2 px-0 ps-1 border-end border-secondary">
                                         {{ order }}
@@ -87,7 +87,7 @@
         <div class="modal-content">
             <div class="modal-header bg-info-subtle">
                 <h5 class="modal-title" id="instructionModalLabel">Form Instructions</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close Instruction"></button>
             </div>
             <div class="modal-body bg-light">
 
@@ -118,7 +118,9 @@
                 </ul>
             </div>
             <div class="modal-footer bg-body-secondary">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close Instruction">
+                    Close
+                </button>
             </div>
         </div>
     </div>
