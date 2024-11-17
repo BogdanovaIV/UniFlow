@@ -8,3 +8,6 @@ node_modules/
 .github/
 cloudinary_python.txt
 db.sqlite3
+.coverage
+quit_mango_gave_436123
+htmlcov/
