@@ -5,11 +5,11 @@
 
 {% block extra_links %}
 <style>
-    :root {
-        --bg-image-sign-up-url: url("{% static 'images/sign-up-page.webp' %}");
-        --bg-image-sign-up-tablet-url: url("{% static 'images/sign-up-page-tablet.webp' %}");
-        --bg-image-sign-up-mobile-url: url("{% static 'images/sign-up-page-mobile.webp' %}");
-    }
+  :root {
+    --bg-image-sign-up-url: url("{% static 'images/sign-up-page.webp' %}");
+    --bg-image-sign-up-tablet-url: url("{% static 'images/sign-up-page-tablet.webp' %}");
+    --bg-image-sign-up-mobile-url: url("{% static 'images/sign-up-page-mobile.webp' %}");
+  }
 </style>
 {% endblock extra_links %}
 
@@ -40,12 +40,28 @@
       <div class="col-md-8 mt-3 offset-md-3 text-white font-monospace fw-medium">
         <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
           {% csrf_token %}
-          {{ form.as_p }}
+          {% for field in form %}
+          <div class="mb-2">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+          </div>
+          {% if field.help_text %}
+          <div class="mb-2">{{ field.help_text }}</div>
+          {% endif %}
+          <div class="text-danger fw-bolder mb-2">
+            <ul>
+              {% for error in field.errors %}
+              <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
           {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
           {% endif %}
           <button class="btn btn-secondary" type="submit" aria-label="Create your account">
-            {% trans "Sign Up" %} &raquo;</button>
+            {% trans "Sign Up" %} &raquo;
+          </button>
         </form>
       </div>
     </div>
