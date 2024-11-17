@@ -355,7 +355,7 @@ class EditScheduleView(ScheduleBaseView):
         - If the form is invalid: Reloads the form with error messages
         displayed for each invalid field.
         """
-        schedule = Schedule.objects.get(pk=pk)
+        schedule = get_object_or_404(Schedule, pk=pk)
         form = ScheduleForm(request.POST, instance=schedule)
 
         if form.is_valid():
@@ -369,8 +369,7 @@ class EditScheduleView(ScheduleBaseView):
 
         # Form validation error message
         for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(request, f"Error in {field}: {error}")
+            messages.error(request, f"Error in {field}: {', '.join(errors)}")
 
         return render(request, self.template_name, {'form': form})
 
@@ -430,8 +429,7 @@ class AddScheduleView(ScheduleBaseView):
 
         # Form validation error message
         for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(request, f"Error in {field}: {error}")
+            messages.error(request, f"Error in {field}: {', '.join(errors)}")
 
         return render(request, self.template_name, {'form': form})
 

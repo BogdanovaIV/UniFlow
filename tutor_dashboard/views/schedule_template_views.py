@@ -232,7 +232,7 @@ class EditScheduleTemplateView(ScheduleTemplateBaseView):
         Returns:
             HttpResponse: Rendered template with the form.
         """
-        schedule_template = ScheduleTemplate.objects.get(pk=pk)
+        schedule_template = get_object_or_404(ScheduleTemplate, pk=pk)
         form = ScheduleTemplateForm(instance=schedule_template)
         return render(request, self.template_name, {'form': form})
 
@@ -248,7 +248,7 @@ class EditScheduleTemplateView(ScheduleTemplateBaseView):
         Returns:
             HttpResponse: Redirects on success or renders form on failure.
         """
-        schedule_template = ScheduleTemplate.objects.get(pk=pk)
+        schedule_template = get_object_or_404(ScheduleTemplate, pk=pk)
         form = ScheduleTemplateForm(request.POST, instance=schedule_template)
 
         if form.is_valid():
@@ -265,8 +265,7 @@ class EditScheduleTemplateView(ScheduleTemplateBaseView):
 
         # Form validation error message
         for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(request, f"Error in {field}: {error}")
+            messages.error(request, f"Error in {field}: {', '.join(errors)}")
 
         return render(request, self.template_name, {'form': form})
 
@@ -329,8 +328,7 @@ class AddScheduleTemplateView(ScheduleTemplateBaseView):
 
         # Form validation error message
         for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(request, f"Error in {field}: {error}")
+            messages.error(request, f"Error in {field}: {', '.join(errors)}")
 
         return render(request, self.template_name, {'form': form})
 

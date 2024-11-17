@@ -63,8 +63,7 @@ class EditStudentMarkView(PermissionRequiredMixin, View):
 
         # Form validation error message
         for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(request, f"Error in {field}: {error}")
+            messages.error(request, f"Error in {field}: {', '.join(errors)}")
 
         return redirect(reverse('tutor:edit_schedule', args=[schedule_pk]))
 
@@ -119,8 +118,7 @@ class AddStudentMarkView(PermissionRequiredMixin, View):
 
         # Form validation error message
         for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(request, f"Error in {field}: {error}")
+            messages.error(request, f"Error in {field}: {', '.join(errors)}")
 
         return redirect(reverse('tutor:edit_schedule', args=[schedule_pk]))
 
