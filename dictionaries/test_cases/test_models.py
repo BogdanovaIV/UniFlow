@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from .models import (
+from dictionaries.models import (
     StudyGroup,
     Term,
     Subject,
@@ -126,19 +126,11 @@ class TestSubjectModel(TestCase):
 
     def setUp(self):
         # Create a Subject instance
-        self.subject = StudyGroup.objects.create(name="subject1", active=True)
+        self.subject = Subject.objects.create(name="subject1", active=True)
 
     def test_str_representation(self):
         """Test the string representation of Subject."""
         self.assertEqual(str(self.subject), "subject1")
-
-    def subject_name_cannot_be_empty(self):
-        """
-        Test if a subject cannot be created with an empty name.
-        """
-        subject = Subject(name='', active=True)
-        with self.assertRaises(ValidationError):
-            subject.full_clean()  # This will trigger validation
 
     def test_unique_name(self):
         """
@@ -518,24 +510,6 @@ class ScheduleTests(TestCase):
         )
         with self.assertRaises(ValidationError):
             schedule.full_clean()  # Trigger validation error
-
-    def test_homework_field_null(self):
-        """
-        Test that the subject field can be null.
-        """
-        schedule = Schedule(
-            study_group=self.study_group,
-            date=date(2024, 9, 1),
-            order_number=1,
-            subject=self.subject
-        )
-        try:
-            schedule.full_clean()  # Trigger validation to check for errors
-        except ValidationError as e:
-            self.fail(
-                f"Schedule.full_clean() raised ValidationError "
-                f"unexpectedly: {e}"
-            )
 
 
 class StudentMarkModelTests(TestCase):

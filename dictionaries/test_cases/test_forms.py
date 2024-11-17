@@ -3,14 +3,14 @@ from datetime import date, timedelta
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from .forms import (
+from dictionaries.forms import (
     ScheduleTemplateFilterForm,
     ScheduleTemplateForm,
     ScheduleFilterForm,
     ScheduleForm,
     StudentMarkForm
 )
-from .models import (
+from dictionaries.models import (
     Term,
     StudyGroup,
     ScheduleTemplate,
