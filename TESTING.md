@@ -29,19 +29,26 @@ app_name/
 After running the tests, here are the results obtained from the project:
 - Command: `Python manage.py test`
 - Output Summary:
-**Dictionaries**
+**dictionaries**
 ```
 ----------------------------------------------------------------------
 Ran 65 tests in 7.536s
 
 OK
 ```
-**Main**
+**main**
 ```
 ----------------------------------------------------------------------
 Ran 9 tests in 0.317s
 
 OK
+```
+**student_dashboard**
+```
+----------------------------------------------------------------------
+Ran 0 tests in 0.000s
+
+NO TESTS RAN
 ```
 - Code Coverage:
   - Prerequisites:
@@ -56,10 +63,12 @@ OK
   ```
   - Results:
 
-  **Dictionaries**
+  **dictionaries**
   ![coverage - dictionaries](documentation/dictionaries/coverage.png)
-  **Main**
+  **main**
   ![coverage - main](documentation/main/coverage.png)
+  **student_dashboard**
+  ![coverage - student_dashboard](documentation/student-dashboard/coverage.png)
 
 ### Jest
 1. **Prerequisites**
@@ -86,6 +95,12 @@ All files were checked and did not have errors or warnings.
  ![validator - the 'Home' page](documentation/main/html/home-page.png)
 - the 'Contact' page
  ![validator - the 'Contact' page](documentation/main/html/contact-page.png)
+- the 'Login' page
+ ![validator - the 'Login' page](documentation/users/html/login.png)
+- the 'Register' page
+ ![validator - the 'Register' page](documentation/users/html/signup.png)
+- the 'Logout' page
+ ![validator - the 'Logout' page](documentation/users/html/logout.png)
 
 ### W3C CSS Validator (CSS)
 Quality checking was tested by [CSS validator service](https://jigsaw.w3.org/css-validator/).
@@ -105,45 +120,59 @@ All files were checked and did not have errors or warnings.
 - tests/google-map-module.js
  ![validator - tests/google-map-module-test.js](documentation/jshint/google-map-module-test.png)
 
-### Validator P8P (Python)
+### Validator PEP8 (Python)
 Quality checking was tested by [PEP8](https://pep8ci.herokuapp.com/#).
 All files were checked and did not have errors or warnings.
 Notes: Each Python file contains a newline at the end of the file.
 
-**Dictionaries**
+**dictionaries**
 - admin.py
- ![validator - admin.py](documentation/dictionaries/p8p/admin.png)
+ ![validator - admin.py](documentation/dictionaries/pep8/admin.png)
 - apps.py
- ![validator - apps.py](documentation/dictionaries/p8p/apps.png)
+ ![validator - apps.py](documentation/dictionaries/pep8/apps.png)
 - forms.py
- ![validator - forms.py](documentation/dictionaries/p8p/forms.png)
+ ![validator - forms.py](documentation/dictionaries/pep8/forms.png)
 - models.py
- ![validator - models.py](documentation/dictionaries/p8p/models.png)
+ ![validator - models.py](documentation/dictionaries/pep8/models.png)
 - tests.py
- ![validator - tests.py](documentation/dictionaries/p8p/tests.png)
+ ![validator - tests.py](documentation/dictionaries/pep8/tests.png)
 - test_cases/test-admin.py
- ![validator - test_cases/test-admin.py](documentation/dictionaries/p8p/test-cases-test-admin.png)
+ ![validator - test_cases/test-admin.py](documentation/dictionaries/pep8/test-cases-test-admin.png)
 - test_cases/test-forms.py
- ![validator - test_cases/test-forms.py](documentation/dictionaries/p8p/test-cases-test-forms.png)
+ ![validator - test_cases/test-forms.py](documentation/dictionaries/pep8/test-cases-test-forms.png)
 - test_cases/test-models.py
- ![validator - test_cases/test-models.py](documentation/dictionaries/p8p/test-cases-test-models.png)
+ ![validator - test_cases/test-models.py](documentation/dictionaries/pep8/test-cases-test-models.png)
 
-**Main**
+**main**
 - admin.py
- ![validator - admin.py](documentation/main/p8p/admin.png)
+ ![validator - admin.py](documentation/main/pep8/admin.png)
 - apps.py
- ![validator - apps.py](documentation/main/p8p/apps.png)
+ ![validator - apps.py](documentation/main/pep8/apps.png)
 - context-processors.py
- ![validator - context-processors.py](documentation/main/p8p/context-processors.png)
+ ![validator - context-processors.py](documentation/main/pep8/context-processors.png)
 - models.py
- ![validator - models.py](documentation/main/p8p/models.png)
-- test.py
- ![validator - tests.py](documentation/main/p8p/tests.png)
+ ![validator - models.py](documentation/main/pep8/models.png)
+- tests.py
+ ![validator - tests.py](documentation/main/pep8/tests.png)
 - urls.py
- ![validator - urls.py](documentation/main/p8p/urls.png)
+ ![validator - urls.py](documentation/main/pep8/urls.png)
 - views.py
- ![validator - views.py](documentation/main/p8p/views.png)
+ ![validator - views.py](documentation/main/pep8/views.png)
 - test-cases/test-context-processors.py
- ![validator - views.py](documentation/main/p8p/test-cases-test-context-processors.png)
+ ![validator - test-cases/test-context-processors.py](documentation/main/pep8/test-cases-test-context-processors.png)
 - test-cases/test-views.py
- ![validator - views.py](documentation/main/p8p/test-cases-test-views.png)
+ ![validator - test-cases/test-views.py](documentation/main/p8p/test-cases-test-views.png)
+
+**student_dashboard**
+- admin.py
+ ![validator - admin.py](documentation/student-dashboard/pep8/admin.png)
+- apps.py
+ ![validator - apps.py](documentation/student-dashboard/pep8/apps.png)
+- models.py
+ ![validator - models.py](documentation/student-dashboard/pep8/models.png)
+- tests.py
+ ![validator - tests.py](documentation/student-dashboard/pep8/tests.png)
+- urls.py
+ ![validator - urls.py](documentation/student-dashboard/pep8/urls.png)
+- views.py
+ ![validator - views.py](documentation/student-dashboard/pep8/views.png)
