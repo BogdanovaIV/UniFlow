@@ -64,18 +64,17 @@
                         </a>
                     </li>
                     {% if user.is_authenticated %}
-                    {% if is_student %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == url_dashboard %}fw-bolder{% endif %}"
-                            href="{% url 'student:dashboard' %}" aria-label="Go to the Student Dashboard" {% if request.path == url_dashboard %}aria-current="page"{% endif %}>
-                            Dashboard
-                        </a>
-                    </li>
-                    {% endif %}
                     {% if is_tutor %}
                     <li class="nav-item">
                         <a class="nav-link {% if url_schedule in request.path or url_schedule_templates in request.path %}fw-bolder{% endif %}"
                             href="{% url 'tutor:schedule' %}" aria-label="Go to the Tutor Schedule" {% if url_schedule in request.path or url_schedule_templates in request.path %}aria-current="page"{% endif %}>
+                            Dashboard
+                        </a>
+                    </li>
+                    {% elif is_student %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == url_dashboard %}fw-bolder{% endif %}"
+                            href="{% url 'student:dashboard' %}" aria-label="Go to the Student Dashboard" {% if request.path == url_dashboard %}aria-current="page"{% endif %}>
                             Dashboard
                         </a>
                     </li>
