@@ -10,7 +10,8 @@ from dictionaries.models import (
     StudyGroup,
     Schedule,
     Subject,
-    ScheduleTemplate
+    ScheduleTemplate,
+    StudentMark
 )
 from dictionaries.forms import ScheduleFilterForm, ScheduleForm
 
@@ -179,6 +180,11 @@ class ScheduleViewTests(TestCase):
             study_group=cls.study_group,
             checked=True
         )
+        cls.student_mark = StudentMark.objects.create(
+            schedule=cls.schedule,
+            student=cls.student_user,
+            mark=95
+        )
 
     def setUp(self):
         """
@@ -326,6 +332,64 @@ class ScheduleViewTests(TestCase):
         self.assertEqual(
             messages_list[0].message,
             "Schedule displayed successfully.")
+
+    def test_student_redirection(self):
+        """
+        Test that a student is redirected to the schedule page with the correct
+        date when they submit the filter form.
+        """
+
+        self.client.login(username="student", password="password")
+
+        post_data = {
+            "date": date(2024, 9, 3),
+        }
+        response = self.client.post(self.url, post_data)
+
+        expected_url = f"{self.url}?date={date(2024, 9, 3)}"
+        self.assertRedirects(response, expected_url)
+
+    def test_tutor_redirection(self):
+        """
+        Test that a tutor is redirected to the schedule page with both date and
+        study_group parameters when they submit the filter form.
+        """
+        self.client.login(username="tutor", password="password")
+
+        post_data = {
+            "date": "2024-09-03",
+            "study_group": self.study_group.id,
+        }
+        response = self.client.post(self.url, post_data)
+        expected_url = (
+            f"{self.url}?date={date(2024, 9, 3)}&"
+            f"study_group={self.study_group.id}"
+        )
+        self.assertRedirects(
+            response,
+            expected_url
+        )
+
+    def test_student_marks_in_schedule(self):
+        """
+        Test that the student's marks are correctly displayed in the schedule
+        when the student is viewing their schedule.
+        """
+        self.client.login(username="student", password="password")
+
+        get_data = {
+            "date": "2024-09-03",
+        }
+
+        response = self.client.get(self.url, get_data)
+
+        self.assertIn('schedule', response.context)
+
+        schedule_data = response.context['schedule']
+        for day_schedule in schedule_data.values():
+            for order, details in day_schedule['details'].items():
+                if details['id'] == self.schedule.id:
+                    self.assertEqual(details['marks'], 95)
 
 
 class EditScheduleViewTests(TestCase):

@@ -133,6 +133,24 @@ class StudentMarkViewTests(TestCase):
 
         self.assertEqual(response.status_code, 403)
 
+    def test_form_validation_error(self):
+        """
+        Test that form validation errors are handled correctly.
+        - Validation error messages are displayed.
+        - The original StudentMark entry is not updated.
+        """
+        self.client.login(username='tutor', password='password')
+        post_data = {"student": self.student_user.pk}
+        response = self.client.post(self.url, post_data)
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(
+            any("Error in mark" in str(message) for message in messages)
+        )
+
+        self.student_mark.refresh_from_db()
+        self.assertEqual(self.student_mark.student, self.student_user) 
+        self.assertEqual(self.student_mark.mark, 90) 
 
 class AddStudentMarkView(TestCase):
     """
@@ -249,6 +267,24 @@ class AddStudentMarkView(TestCase):
 
         self.assertEqual(response.status_code, 403)
 
+    def test_form_validation_error_message(self):
+        """
+        Test that form validation errors are correctly displayed when the form
+        data is incomplete or invalid.
+        For example, missing required fields should trigger validation
+        error messages.
+        """
+        self.client.login(username='tutor', password='password')
+        data = {
+            "student": self.student_user.pk,
+        }
+        response = self.client.post(self.url, data)
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(
+            any("Error in" in str(message) for message in messages)
+        )
+        self.assertEqual(response.status_code, 302)
 
 class DeleteStudentMarkView(TestCase):
     """
