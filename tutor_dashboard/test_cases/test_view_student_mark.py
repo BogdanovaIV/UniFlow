@@ -149,8 +149,9 @@ class StudentMarkViewTests(TestCase):
         )
 
         self.student_mark.refresh_from_db()
-        self.assertEqual(self.student_mark.student, self.student_user) 
-        self.assertEqual(self.student_mark.mark, 90) 
+        self.assertEqual(self.student_mark.student, self.student_user)
+        self.assertEqual(self.student_mark.mark, 90)
+
 
 class AddStudentMarkView(TestCase):
     """
@@ -285,6 +286,7 @@ class AddStudentMarkView(TestCase):
             any("Error in" in str(message) for message in messages)
         )
         self.assertEqual(response.status_code, 302)
+
 
 class DeleteStudentMarkView(TestCase):
     """
