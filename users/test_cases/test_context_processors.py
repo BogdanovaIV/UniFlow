@@ -3,7 +3,7 @@ from django.db.models.query import QuerySet
 from django.contrib.auth.models import User, Group
 from dictionaries.models import StudyGroup
 from users.models import UserProfile
-from .context_processors import user_profile_parameters
+from users.context_processors import user_profile_parameters
 
 
 class ContextProcessorsTests(TestCase):

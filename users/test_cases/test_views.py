@@ -29,6 +29,13 @@ class CustomAuthViewTests(TestCase):
             first_name='tutor',
             last_name='tutor'
         )
+        self.user = User.objects.create_user(
+            username='user@email.com',
+            email='user@email.com',
+            password='Password123!',
+            first_name='user',
+            last_name='user'
+        )
 
         # Assign groups to users
         self.student_user.groups.add(self.student_group)
@@ -86,3 +93,18 @@ class CustomAuthViewTests(TestCase):
             print(response.context['form'].errors)
 
         self.assertRedirects(response, reverse('student:dashboard'))
+
+    def test_user_login_redirect(self):
+        """
+        Test that a user without groups is redirected to the home page after
+        login.
+        """
+        response = self.client.post(
+            reverse('account_login'),
+            {'login': 'user@email.com', 'password': 'Password123!'}
+        )
+        if response.status_code == 200:
+            print(response.context['form'].errors)
+
+        # Check for the redirect to student dashboard
+        self.assertRedirects(response, reverse('home'))

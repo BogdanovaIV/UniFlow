@@ -1,7 +1,7 @@
 from django.test import TestCase, RequestFactory
 from django.contrib.sessions.models import Session
 from django.contrib.sessions.backends.db import SessionStore
-from .forms import CustomSignupForm
+from users.forms import CustomSignupForm
 
 
 class TestCustomSignupForm(TestCase):
