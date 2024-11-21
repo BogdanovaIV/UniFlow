@@ -1,6 +1,7 @@
 asgiref==3.8.1
 black==24.10.0
 click==8.1.7
+coverage==7.6.7
 dj-database-url==0.5.0
 Django==4.2.16
 django-allauth==0.57.2
