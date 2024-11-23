@@ -145,6 +145,12 @@ class ScheduleView(PermissionRequiredMixin, View):
             else ''
         )
 
+        if not date:
+            if isinstance(get_params, dict):
+                get_params = request.GET.copy()
+            date = datetime.now()
+            get_params['date'] = date
+
         form = ScheduleFilterForm(
             get_params,
             is_student=context_var['is_student'],
