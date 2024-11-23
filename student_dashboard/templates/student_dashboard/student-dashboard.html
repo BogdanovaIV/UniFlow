@@ -135,7 +135,7 @@
                                                         {{ row_detail.homework }}
                                                         {% if row_detail.marks != 0 %}
                                                         <span
-                                                            class="badge text-bg-primary rounded-pill position-absolute end-0"
+                                                            class="badge bg-primary rounded-pill position-absolute end-0"
                                                             aria-label="Your mark: {{row_detail.marks}} for {{ row_detail.subject }}">
                                                             {{row_detail.marks|default_if_none:'' }}
                                                         </span>

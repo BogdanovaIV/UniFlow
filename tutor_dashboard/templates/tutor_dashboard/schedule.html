@@ -84,7 +84,7 @@
                                         <div class="col-10 px-1 position-relative text-truncate">
                                             {{ row_detail.homework }}
                                             {% if row_detail.marks != 0 %}
-                                            <span class="badge text-bg-primary rounded-pill position-absolute end-0"
+                                            <span class="badge bg-primary rounded-pill position-absolute end-0"
                                                 aria-label="Number of marks for this subject">
                                                 {{ row_detail.marks|default_if_none:'' }}
                                             </span>
