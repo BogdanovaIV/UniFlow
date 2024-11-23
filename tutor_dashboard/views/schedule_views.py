@@ -297,7 +297,7 @@ class ScheduleView(PermissionRequiredMixin, View):
             schedule[object.date.weekday()]['details'][object.order_number] = {
                 'id': object.id,
                 'subject': object.subject,
-                'homework': object.homework,
+                'homework': 'Tasks: ' + object.homework,
                 'marks': marks,
             }
         return schedule
