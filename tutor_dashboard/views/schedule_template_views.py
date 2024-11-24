@@ -72,7 +72,7 @@ class ScheduleTemplateView(PermissionRequiredMixin, View):
         permission_required (str): Permission required to view schedule
         templates.
     """
-    template_name = 'tutor_dashboard/schedule-templates.html'
+    template_name = 'tutor_dashboard/schedule_templates.html'
     permission_required = 'dictionaries.view_scheduletemplate'
 
     def get(self, request):

@@ -11,5 +11,5 @@ class StudentScheduleView(ScheduleView):
     data by weekdays, and handling both GET and POST requests for schedule
     filtering.
     """
-    template_name = 'student_dashboard/student-dashboard.html'
+    template_name = 'student_dashboard/student_dashboard.html'
     url_name = 'student:dashboard'
