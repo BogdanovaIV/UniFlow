@@ -543,8 +543,6 @@ Notes: Each Python file contains a newline at the end of the file.
   ![validator - forms.py](documentation/dictionaries/pep8/forms.png)
 - models.py
   ![validator - models.py](documentation/dictionaries/pep8/models.png)
-- tests.py
-  ![validator - tests.py](documentation/dictionaries/pep8/tests.png)
 - test_cases/test-admin.py
   ![validator - test_cases/test-admin.py](documentation/dictionaries/pep8/test-cases-test-admin.png)
 - test_cases/test-forms.py
@@ -553,16 +551,10 @@ Notes: Each Python file contains a newline at the end of the file.
   ![validator - test_cases/test-models.py](documentation/dictionaries/pep8/test-cases-test-models.png)
 
 **main**
-- admin.py
-  ![validator - admin.py](documentation/main/pep8/admin.png)
 - apps.py
   ![validator - apps.py](documentation/main/pep8/apps.png)
 - context-processors.py
   ![validator - context-processors.py](documentation/main/pep8/context-processors.png)
-- models.py
-  ![validator - models.py](documentation/main/pep8/models.png)
-- tests.py
-  ![validator - tests.py](documentation/main/pep8/tests.png)
 - urls.py
   ![validator - urls.py](documentation/main/pep8/urls.png)
 - views.py
@@ -570,31 +562,19 @@ Notes: Each Python file contains a newline at the end of the file.
 - test-cases/test-context-processors.py
   ![validator - test-cases/test-context-processors.py](documentation/main/pep8/test-cases-test-context-processors.png)
 - test-cases/test-views.py
-  ![validator - test-cases/test-views.py](documentation/main/p8p/test-cases-test-views.png)
+  ![validator - test-cases/test-views.py](documentation/main/pep8/test-cases-test-views.png)
 
 **student_dashboard**
-- admin.py
-  ![validator - admin.py](documentation/student-dashboard/pep8/admin.png)
 - apps.py
   ![validator - apps.py](documentation/student-dashboard/pep8/apps.png)
-- models.py
-  ![validator - models.py](documentation/student-dashboard/pep8/models.png)
-- tests.py
-  ![validator - tests.py](documentation/student-dashboard/pep8/tests.png)
 - urls.py
   ![validator - urls.py](documentation/student-dashboard/pep8/urls.png)
 - views.py
   ![validator - views.py](documentation/student-dashboard/pep8/views.png)
 
 **tutor_dashboard**
-- admin.py
-  ![validator - admin.py](documentation/tutor-dashboard/pep8/admin.png)
 - apps.py
   ![validator - apps.py](documentation/tutor-dashboard/pep8/apps.png)
-- models.py
-  ![validator - models.py](documentation/tutor-dashboard/pep8/models.png)
-- tests.py
-  ![validator - tests.py](documentation/tutor-dashboard/pep8/tests.png)
 - urls.py
   ![validator - urls.py](documentation/tutor-dashboard/pep8/urls.png)
 - test_cases/test_view_schedule_template.py
@@ -625,8 +605,6 @@ Notes: Each Python file contains a newline at the end of the file.
   ![validator - models.py](documentation/users/pep8/models.png)
 - signals.py
   ![validator - signals.py](documentation/users/pep8/signals.png)  
-- tests.py
-  ![validator - tests.py](documentation/users/pep8/tests.png)
 - urls.py
   ![validator - urls.py](documentation/users/pep8/urls.png)
 - views.py

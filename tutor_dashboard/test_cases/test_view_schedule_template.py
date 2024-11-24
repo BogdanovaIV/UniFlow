@@ -190,7 +190,7 @@ class ScheduleTemplateViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
             response,
-            'tutor_dashboard/schedule-templates.html'
+            'tutor_dashboard/schedule_templates.html'
         )
 
         # Check the filter form instance

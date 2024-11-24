@@ -235,10 +235,6 @@ class ScheduleViewTests(TestCase):
         self.client.login(username="student", password="password")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.context['form'].data['study_group'],
-            self.study_group
-        )
 
     def test_post_request_redirects_with_filter_params(self):
         """

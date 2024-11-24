@@ -1,6 +1,6 @@
 from django.test import RequestFactory, TestCase
 from datetime import datetime
-from .context_processors import current_year
+from main.context_processors import current_year
 
 
 class ContextProcessorsTests(TestCase):
