@@ -10,49 +10,132 @@ Functional testing ensures that all features and functionalities of the applicat
 
 | feature | action | expected result | tested | passed | comments |
 | --- | --- | --- | --- | --- | --- |
-| Navigation bar | | | | | |
-| Logo and Logo name | Click the Logo link | The Logo link opens the Home page | Yes | Yes | - |
-| The Logo link is hovered over on large devices | Hover over the Logo link | The Logo link changes color | Yes | Yes | - |
-| The Home link | Click the Home link | The Home link opens the Home page | Yes | Yes | - |
-| The Home link is hovered over on large devices | Hover over the Home link | The Home link changes color | Yes | Yes | - |
-| The Contact link | Click the Contact link | The Contact link opens the Contact page | Yes | Yes | - |
-| The Contact link is hovered over on large devices | Hover over the Contact link | The Contact link changes color | Yes | Yes | - |
-| The Register link | Click the Register link | The Register link opens the Register page | Yes | Yes | - |
-| The Register link is hovered over on large devices | Hover over the Register link | The Register link changes color | Yes | Yes | - |
-| The Login link | Click the Login link | The Login link opens the Login page | Yes | Yes | - |
-| The Login link is hovered over on large devices | Hover over the Login link | The Login link changes color | Yes | Yes | - |
-| The Logout link | Click the Logout link | The Logout link opens the Logout page | Yes | Yes | - |
-| The Logout link is hovered over on large devices | Hover over the Logout link | The Logout link changes color | Yes | Yes | - |
+| Navigation bar | View the navigation bar | The navigation bar is visible and contains links to main site sections. | | | |
+| Logo and Logo name | Click the Logo link | The Logo link opens the Home page. | Yes | Yes | - |
+|  | Hover over the Logo link on large devices | The Logo link changes color. | Yes | Yes | - |
+| The Home link | Click the Home link | The Home link opens the Home page. | Yes | Yes | - |
+|  | Hover over the Home link on large devices | The Home link changes color. | Yes | Yes | - |
+| The Contact link | Click the Contact link | The Contact link opens the Contact page. | Yes | Yes | - |
+|  | Hover over the Contact link on large devices | The Contact link changes color. | Yes | Yes | - |
+| The Register link | Click the Register link | The Register link opens the Register page. | Yes | Yes | - |
+|  | Hover over the Register link on large devices | The Register link changes color. | Yes | Yes | - |
+| The Login link | Click the Login link | The Login link opens the Login page. | Yes | Yes | - |
+|  | Hover over the Login link on large devices | The Login link changes color. | Yes | Yes | - |
+| The Logout link | Click the Logout link | The Logout link opens the Logout page. | Yes | Yes | - |
+|  | Hover over the Logout link on large devices | The Logout link changes color | Yes | Yes | - |
 | The Dashboard link | Click the Dashboard link | The Dashboard link opens the Dashboard page | Yes | Yes | - |
-| The Dashboard link is hovered over on large devices | Hover over the Logout link | The Dashboard link changes color | Yes | Yes | - |
-| Footer | | | | | |
+|  | Hover over the Logout link on large devices | The Dashboard link changes color. | Yes | Yes | - |
+| Footer | View the Footer section | Footer contains email and social media links. | | | |
 | The E-mail link | Click the E-mail link | The E-mail link offers to choose an application to send e-mail. | Yes | Yes | - |
-| The E-mai link is hovered over on large devices | Hover over the E-mai link | The E-mai link changes color | Yes | Yes | - |
-| The Twitter link | Click the Twitter link | The Twitter link opens the Twitter page | Yes | Yes | - |
-| The Twitter link is hovered over on large devices | Hover over the Twitter link | The Twitter link changes color | Yes | Yes | - |
-| The Facebook link | Click the Facebook link | The Facebook link opens the Facebook page | Yes | Yes | - |
-| The Facebook link is hovered over on large devices | Hover over the Facebook link | The Facebook link changes color | Yes | Yes | - |
+|  | Hover over the E-mail link on large devices | The E-mail link changes color. | Yes | Yes | - |
+| The Twitter link | Click the Twitter link | The Twitter link opens the Twitter page. | Yes | Yes | - |
+|  | Hover over the Twitter link on large devices | The Twitter link changes color. | Yes | Yes | - |
+| The Facebook link | Click the Facebook link | The Facebook link opens the Facebook page. | Yes | Yes | - |
+|  | Hover over the Facebook link on large devices | The Facebook link changes color. | Yes | Yes | - |
 | The Instagram link | Click the Instagram link | The Instagram link opens the Instagram page | Yes | Yes | - |
-| The Instagram link is hovered over on large devices | Hover over the Instagram link | The Instagram link changes color | Yes | Yes | - |
+|  | Hover over the Instagram link on large devices | The Instagram link changes color | Yes | Yes | - |
 | The Home page | | | | | |
-| The content | Go to the Home page | The content is consistent and full | Yes | Yes | - |
-| The Home link | Go to the Home page | The Home link has bold font | Yes | Yes | - |
+| The Home link | Navigates to the Home page | The Home link appears in bold font. | Yes | Yes | - |
+| The content | Provides essential contact information | The Home page content includes a welcome message and introductory information about the website. | Yes | Yes | - |
 | The Contact page | | | | | |
-| The content | Go to the Contact page | The content has a map and contact infotmation | Yes | Yes | - |
-| The Contact link | Go to the Contact page | The Contact link has bold font | Yes | Yes | - |
-| The map | Go to the Contact page | The map displays a correct location | Yes | Yes | - |
-| The Logout page | | | | | |
-| The content | Go to the Logout page | The content has confirmation to sign out and an appropriate button. | Yes | Yes | - |
-| The Logout link | Go to the Logout page | The Logout link has bold font | Yes | Yes | - |
-| The Sign-out button | Click the Sign-out button | The Sign-out button logs out. | Yes | Yes | - |
+| The Contact link | Navigates to the Contact page |  The Contact link appears in bold font. | Yes | Yes | - |
+| The content | Provides essential contact information | The content includes a map and detailed contact information (address, phone number, email). | Yes | Yes | - |
+| The map | Displays the university's location | The map is embedded and displays the correct location using Google Maps integration. | Yes | Yes | - |
 | The Login page | | | | | |
-| The content | Go to the Login page | The content has the 'Sign up' link, the 'Sign in' button, the 'Remember me' checkbox, and the fields: username and password. | Yes | Yes | - |
-| The Login link | Go to the Login page | The Login link has bold font | Yes | Yes | - |
-| Login process | Fill in the fields: username and password, and click on the Sign-in button | The system authenticates the user and displays messages if something goes wrong. | Yes | Yes | - |
+| The Login link | Navigates to the Login page | The Login link appears in bold font. | Yes | Yes | - |
+| The content | Access the Login page | Includes a 'Sign up' link, a 'Sign in' button, a 'Remember me' checkbox, and two fields: 'Username' and 'Password'. | Yes | Yes | - |
+| Login process | Authenticate a user | The user fills in the 'Username' and 'Password' fields, then clicks the 'Sign in' button. The system validates the input and displays relevant error messages if authentication fails. | Yes | Yes | - |
+| the 'Remember me' checkbox | Enable browser to retain login credentials | The user selects the checkbox, fills in 'Username' and 'Password', and clicks 'Sign in'. The system remembers the credentials for future logins if authentication succeeds. | Yes | Yes | - |
 | The Register page | | | | | |
-| The content | Go to the Register page | The content has the 'Sign in' link, the 'Sign up' button, and the fields: email, first name, last name, password, and password again. | Yes | Yes | - |
-| Register process | Fill in the fields: email, first name, last name, password, and password again and click the Sign-up button | The system checks that all fields are filled, if it is so it creates a new user with "Student" permission in the database and redirect to "Dashboard" page. If it is not, the system displays the message with an error description. | Yes | Yes | - |
-| The Register link | Go to the Register page | The Register link has bold font | Yes | Yes | - |
+| The Register link | Navigate to the Register page | The Register link appears in bold font | Yes | Yes | - |
+| The content | Access the Register page | Includes a 'Sign in' link, a 'Sign up' button, and fields for 'Email', 'First name', 'Last name', 'Password', and 'Password (again)'. | Yes | Yes | - |
+| Register process | Create a new user account | The user fills in all required fields and clicks the 'Sign up' button. If successful, the system creates a user with "Student" permissions and redirects them to the "Dashboard" page. If there are errors, the system displays detailed error messages.\. | Yes | Yes | - |
+| The Logout page | | | | | |
+| The Logout link | Navigate to the Logout page | The Logout link appears in bold font | Yes | Yes | - |
+| The content | Go to the Logout page | The content has confirmation to sign out and an appropriate button. | Yes | Yes | - |
+| The Sign-out button | Click the Sign-out button | The Sign-out button logs out. | Yes | Yes | - |
+| The Dashboard page for students | | Displays schedule information and selection options | | | |
+| The Dashboard link | Navigate to the Dashboard page | The Dashboard link has bold font | Yes | Yes | - |
+| The content |  | The Dashboard displays an "Update" button, a "Selection" button, a "Instruction" button, cards with detailed schedule information, and an info-line about the applied selection. | Yes | Yes | - |
+| Actions of the Selection button | Click the Selection button, fill in the fields, and click the Apply button. | The "Selection" button expands to reveal a form with "Date" and "Study group" fields. The "Study group" field is read-only and automatically set to the student's study group (from UserProfile). The "Date" field defaults to the current date. If the "Date" field is empty, the system prompts with "Please fill out the field." Upon valid submission, the schedule for the selected "Date" and "Study group" is displayed, with the info-line showing the applied selection. | Yes | Yes | - |
+| Displaying schedule | Apply the 'Selection' form | The schedule correctly displays subjects, homework, and student marks in order of occurrence and date. Homework entries include an arrow icon and a hover effect. Clicking expands the homework details. Marks are displayed as badges with accurate values. | | | |
+| The Update button | Click the Update button | Refreshes the schedule information with the latest data for the current selection. | Yes | Yes | - |
+| The Instruction button | Click the Instruction button | Opens a modal with detailed instructions on how to use the form, including steps to select a schedule and view its details. | Yes | Yes | - |
+| The Dashboard page for tutors | | | | | |
+| The content | Go to the Dashboard page | The page contains a navigation bar with the following tabs: 'Schedule', 'Schedule Template', and an 'Instruction' button. | Yes | Yes | - |
+| The Dashboard link | Click the Dashboard link | The Dashboard link has bold font | Yes | Yes | - |
+| Schedule Tab | Click the 'Schedule' tab | the 'Schedule' tab changes the background color and loads its associated content. | Yes | Yes | - |
+| Schedule Template tab | Click the 'Schedule Template' tab | the 'Schedule Template' tab changes the background color and loads its associated content. | Yes | Yes | - |
+| The Instruction button | Click the Instruction button | Displays a modal providing instructions for navigating and using the currently active tab. | Yes | Yes | - |
+| Schedule Template tab | | | | | |
+| Schedule Template Content | Go to the Schedule Template tab | Displays an "Update" button, a "Selection" button, a "Instruction" button, cards with detailed schedule information, and an info-line about the applied selection. | Yes | Yes | - |
+| Actions of the Selection button | Click the Selection button, fill in the fields, and click the Apply button. | The "Selection" button expands to reveal a form with "Term" and "Study group" fields. If the "Term" or "Study group" field is empty, the system prompts with "Please fill out the field." Upon valid submission, the schedule template for the selected "Term" and "Study group" is displayed, with the info-line showing the applied selection. | Yes | Yes | - |
+| Displaying schedule template | Apply the 'Selection' form | Correctly renders subjects in the specified order for the selected weekday. Subjects have a hover effect that changes the background color. Clicking a subject opens the 'Add Schedule Template' page for empty entries and the 'Edit Schedule Template' page for existing entries. | | | |
+| The Update button | Click the Update button | Refreshes the schedule templae information with the latest data for the current selection. | Yes | Yes | - |
+| The 'Add schedule template' page | | | | | |
+| The content | Go to the 'Add schedule template' page | The page displays the following elements: 'Save' button, 'Cancel' button, 'Subject' field, and the following info fields: 'Term', 'Study Group', 'Weekday', 'Order Number'. All info fields show correct values. | Yes | Yes | - |
+| The Save button | Click the Save button | The system checks that the 'Subject' field is filled, saves the new object to the database, and redirects to the 'Schedule Template' page. | Yes | Yes | - |
+| The Cancel button | Click the Cancel button | The system redirects to the 'Schedule Template' page without making any changes. | Yes | Yes | - |
+| The 'Edit schedule template' page | | | | | |
+| The content | Go to the 'Edit schedule template' page | The page displays the following elements: 'Save' button, 'Cancel' button, 'Delete' button, 'Subject' field, and the info fields: 'Term', 'Study Group', 'Weekday', 'Order Number'. The info fields display the correct values, and 'Subject' is pre-filled with the current value. | Yes | Yes | - |
+| The Save button | Click the Save button | The system checks that the 'Subject' field is filled, updates the current object in the database, and redirects to the 'Schedule Template' page. | Yes | Yes | - |
+| The Cancel button | Click the Cancel button | The system redirects to the 'Schedule Template' page without making any changes. | Yes | Yes | - |
+| The Delete button | Click the Delete button | The system prompts the user with a confirmation modal. If confirmed, the current object is deleted and the system redirects to the 'Schedule Template' page. | Yes | Yes | - |
+| Schedule tab | | | | | |
+| The content | Go to the Schedule bookmark | Displays an "Update" button, a "Selection" button, a "Fill" button, a "Instruction" button, cards with detailed schedule information, and an info-line about the applied selection. | Yes | Yes | - |
+| Actions of the Selection button | Click the Selection button, fill in the fields, and click the Apply button. | The "Selection" button expands to reveal a form with "Date" and "Study group" fields. The "Date" field defaults to the current date. If the "Date" field is empty, the system prompts with "Please fill out the field." Upon valid submission, the schedule for the selected "Date" and "Study group" is displayed, with the info-line showing the applied selection. | Yes | Yes | - |
+| Displaying schedule | Apply the 'Selection' form | The schedule displays subjects, homework, and a badge showing the number of student marks in the correct order and date. The subject and homework cells have a hover effect, changing the background color. When the user clicks on a subject or homework, the system checks if the selection is valid. If valid, it opens the 'Add Schedule' page for empty fields and the 'Edit Schedule' page for filled fields. | Yes | Yes | |
+| The Update button | Click the Update button | Refreshes the schedule information with the latest data for the current selection. | Yes | Yes | - |
+| The Fill button | Click the Fill button | The Fill button appears only if the schedule is empty. When clicked, it automatically fills the schedule according to the schedule template based on the selected date and study group. | Yes | Yes | - |
+| The 'Add schedule' page | | | | | |
+| The content | Go to the 'Add schedule' page | Displays the 'Save' and 'Cancel' buttons, the 'Subject' and 'Homework' fields, and information fields: 'Term', 'Study group', 'Weekday', and 'Order number'. The information fields contain correct values. | Yes | Yes | - |
+| The Save button | Click the Save button | The system verifies that the 'Subject' field is filled, saves a new object in the database, and redirects to the 'Edit Schedule' page. | Yes | Yes | - |
+| The Cancel button | Click the Cancel button |The system redirects to the 'Schedule' page without making any changes. | Yes | Yes | - |
+| The 'Edit schedule' page | | | | | |
+| The content | Go to the Dashboard page | Displays the 'Save', 'Cancel', and 'Delete' buttons, the 'Subject' field, and information fields: 'Term', 'Study group', 'Weekday', and 'Order number'. The 'Subject' field matches the current value.| Yes | Yes | - |
+| The Save button | Click the Save button | The system verifies that the 'Subject' field is filled, updates the current object in the database, and redirects to the 'Schedule' page. | Yes | Yes | - |
+| The Cancel button | Click the Cancel button | The system redirects to the 'Schedule' page without making any changes. | Yes | Yes | - |
+| The Delete button | Click the Delete button | The system deletes the current object and redirects to the 'Schedule' page. | Yes | Yes | - |
+| Working with Student Marks | | In the 'Edit Schedule' page, student marks are displayed in a table below the schedule details. The table shows each student's name, their mark, and options to edit or delete marks. | | | |
+| Add New Mark | Click the 'Add' button in the Student Marks section | A modal appears where you can select a student and enter their mark. After submission, the new mark is added to the schedule and displayed in the table. | Yes | Yes | - |
+| Edit Mark | Click the 'Edit' button next to a mark | A modal appears with pre-filled data for the selected student and mark. Changes are saved to the database once the form is submitted. | Yes | Yes | - |
+| Delete Mark | Click the 'Delete' button next to a mark |A modal appears asking for confirmation to delete the selected mark. Once confirmed, the mark is deleted from the database. | Yes | Yes | - |
+| No Marks | No Marks | A message is displayed saying "No marks available." | - |
+
+## Admin Panel Functional Testing
+
+Admin panel testing ensures that the admin interface works as expected and provides the correct functionality for managing the application's data.
+
+| feature | action  | expected result  | tested | passed | comments |
+|---|---|---|----|---|---|
+| Admin login | Log in using admin credentials | Successfully logs into the admin panel. | Yes | Yes | - |
+| Add StudyGroup | Navigate to the StudyGroup section and click 'Add' | The 'StudyGroup' creation form opens with fields for 'name' and 'active' status. | Yes | Yes | - |
+| Add StudyGroup (form submit) | Fill the form and click 'Save' | The system saves the new 'StudyGroup' and redirects to the list view of study groups. | Yes | Yes | - |
+| Edit StudyGroup | Click the 'Edit' button for an existing StudyGroup | The 'StudyGroup' edit form opens with the current values pre-filled. | Yes | Yes | - |
+| Edit StudyGroup (form submit)  | Modify the fields and click 'Save' | The system updates the 'StudyGroup' and redirects to the list view with the updated information. | Yes | Yes | - |
+| Delete StudyGroup | Click the 'Delete' button for an existing StudyGroup | The system asks for confirmation to delete the 'StudyGroup'. Upon confirmation, the 'StudyGroup' is deleted. | Yes | Yes | - |
+| Add Term | Navigate to the Term section and click 'Add' | The 'Term' creation form opens with fields for 'name', 'date_from', 'date_to', and 'active' status. | Yes | Yes | - |
+| Add Term (form submit)  | Fill the form and click 'Save' | The system saves the new 'Term' and redirects to the list view of terms. | Yes | Yes | - |
+| Edit Term | Click the 'Edit' button for an existing Term | The 'Term' edit form opens with the current values pre-filled. | Yes | Yes | - |
+| Edit Term (form submit) | Modify the fields and click 'Save' | The system updates the 'Term' and redirects to the list view with the updated information. | Yes | Yes | - |
+| Delete Term  | Click the 'Delete' button for an existing Term | The system asks for confirmation to delete the 'Term'. Upon confirmation, the 'Term' is deleted. | Yes | Yes | - |
+| Add Subject | Navigate to the Subject section and click 'Add' | The 'Subject' creation form opens with fields for 'name' and 'active' status. | Yes | Yes | - |
+| Add Subject (form submit) | Fill the form and click 'Save' | The system saves the new 'Subject' and redirects to the list view of subjects. | Yes | Yes | - |
+| Edit Subject | Click the 'Edit' button for an existing Subject | The 'Subject' edit form opens with the current values pre-filled. | Yes | Yes | - |
+| Edit Subject (form submit) | Modify the fields and click 'Save' | The system updates the 'Subject' and redirects to the list view with the updated information. | Yes | Yes | - |
+| Delete Subject | Click the 'Delete' button for an existing Subject | The system asks for confirmation to delete the 'Subject'. Upon confirmation, the 'Subject' is deleted. | Yes | Yes | - |
+| Add ScheduleTemplate | Navigate to the ScheduleTemplate section and click 'Add' | The 'ScheduleTemplate' creation form opens with fields for 'term', 'study_group', 'weekday', 'order_number', and 'subject'. | Yes | Yes | - |
+| Add ScheduleTemplate (form submit) | Fill the form and click 'Save' | The system saves the new 'ScheduleTemplate' and redirects to the list view of schedule templates. | Yes | Yes | - |
+| Edit ScheduleTemplate | Click the 'Edit' button for an existing ScheduleTemplate | The 'ScheduleTemplate' edit form opens with the current values pre-filled. | Yes | Yes | - |
+| Edit ScheduleTemplate (form submit) | Modify the fields and click 'Save' | The system updates the 'ScheduleTemplate' and redirects to the list view with the updated information. | Yes | Yes | - |
+| Delete ScheduleTemplate | Click the 'Delete' button for an existing ScheduleTemplate | The system asks for confirmation to delete the 'ScheduleTemplate'. Upon confirmation, the 'ScheduleTemplate' is deleted. | Yes | Yes | - |
+
+### Admin Panel Access Control
+
+| feature | action | expected result  | tested | passed | comments |
+|---|---|---|---|---|---|
+| Admin login without permissions | Log in as a non-admin user | The system prevents access to the admin panel and redirects to the home page or appropriate page. | Yes | Yes | - |
+| Access control on models | Log in as an admin user and navigate to various models (StudyGroup, Term, Subject, ScheduleTemplate) | The admin user has access to all models, can add/edit/delete data, and access restricted functionalities. | Yes | Yes | - |
 
 ## Performance Testing
 To ensure the application is optimized and performs efficiently, we use **[Lighthouse](https://developers.google.com/web/tools/lighthouse)** for performance testing. 
