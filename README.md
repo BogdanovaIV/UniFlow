@@ -55,6 +55,15 @@ The repository can be accessed by this [link](https://github.com/BogdanovaIV/Uni
 
 ### Existing Features
 
+The system allows students to see their study calendar with tasks and marks. Students cannot add or edit any information.
+Tutors have two tabs on their dashboards with three dictionaries:
+1. **Schedule template** - This dictionary is designed for quick filling **Schedule** because schedules have the same data over the terms; it, in turn, allows tutors to save their time.
+2. **Schedule** - This dictionary is designed for storing calendars, including homework and subjects with their order numbers. It can be filled out using the **Schedule template**.
+3. **Student mark** - This dictionary is designed for storing students' marks related to **Schedule object**
+Throughout the entire adding, editing, and deleting stage the system informs the user about an execution status.
+
+![Message](documentation/features/messages.png)
+
 __Navigation Bar__
  
  - This section is on all pages.
@@ -63,6 +72,7 @@ __Navigation Bar__
  - The button has a bold font when it is according to the opened page. 
  - This section has a drop-down menu for small-size devices.
  - The navigation allows the user to easily get targets without having to revert back to the previous page via the ‘back’ button.
+  
   ![Navigation Bar (the user is not authorized)](documentation/features/navigation-bar-user-not-authorized.png) 
   ![Navigation Bar (the user is authorized)](documentation/features/navigation-bar-user-authorized.png) 
   ![Navigation Bar (small-size devices)](documentation/features/navigation-bar-small-size.png) 
@@ -70,46 +80,64 @@ __Navigation Bar__
 __The Footer__
 
  - The footer section includes links to the relevant social media sites for Medocal University. The links will open in a new tab to allow easy navigation for the user.
+  
   ![The Footer](documentation/features/footer.png)
 
  - Links have a hover effect: changing color.
+  
   ![The Footer (hover)](documentation/features/footer-hover.png)
 
 __The Home Page__
 
  - The page contains relevant detailed information about the University.
+  
   ![The Home page](documentation/features/home.png)
 
 __The Contact Page__
 
  - The page contains relevant information about the address, the phone, the e-mail, and the map with the location.
+  
   ![The Contact page](documentation/features/contact.png)
 
 __The Register Page__
 
  - The page registers a new user on the website. The user has to fill out the e-mail which is login, the first name, the last name, and the password. 
+  
   ![The Register page](documentation/features/register.png)
 
 __The Login Page__
 
  - The page allows the user to authenticate on the website. The user has to fill out the login which is the e-mail and the password. 
+  
   ![The Login page](documentation/features/login.png)
 
 __The Dashboard Page (Student)__
 
  - The page displays the weekly schedule containing subjects, homework, and marks of the user. 
  - There are three buttons: Instruction, Update, and Selection. The buttons have tooltips with short descriptions.
+ - **Tutors who have two permissions groups: Tutor and Student can open the student dashboard through the direct link.**
+  
   ![The Dashboard page for students](documentation/features/student-dashboard.png)
+
  - The "Instruction" button displays the instructions on how to work with this page to the user.
+  
   ![The instructions on how to work with this page](documentation/features/student-dashboard-instruction.png)
+
  - The "Update" button updates information on the dashboard.
  - When the user clicks on the "Selection" button, it expands and displays a selection that the user has to fill out.
+  
   ![Expanded selection](documentation/features/student-dashboard-selection.png)
+
  - the "Homework" link has a hover effect
+  
   ![Hover homework](documentation/features/student-dashboard-hover-homework.png)
+
  - When the user clicks on the "Homework" link, it expands and displays the whole text.
+  
   ![Expanded homework](documentation/features/student-dashboard-expand-homework.png)
+
  - The blue oval contains the student's mark.
+  
   ![Student's mark](documentation/features/student-dashboard-mark.png)
 
 __The Dashboard Page (Tutor)__
@@ -117,64 +145,113 @@ __The Dashboard Page (Tutor)__
  - It contains two pages: Schedule and Schedule templates.
  **Schedule templates**
  Schedule templates are used to fill out Schedules by template and save the user time. It contains the weekly schedule template with subjects and three buttons: Instruction, Update, and Selection.
- ![Schedule template](documentation/features/tutor-schedule-template.png)
-- The "Instruction" button displays the instructions on how to work with this page to the user.
+  
+  ![Schedule template](documentation/features/tutor-schedule-template.png)
+
+ - The "Instruction" button displays the instructions on how to work with this page to the user.
+
   ![The instructions on how to work with this page](documentation/features/tutor-schedule-template-instruction.png)
+
  - The "Update" button updates information on the dashboard.
  - When the user clicks on the "Selection" button, it expands and displays a selection that the user has to fill out.
+
   ![Expanded selection](documentation/features/tutor-schedule-template-selection.png)
- - The cells in the table have a hover effect
+
+ - The cells in the table have a hover effect.
+
   ![Hover effect of cells](documentation/features/tutor-schedule-template-hover.png)
- - When the user clicks on an empty cell, the system opens the "Add schedule template" page. The user has to fill in a subject and click the "Save" button to add a new item. If the user changes their decision, they can click on the "Cancel" button not to add anything. 
+
+ - When the user clicks on an empty cell, the system opens the "Add schedule template" page. The user has to fill in a subject and click the "Save" button to add a new item. If the user changes their decision, they can click on the "Cancel" button not to add anything.
+
   ![the "Add schedule template" page](documentation/features/tutor-schedule-template-add-new.png)
+
 - the "Add schedule template" page has the "Instruction" button that, when pressed, opens a instruction window.
+
   ![the "Add schedule template" page - instruction](documentation/features/tutor-schedule-template-add-new-instruction.png)
-- When the user clicks on a filled cell, the system opens the "Edit schedule template" page. The user has to change a subject and click the "Save" button to edit this item. If the user changes a decision, they can click on the "Cancel" button not to edit anything. Also, this form has the "Delete" button which deletes the current item. When the user clicks on it, the system displays a confirmation form. 
+
+- When the user clicks on a filled cell, the system opens the "Edit schedule template" page. The user has to change a subject and click the "Save" button to edit this item. If the user changes a decision, they can click on the "Cancel" button not to edit anything. Also, this form has the "Delete" button which deletes the current item. When the user clicks on it, the system displays a confirmation form.
+
   ![the "Add schedule template" page](documentation/features/tutor-schedule-template-add-new.png)
   ![Delete confirmation](documentation/features/tutor-schedule-template-delete.png)
+
 - the "Edit schedule template" page has the "Instruction" button that, when pressed, opens a instruction window.
+
   ![the "Edit schedule template" page - instruction](documentation/features/tutor-schedule-template-edit-instruction.png)
+
 **Schedule**
  Schedule contains the weekly schedule with subjects, homeworks, numbers of students' marks and four buttons: Instruction, Update, Fill and Selection.
- ![Schedule](documentation/features/tutor-schedule.png)
-- The "Instruction" button displays the instructions on how to work with this page to the user.
+
+  ![Schedule](documentation/features/tutor-schedule.png)
+
+ - The "Instruction" button displays the instructions on how to work with this page to the user.
+
   ![The instructions on how to work with this page](documentation/features/tutor-schedule-instruction.png)
+
  - The "Update" button updates information on the dashboard.
  - The "Fill" button is available only for an empty schedule. When the user clicks it, the system creates a Schedule based on the Schedule template of the particular study group.
+
   ![The instructions on how to work with this page](documentation/features/tutor-schedule-template-fill-button.png)
+
  - When the user clicks on the "Selection" button, it expands and displays a selection that the user has to fill out.
+
   ![Expanded selection](documentation/features/tutor-schedule-selection.png)
- - The cells in the table have a hover effect
+
+ - The cells in the table have a hover effect.
+
   ![Hover effect of cells](documentation/features/tutor-schedule-hover.png)
+
  - When the user clicks on an empty cell, the system opens the "Add schedule" page. The user has to fill in a subject, a homework (optional), and click the "Save" button to add a new item. If the user changes their decision, they can click on the "Cancel" button not to add anything. After saving the system opens the "Edit schedule" form which allows to fill in students' marks.
+
   ![the "Add schedule" page](documentation/features/tutor-schedule-add-new.png)
+
  - the "Add schedule" page has the "Instruction" button that, when pressed, opens a instruction window.
+
   ![the "Add schedule" page - instruction](documentation/features/tutor-schedule-add-new-instruction.png)
- - When the user clicks on a filled cell, the system opens the "Edit schedule" page. The user has to change a subject (optional), a homework (optional)  and click the "Save" button to edit this item. If the user changes a decision, they can click on the "Cancel" button not to edit anything. Also, this form has the "Delete" button which deletes the current item. When the user clicks on it, the system displays a confirmation form. 
+
+ - When the user clicks on a filled cell, the system opens the "Edit schedule" page. The user has to change a subject (optional), a homework (optional)  and click the "Save" button to edit this item. If the user changes a decision, they can click on the "Cancel" button not to edit anything. Also, this form has the "Delete" button which deletes the current item. When the user clicks on it, the system displays a confirmation form.
+
   ![the "Edit schedule" page](documentation/features/tutor-schedule-add-new.png)
   ![Delete confirmation](documentation/features/tutor-schedule-delete.png)
+
  - the "Edit schedule" page has the "Instruction" button that, when pressed, opens a instruction window.
+
   ![the "Edit schedule" page - instruction](documentation/features/tutor-schedule-edit-instruction.png)
+
  - To add, edit, or delete students' marks, the user has to open the "Edit schedule" page. It displays a students' marks table.
  - To add a new mark, the user has to click the "Add" button and fill in a student and their mark.
+
   ![the "Add mark" page](documentation/features/tutor-schedule-add-mark.png)
+
  - To edit the mark, the user has to click the "Edit" button and change fields.
+
   ![the "Edit mark" page](documentation/features/tutor-schedule-edit-mark.png)
+
  - To delete the mark, the user has to click the "Delete" button and confirm action.
+
   ![the "Edit mark" page](documentation/features/tutor-schedule-delete-mark.png)
+
 __The Admin page__
 This page allows supper-users to administrate a database and add, edit, and delete information in dictionaries which they are responsible  for.
  - **Users** contains information about all users. The supper-user can set permissions for users and ban if it is necessary (uncheck active). The system has two group permissions: Tutor and Student which give the appropriate access rights.
+
   ![the "Users" page](documentation/features/users-page.png)
   ![the "Users" page - permissions](documentation/features/users-permissions.png)
+
  - **User profiles** contains information about the student's study group and has the "checked" checkbox which allows students to see their schedules. If  the "checked" checkbox is not selected, the user sees messages that their accounts are under inspection.
+
   ![the "User profile" page](documentation/features/user-profile.png)
   ![The student's account is under inspection](documentation/features/student-under-inspection.png)
+
  - **Terms** contains information about study terms with fields: name, date from, date to, and active. If The "active" checkbox is not selected, this option is not displayed for tutors to select.
+
  ![Terms](documentation/features/terms.png)
+
  - **Study groups** contains information about study groups with fields: name and active. If The "active" checkbox is not selected, this option is not displayed for tutors to select.
+
  ![Study groups](documentation/features/study-groups.png)
+
  - **Subjects** contains information about subjects with fields: name and active. If The "active" checkbox is not selected, this option is not displayed for tutors to select.
+
  ![Subjects](documentation/features/subjects.png)
 
 ## Design
@@ -199,12 +276,12 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica N
 
 ### Backend
 - [Python 3.12.2](https://www.python.org/downloads/release/python-3122/): A versatile and widely-used programming language known for its readability and extensive libraries. This project is primarily built using Python due to its powerful data manipulation capabilities and ease of integration with other technologies.
-- [Django 4.x](https://www.djangoproject.com/): A high-level Python web framework that encourages rapid development and clean design. Django is used to manage the core application logic, database interactions, and routing, enabling efficient handling of complex backend functionalities.
+- [Django 4.2.16](https://www.djangoproject.com/): A high-level Python web framework that encourages rapid development and clean design. Django is used to manage the core application logic, database interactions, and routing, enabling efficient handling of complex backend functionalities.
 
 ### Frontend
-- [HTML5 & CSS3](https://developer.mozilla.org/en-US/docs/Web): Used to structure the web pages and style them to ensure a visually appealing and user-friendly interface. Semantic HTML5 tags provide a solid foundation, while CSS3 enables responsive and consistent styling.
+- [HTML & CSS](https://developer.mozilla.org/en-US/docs/Web): Used to structure the web pages and style them to ensure a visually appealing and user-friendly interface. Semantic HTML5 tags provide a solid foundation, while CSS3 enables responsive and consistent styling.
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript): Enables client-side scripting to add interactivity and dynamic elements on the website. JavaScript is used for real-time form validations, UI animations, and responsive features across devices.
-- [Bootstrap 5.x](https://getbootstrap.com/): A popular CSS framework that accelerates frontend development. Bootstrap provides pre-styled components and responsive grid systems, ensuring consistent and mobile-friendly UI elements.
+- [Bootstrap 5.3.3](https://getbootstrap.com/): A popular CSS framework that accelerates frontend development. Bootstrap provides pre-styled components and responsive grid systems, ensuring consistent and mobile-friendly UI elements.
 - [Google Maps JavaScript API](https://developers.google.com/maps): Google Maps is integrated to provide interactive maps that enhance the application's user experience, such as displaying the university’s location or directions. By utilizing the JavaScript API, the project can dynamically load maps and customize the map view based on user interaction and location data, making it a valuable addition for location-based features.
 
 ### Database
@@ -213,6 +290,16 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica N
 ### Authentication & Authorization
 - [Django-Allauth](https://django-allauth.readthedocs.io/en/latest/): A comprehensive library used for managing user authentication, registration, and account management. Django-Allauth is utilized to streamline the process of user sign-up, login, and role-based access control.
 - [Django Permissions](https://docs.djangoproject.com/en/5.1/topics/auth/default/#permissions): The project utilizes Django’s built-in permissions system to control access to specific views and actions within the application. PermissionRequiredMixin from django.contrib.auth.mixins is used to restrict access to certain views, allowing only users with the necessary permissions to proceed.
+
+### Testing
+- [Django Test Framework](https://docs.djangoproject.com/en/5.1/topics/testing/): For automated testing, python3 manage.py test is used to run tests built with Django's built-in test framework. This framework, based on Python’s unittest, helps verify that all application components work as expected and provides a solid foundation for maintaining reliable code as the project evolves.
+  - **SQLite for Testing**:  
+    By default, Django uses an SQLite database when running tests. This lightweight database ensures fast test execution and simplifies the setup process.  
+- [Jest](https://jestjs.io/): A JavaScript testing framework used to test frontend components, especially those involving DOM manipulation and user interactions. Jest is essential in ensuring that UI behaviors function as expected across various user scenarios.
+
+### Deploiment
+- [Heroku](https://dashboard.heroku.com/): A cloud platform used for deploying, managing, and scaling the application. Heroku simplifies the deployment process, enabling continuous delivery and scaling the app as needed without complex infrastructure.
+- [GitHub](https://github.com/): A version control and collaboration platform that hosts the codebase, tracks changes, and allows collaboration through pull requests and issue tracking.
 
 # Design Architecture
 This project uses **PostgreSQL** as the database backend and defines models for managing terms, study groups, schedules, and student marks in an academic environment.
@@ -225,10 +312,10 @@ This project uses **PostgreSQL** as the database backend and defines models for 
 Represents a study group.
 
 | Field Name | Data Type | Constraints | Description |
-|-|-|-|-|
-| `id` | Primary Key | Auto-increment | Unique identifier for the group.|
+| - | - | - | - |
+| `id` | Primary Key | Auto-increment | Unique identifier for the group. |
 | `name` | CharField(100) | Unique, Not Null | Name of the study group. |
-| `active` | BooleanField | Default = True | Indicates if the group is active.|
+| `active` | BooleanField | Default = True | Indicates if the group is active. |
 
 - **Meta:**
   - **Ordering:** By `name`.
@@ -239,7 +326,7 @@ Represents a study group.
 Represents an academic term.
 
 | Field Name | Data Type | Constraints | Description |
-|-|-|-|
+| - | - | - | - |
 | `id` | Primary Key | Auto-increment | Unique identifier for the term. |
 | `name` | CharField(100) | Unique, Not Null | Name of the academic term. |
 | `date_from` | DateField | Unique, Not Null | Start date of the term. |
@@ -256,10 +343,10 @@ Represents an academic term.
 Represents a subject.
 
 | Field Name | Data Type | Constraints | Description |
-|-|-|-|-|
-| `id` | Primary Key | Auto-increment | Unique identifier for the subject.|
+| - | - | - | - |
+| `id` | Primary Key | Auto-increment | Unique identifier for the subject. |
 | `name` | CharField(100) | Unique, Not Null | Name of the subject. |
-| `active` | BooleanField | Default = True | Indicates if the subject is active.|
+| `active` | BooleanField | Default = True | Indicates if the subject is active. |
 
 - **Meta:**
   - **Ordering:** By `name`.
@@ -270,8 +357,8 @@ Represents a subject.
 Represents a schedule template for a specific term and study group.
 
 | Field Name | Data Type | Constraints | Description |
-|-|-|-|
-| `id` | Primary Key | Auto-increment | Unique identifier for the schedule template.  |
+| - | - | - | - |
+| `id` | Primary Key | Auto-increment | Unique identifier for the schedule template. |
 | `term` | ForeignKey(Term) | Not Null | Associated academic term. |
 | `study_group` | ForeignKey(StudyGroup) | Not Null | Associated study group. |
 | `weekday` | IntegerField | Choices (0-6, Mon-Sun) | Day of the week for the schedule. |
@@ -288,7 +375,7 @@ Represents a schedule template for a specific term and study group.
 Represents a daily schedule for a study group.
 
 | Field Name | Data Type | Constraints | Description |
-|-|-|-|-|
+| - | - | - | - |
 | `id` | Primary Key | Auto-increment | Unique identifier for the schedule. |
 | `study_group` | ForeignKey(StudyGroup) | Not Null | Associated study group. |
 | `date` | DateField | Not Null | Date of the schedule. |
@@ -306,7 +393,7 @@ Represents a daily schedule for a study group.
 Represents a student's performance in a schedule.
 
 | Field Name | Data Type | Constraints | Description  |
-|-|-|-|-|
+| - | - | - | - |
 | `id` | Primary Key | Auto-increment | Unique identifier for the student mark. |
 | `student` | ForeignKey(User)  | Not Null | Associated student. |
 | `schedule` | ForeignKey(Schedule)| Not Null | Associated schedule. |
@@ -322,7 +409,7 @@ Represents a student's performance in a schedule.
 Enumeration for days of the week.
 
 | Value | Name |
-|-|-|
+| - | - |
 | 0 | Monday |
 | 1 | Tuesday |
 | 2 | Wednesday |
@@ -346,15 +433,6 @@ Enumeration for days of the week.
 4. **`schedule_idx`**: Optimizes queries by `schedule` in `StudentMark` for searching by the schedule.
    - **Fields**: `schedule`
 
-
-### Testing
-- [Django Test Framework](https://docs.djangoproject.com/en/5.1/topics/testing/): For automated testing, python3 manage.py test is used to run tests built with Django's built-in test framework. This framework, based on Python’s unittest, helps verify that all application components work as expected and provides a solid foundation for maintaining reliable code as the project evolves.
-- [Jest](https://jestjs.io/): A JavaScript testing framework used to test frontend components, especially those involving DOM manipulation and user interactions. Jest is essential in ensuring that UI behaviors function as expected across various user scenarios.
-
-### Testing
-- [Heroku](https://dashboard.heroku.com/): A cloud platform used for deploying, managing, and scaling the application. Heroku simplifies the deployment process, enabling continuous delivery and scaling the app as needed without complex infrastructure.
-- [GitHub](https://github.com/): A version control and collaboration platform that hosts the codebase, tracks changes, and allows collaboration through pull requests and issue tracking.
-
 ## Testing
 
 Please refer to the [TESTING.md](TESTING.md) file for all test-related documentation.
@@ -374,7 +452,7 @@ The steps to deploy are as follows:
 - 3. Set Up Environment Variables
      - Go to the "Settings" tab of your Heroku app.
      - Click "Reveal Config Vars".
-     - Add any necessary environment variables: CREDS equal JSON and PORT equal 8000
+     - Add any necessary environment variables with your values: DATABASE_URL, GOOGLE_MAPS_API_KEY, and SECRET_KEY (DJango)
       ![Heroku - config var](documentation/heroku/heroku-config-var.png)
 - 4. Buildpacks
      - Click "Add buildpack"
@@ -437,9 +515,19 @@ Clone the Repository
 
 - Send e-mail when the user creates an account, edits a password or the administrator changes information about the user.
 - Create a report of students' marks and average marks for students and tutors.
-- Add time and the ability to use an additional dictionary where the user can save events, meals, etc. in schedules 
+- Add time and the ability to use an additional dictionary where the user can save events, meals, etc. in schedules
+- Limit the ability to change past data. Create a separate permission for it.
+- Improve user-friendly experience.
 
 ## Credits 
+- [Github](https://github.com/) provided free access to a versioning system.
+- [Heroku](heroku.com) provided a service to deploy an application.
+- [Django](https://www.djangoproject.com/): was used to manage the core application logic, database interactions, and routing, enabling efficient handling of complex backend functionalities.
+- [WhiteNoise](http://whitenoise.evans.io/): Simplified static file management and improved performance by serving static files directly in production without requiring an additional server.  
+- [Gunicorn](https://gunicorn.org/): A Python WSGI HTTP server used to run the application in production, ensuring stability and reliability.  
+- [Google Maps](https://developers.google.com/maps): provided interactive maps that enhance the application's user experience, such as displaying the university’s location or directions.
+- [Bootstrap](https://getbootstrap.com/): provided pre-styled components and responsive grid systems, ensuring consistent and mobile-friendly UI elements.
+- [Pxhere](https://pxhere.com/): provided free images which helped to create awesome backgrounds.
 
 ### Content 
 
@@ -450,9 +538,3 @@ Clone the Repository
 
 - [Juliia Konovalova](https://github.com/IuliiaKonovalova/) was a great mentor who helped me to reveal my abilities and gave valuable advice.
 - [Code Institute team](https://codeinstitute.net/) supported me and provided all the information that I needed.
-- [Github](https://github.com/) provided free access to a versioning system.
-- [Heroku](heroku.com) provided a service to deploy an application.
-- [Django 4.x](https://www.djangoproject.com/): was used to manage the core application logic, database interactions, and routing, enabling efficient handling of complex backend functionalities.
-- [Google Maps](https://developers.google.com/maps): provided interactive maps that enhance the application's user experience, such as displaying the university’s location or directions.
-- [Bootstrap 5.x](https://getbootstrap.com/): provided pre-styled components and responsive grid systems, ensuring consistent and mobile-friendly UI elements.
-- [Pxhere](https://pxhere.com/): provided free images which helped to create awesome backgrounds.
