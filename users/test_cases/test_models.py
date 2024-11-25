@@ -6,11 +6,9 @@ from users.models import UserProfile
 
 
 class TestUserProfileModel(TestCase):
-    """
-    Test cases for the UserProfile model.
-    """
+    """ Test cases for the UserProfile model. """
     def setUp(self):
-        """Create a user and study group for testing."""
+        """ Create a user and study group for testing. """
         self.user = User.objects.create_user(
             username='testuser',
             password='password123'
@@ -18,7 +16,7 @@ class TestUserProfileModel(TestCase):
         self.study_group = StudyGroup.objects.create(name='Test Group')
 
     def test_user_profile_creation(self):
-        """Test creating a UserProfile with a user."""
+        """ Test creating a UserProfile with a user. """
         profile = UserProfile.objects.create(user=self.user)
         self.assertEqual(profile.user, self.user)
         # study_group should be None by default
@@ -27,7 +25,7 @@ class TestUserProfileModel(TestCase):
         self.assertFalse(profile.checked)
 
     def test_user_profile_with_study_group(self):
-        """Test creating a UserProfile with a study group."""
+        """ Test creating a UserProfile with a study group. """
         profile = UserProfile.objects.create(
             user=self.user,
             study_group=self.study_group
@@ -36,8 +34,8 @@ class TestUserProfileModel(TestCase):
 
     def test_clean_method_with_checked_and_empty_study_group(self):
         """
-        Test that a ValidationError is raised
-        if checked is True but study_group is empty.
+        Test that a ValidationError is raised if checked is True but
+        study_group is empty.
         """
         profile = UserProfile(user=self.user, checked=True)
 
@@ -47,8 +45,8 @@ class TestUserProfileModel(TestCase):
 
     def test_clean_method_with_checked_and_filled_study_group(self):
         """
-        Test that no ValidationError is raised
-        if checked is True and study_group is filled.
+        Test that no ValidationError is raised if checked is True and
+        study_group is filled.
         """
         profile = UserProfile(
             user=self.user,
@@ -64,6 +62,6 @@ class TestUserProfileModel(TestCase):
             )
 
     def test_string_representation(self):
-        """Test the string representation of UserProfile."""
+        """ Test the string representation of UserProfile. """
         profile = UserProfile.objects.create(user=self.user)
         self.assertEqual(str(profile), "testuser's Profile")

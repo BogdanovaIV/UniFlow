@@ -10,7 +10,7 @@ class CustomAuthViewTests(TestCase):
     behavior based on user group membership.
     """
     def setUp(self):
-        # Set up groups
+        """ Create the data for testing. """
         self.student_group = Group.objects.get(name='Student')
         self.tutor_group = Group.objects.get(name='Tutor')
 

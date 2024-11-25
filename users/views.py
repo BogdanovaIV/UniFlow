@@ -4,9 +4,7 @@ from allauth.account.views import LoginView, SignupView
 
 
 class CustomAuthMixin:
-    """
-    Mixin to handle redirection based on the user's group.
-    """
+    """ Mixin to handle redirection based on the user's group. """
     def redirect_based_on_group(self, user):
         """Redirects user based on group membership."""
         if user.groups.filter(name='Student').exists():
@@ -18,9 +16,7 @@ class CustomAuthMixin:
 
 
 class CustomLoginView(LoginView, CustomAuthMixin):
-    """
-    Custom login view that logs the user in and redirects based on group.
-    """
+    """Custom login view that logs the user in and redirects based on group."""
     def form_valid(self, form):
         """Logs in the user and redirects based on group."""
         user = form.user

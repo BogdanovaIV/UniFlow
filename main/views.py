@@ -5,9 +5,7 @@ if os.path.isfile('env.py'):
 
 
 def home(request):
-    """
-    Renders the Home page
-    """
+    """ Renders the Home page. """
     return render(
         request,
         "main/home.html",
@@ -15,9 +13,7 @@ def home(request):
 
 
 def contact(request):
-    """
-    Renders the Contact page
-    """
+    """ Renders the Contact page. """
     return render(
         request,
         "main/contact.html",

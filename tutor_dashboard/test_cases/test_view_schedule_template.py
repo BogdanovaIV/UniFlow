@@ -53,9 +53,7 @@ class ScheduleTemplateBaseViewTests(TestCase):
         cls.student_user.groups.add(student_group)
 
     def setUp(self):
-        """
-        Set up the request factory and view instance for each test.
-        """
+        """ Set up the request factory and view instance for each test. """
         self.client = Client()
         self.view = ScheduleTemplateBaseView()
 
@@ -134,9 +132,7 @@ class ScheduleTemplateViewTests(TestCase):
     """
     @classmethod
     def setUpTestData(cls):
-        """
-        Sets up initial test data for terms, study groups, and subjects.
-        """
+        """Sets up initial test data for terms, study groups, and subjects."""
         cls.term = Term.objects.create(
             name="Term 1",
             date_from=date(2024, 1, 1),
@@ -217,9 +213,7 @@ class ScheduleTemplateViewTests(TestCase):
         )
 
     def test_student_cannot_view_schedule_templates(self):
-        """
-        Test that a student cannot view schedule templates.
-        """
+        """ Test that a student cannot view schedule templates. """
         self.client.login(username="student", password="password")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 403)
@@ -313,15 +307,11 @@ class ScheduleTemplateViewTests(TestCase):
 
 
 class EditScheduleTemplateViewTests(TestCase):
-    """
-    Test suite for EditScheduleTemplateView.
-    """
+    """ Test suite for EditScheduleTemplateView. """
 
     @classmethod
     def setUpTestData(cls):
-        """
-        Set up initial data for testing.
-        """
+        """ Set up initial data for testing. """
         cls.term = Term.objects.create(
             name="Term 1",
             date_from=date(2024, 1, 1),
@@ -356,9 +346,7 @@ class EditScheduleTemplateViewTests(TestCase):
         cls.student_user.groups.add(student_group)
 
     def setUp(self):
-        """
-        Set up client and URL for the view under test.
-        """
+        """ Set up client and URL for the view under test. """
         self.client = Client()
         self.url = reverse(
             'tutor:edit_schedule_template',
@@ -366,9 +354,7 @@ class EditScheduleTemplateViewTests(TestCase):
         )
 
     def test_get_request_renders_form_with_instance_data(self):
-        """
-        Test that a GET request renders the form with instance data.
-        """
+        """ Test that a GET request renders the form with instance data. """
         self.client.login(username="tutor", password="password")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -382,9 +368,7 @@ class EditScheduleTemplateViewTests(TestCase):
         self.assertEqual(form.instance, self.schedule_template)
 
     def test_student_cannot_edit_schedule_templates(self):
-        """
-        Test that a student cannot edit schedule templates.
-        """
+        """ Test that a student cannot edit schedule templates. """
         self.client.login(username="student", password="password")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 403)
@@ -450,13 +434,11 @@ class EditScheduleTemplateViewTests(TestCase):
 
 
 class AddScheduleTemplateViewTests(TestCase):
-    """Test suite for AddScheduleTemplateView."""
+    """ Test suite for AddScheduleTemplateView. """
 
     @classmethod
     def setUpTestData(cls):
-        """
-        Set up initial data for testing.
-        """
+        """ Set up initial data for testing. """
         cls.term = Term.objects.create(
             name="Term 1",
             date_from=date(2024, 1, 1),
@@ -482,14 +464,12 @@ class AddScheduleTemplateViewTests(TestCase):
         cls.student_user.groups.add(student_group)
 
     def setUp(self):
-        """
-        Set up client and URL for the view under test.
-        """
+        """ Set up client and URL for the view under test. """
         self.client = Client()
         self.url = reverse('tutor:add_schedule_template')
 
     def test_get_add_schedule_template_view(self):
-        """Test the GET method renders the form with initial data."""
+        """ Test the GET method renders the form with initial data. """
         self.client.login(username="tutor", password="password")
         response = self.client.get(
             self.url,
@@ -516,9 +496,7 @@ class AddScheduleTemplateViewTests(TestCase):
         )
 
     def test_get_student_cannot_add_schedule_templates(self):
-        """
-        Test that a student cannot call GET method.
-        """
+        """ Test that a student cannot call GET method. """
         self.client.login(username="student", password="password")
         response = self.client.get(
             self.url,
@@ -532,7 +510,7 @@ class AddScheduleTemplateViewTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_post_add_schedule_template_view_success(self):
-        """Test the POST method successfully adds a ScheduleTemplate."""
+        """ Test the POST method successfully adds a ScheduleTemplate. """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
             'term': self.term.id,
@@ -562,7 +540,7 @@ class AddScheduleTemplateViewTests(TestCase):
         )
 
     def test_post_add_schedule_template_view_failure(self):
-        """Test the POST method fails when form data is invalid."""
+        """ Test the POST method fails when form data is invalid. """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
             'term': self.term.id,
@@ -590,9 +568,7 @@ class AddScheduleTemplateViewTests(TestCase):
 
 
 class DeleteScheduleTemplateViewTests(TestCase):
-    """
-    Tests for the DeleteScheduleTemplateView.
-    """
+    """ Tests for the DeleteScheduleTemplateView. """
     @classmethod
     def setUpTestData(cls):
         """
@@ -612,7 +588,7 @@ class DeleteScheduleTemplateViewTests(TestCase):
         cls.student_user.groups.add(student_group)
 
     def setUp(self):
-        """Set up test data for the tests."""
+        """ Set up test data for the tests. """
         self.term = Term.objects.create(
             name="Term 1",
             date_from=date(2024, 1, 1),
@@ -637,7 +613,7 @@ class DeleteScheduleTemplateViewTests(TestCase):
         )
 
     def test_delete_schedule_template_success(self):
-        """Test successful deletion of a schedule template."""
+        """ Test successful deletion of a schedule template. """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 302)
@@ -653,9 +629,7 @@ class DeleteScheduleTemplateViewTests(TestCase):
         )
 
     def test_get_student_cannot_add_schedule_templates(self):
-        """
-        Test that a student cannot delete schedule template.
-        """
+        """ Test that a student cannot delete schedule template. """
         self.client.login(username="student", password="password")
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 403)

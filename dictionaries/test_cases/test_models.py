@@ -16,22 +16,18 @@ from dictionaries.models import (
 
 
 class TestStudyGroupModel(TestCase):
-    """
-    Test cases for the StudyGroup model.
-    """
+    """ Test cases for the StudyGroup model. """
 
     def setUp(self):
         # Create a StudyGroup instance
         self.study_group = StudyGroup.objects.create(name="101", active=True)
 
     def test_str_representation(self):
-        """Test the string representation of StudyGroup."""
+        """ Test the string representation of StudyGroup. """
         self.assertEqual(str(self.study_group), "101")
 
     def test_study_group_name_cannot_be_empty(self):
-        """
-        Test if a StudyGroup cannot be created with an empty name.
-        """
+        """ Test if a StudyGroup cannot be created with an empty name. """
         study_group = StudyGroup(name='', active=True)
         with self.assertRaises(ValidationError):
             study_group.full_clean()  # This will trigger validation
@@ -46,15 +42,13 @@ class TestStudyGroupModel(TestCase):
             StudyGroup.objects.create(name="102", active=False)
 
     def test_active_default(self):
-        """Test that the active field defaults to True."""
+        """ Test that the active field defaults to True. """
         new_group = StudyGroup.objects.create(name="103")
         self.assertTrue(new_group.active)
 
 
 class TestTermModelTest(TestCase):
-    """
-    Test cases for the Term model.
-    """
+    """ Test cases for the Term model. """
 
     def setUp(self):
         # Create a Term instance
@@ -66,16 +60,14 @@ class TestTermModelTest(TestCase):
         )
 
     def test_str_representation(self):
-        """Test the string representation of Term."""
+        """ Test the string representation of Term. """
         self.assertEqual(
             str(self.term),
             "2024-2025 Term 1"
         )
 
     def test_term_name_cannot_be_empty(self):
-        """
-        Test if a Term cannot be created with an empty name.
-        """
+        """ Test if a Term cannot be created with an empty name. """
         term = Term(
             name='',
             date_from='2024-01-01',
@@ -86,7 +78,7 @@ class TestTermModelTest(TestCase):
             term.full_clean()  # This will trigger validation
 
     def test_date_ordering(self):
-        """Test that date_from is less than date_to."""
+        """ Test that date_from is less than date_to. """
         term_invalid = Term(
             name="Invalid Term",
             date_from=date(2024, 5, 31),
@@ -98,7 +90,7 @@ class TestTermModelTest(TestCase):
             term_invalid.clean()
 
     def test_overlapping_terms(self):
-        """Test that overlapping terms raise a ValidationError."""
+        """ Test that overlapping terms raise a ValidationError. """
         # Create an overlapping term
         Term.objects.create(
             name="2024-2025 Term 2",
@@ -120,9 +112,7 @@ class TestTermModelTest(TestCase):
 
 
 class TestSubjectModel(TestCase):
-    """
-    Test cases for the Subject model.
-    """
+    """ Test cases for the Subject model. """
 
     def setUp(self):
         # Create a Subject instance
@@ -142,7 +132,7 @@ class TestSubjectModel(TestCase):
             Subject.objects.create(name="subject2", active=False)
 
     def test_active_default(self):
-        """Test that the active field defaults to True."""
+        """ Test that the active field defaults to True. """
         new_subject = Subject.objects.create(name="subject3")
         self.assertTrue(new_subject.active)
 
@@ -154,7 +144,7 @@ class WeekdayChoicesTests(TestCase):
     """
 
     def test_weekday_choices(self):
-        """Test that each choice in WeekdayChoices has the correct label."""
+        """ Test that each choice in WeekdayChoices has the correct label. """
         self.assertEqual(WeekdayChoices.MONDAY.label, 'Monday')
         self.assertEqual(WeekdayChoices.TUESDAY.label, 'Tuesday')
         self.assertEqual(WeekdayChoices.WEDNESDAY.label, 'Wednesday')
@@ -184,7 +174,7 @@ class ScheduleTemplateTests(TestCase):
     """
 
     def setUp(self):
-        """Set up test instances for foreign key fields."""
+        """ Set up test instances for foreign key fields. """
         self.term = Term.objects.create(
             name='2024-2025 term 1',
             date_from='2024-01-01',
@@ -282,9 +272,7 @@ class ScheduleTemplateTests(TestCase):
             duplicate_schedule.full_clean()  # Trigger unique constraint error
 
     def test_term_field_null(self):
-        """
-        Test that the term field cannot be null.
-        """
+        """ Test that the term field cannot be null. """
         schedule = ScheduleTemplate(
             term=None,  # Invalid
             study_group=self.study_group,
@@ -296,9 +284,7 @@ class ScheduleTemplateTests(TestCase):
             schedule.full_clean()  # Trigger validation error
 
     def test_study_group_field_null(self):
-        """
-        Test that the study_group field cannot be null.
-        """
+        """ Test that the study_group field cannot be null. """
         schedule = ScheduleTemplate(
             term=self.term,
             study_group=None,  # Invalid
@@ -310,9 +296,7 @@ class ScheduleTemplateTests(TestCase):
             schedule.full_clean()  # Trigger validation error
 
     def test_weekday_field_null(self):
-        """
-        Test that the weekday field cannot be null.
-        """
+        """ Test that the weekday field cannot be null. """
         schedule = ScheduleTemplate(
             term=self.term,
             study_group=self.study_group,
@@ -324,9 +308,7 @@ class ScheduleTemplateTests(TestCase):
             schedule.full_clean()  # Trigger validation error
 
     def test_order_number_field_null(self):
-        """
-        Test that the order_number field cannot be null.
-        """
+        """ Test that the order_number field cannot be null. """
         schedule = ScheduleTemplate(
             term=self.term,
             study_group=self.study_group,
@@ -338,9 +320,7 @@ class ScheduleTemplateTests(TestCase):
             schedule.full_clean()  # Trigger validation error
 
     def test_subject_field_null(self):
-        """
-        Test that the subject field cannot be null.
-        """
+        """ Test that the subject field cannot be null. """
         schedule = ScheduleTemplate(
             term=self.term,
             study_group=self.study_group,
@@ -360,7 +340,7 @@ class ScheduleTests(TestCase):
     """
 
     def setUp(self):
-        """Set up test instances for foreign key fields."""
+        """ Set up test instances for foreign key fields. """
         self.study_group = StudyGroup.objects.create(
             name='101',
             active=True
@@ -368,9 +348,7 @@ class ScheduleTests(TestCase):
         self.subject = Subject.objects.create(name='Subject1', active=True)
 
     def test_schedule_creation(self):
-        """
-        Test that a Schedule instance can be created with valid fields.
-        """
+        """Test that a Schedule instance can be created with valid fields."""
         schedule = Schedule.objects.create(
             study_group=self.study_group,
             date=date(2024, 9, 1),
@@ -455,9 +433,7 @@ class ScheduleTests(TestCase):
             duplicate_schedule.full_clean()
 
     def test_study_group_field_null(self):
-        """
-        Test that the study_group field cannot be null.
-        """
+        """ Test that the study_group field cannot be null. """
         schedule = Schedule(
             study_group=None,  # Invalid
             date=date(2024, 9, 1),
@@ -469,9 +445,7 @@ class ScheduleTests(TestCase):
             schedule.full_clean()  # Trigger validation error
 
     def test_date_field_null(self):
-        """
-        Test that the date field cannot be null.
-        """
+        """ Test that the date field cannot be null. """
         schedule = Schedule(
             study_group=self.study_group,
             # Invalid
@@ -484,9 +458,7 @@ class ScheduleTests(TestCase):
             schedule.full_clean()  # Trigger validation error
 
     def test_order_number_field_null(self):
-        """
-        Test that the order_number field cannot be null.
-        """
+        """ Test that the order_number field cannot be null. """
         schedule = Schedule(
             study_group=self.study_group,
             date=date(2024, 9, 1),
@@ -498,9 +470,7 @@ class ScheduleTests(TestCase):
             schedule.full_clean()  # Trigger validation error
 
     def test_subject_field_null(self):
-        """
-        Test that the subject field cannot be null.
-        """
+        """ Test that the subject field cannot be null. """
         schedule = Schedule(
             study_group=self.study_group,
             date=date(2024, 9, 1),
@@ -520,7 +490,7 @@ class StudentMarkModelTests(TestCase):
     """
 
     def setUp(self):
-        """Set up test instances for foreign key fields."""
+        """ Set up test instances for foreign key fields. """
         self.student = User.objects.create_user(
             username='student', password='password'
             )
@@ -538,7 +508,7 @@ class StudentMarkModelTests(TestCase):
         )
 
     def test_create_student_mark(self):
-        """Test creating a StudentMark with valid data."""
+        """ Test creating a StudentMark with valid data. """
         student_mark = StudentMark.objects.create(
             student=self.student,
             schedule=self.schedule,
@@ -549,7 +519,7 @@ class StudentMarkModelTests(TestCase):
         self.assertEqual(student_mark.schedule, self.schedule)
 
     def test_mark_within_valid_range(self):
-        """Test that the mark value is within the valid range (0-100)."""
+        """ Test that the mark value is within the valid range (0-100). """
         student_mark = StudentMark(
             student=self.student,
             schedule=self.schedule
@@ -582,7 +552,7 @@ class StudentMarkModelTests(TestCase):
             student_mark.full_clean()
 
     def test_unique_constraint(self):
-        """Test unique constraint on schedule and student."""
+        """ Test unique constraint on schedule and student. """
         # Create initial StudentMark instance
         StudentMark.objects.create(
             student=self.student,
@@ -600,7 +570,7 @@ class StudentMarkModelTests(TestCase):
             duplicate_student_mark.full_clean()
 
     def test_string_representation(self):
-        """Test the string representation of the StudentMark instance."""
+        """ Test the string representation of the StudentMark instance. """
         student_mark = StudentMark.objects.create(
             student=self.student,
             schedule=self.schedule,

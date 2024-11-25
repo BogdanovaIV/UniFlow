@@ -5,10 +5,10 @@ from users.forms import CustomSignupForm
 
 
 class TestCustomSignupForm(TestCase):
-    """Test cases for the CustomSignupForm."""
+    """ Test cases for the CustomSignupForm. """
 
     def setUp(self):
-        """Set up initial data for testing."""
+        """ Set up initial data for testing. """
         self.valid_data = {
             'email': 'testuser@example.com',
             'password1': 'Password123!',
@@ -36,7 +36,7 @@ class TestCustomSignupForm(TestCase):
         self.factory = RequestFactory()
 
     def test_valid_form(self):
-        """Test that the form is valid with all required fields."""
+        """ Test that the form is valid with all required fields. """
         # Create a mock request
         request = self.factory.post('/accounts/signup/', data=self.valid_data)
 
@@ -53,13 +53,13 @@ class TestCustomSignupForm(TestCase):
         self.assertEqual(user.last_name, self.valid_data['last_name'])
 
     def test_invalid_form_first_name(self):
-        """Test that the form is invalid with missing first name."""
+        """ Test that the form is invalid with missing first name. """
         form = CustomSignupForm(data=self.invalid_data_first_name)
         self.assertFalse(form.is_valid())
         self.assertIn('first_name', form.errors)
 
     def test_invalid_form_last_name(self):
-        """Test that the form is invalid with missing last name."""
+        """ Test that the form is invalid with missing last name. """
         form = CustomSignupForm(data=self.invalid_data_last_name)
         self.assertFalse(form.is_valid())
         self.assertIn('last_name', form.errors)

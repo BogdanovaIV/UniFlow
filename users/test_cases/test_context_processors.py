@@ -7,9 +7,7 @@ from users.context_processors import user_profile_parameters
 
 
 class ContextProcessorsTests(TestCase):
-    """
-    Tests custom context processors for user groups.
-    """
+    """ Tests custom context processors for user groups. """
     def setUp(self):
         """
         Creates a student user and assigns them to the 'Student' group.

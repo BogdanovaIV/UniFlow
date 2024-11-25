@@ -4,11 +4,9 @@ from users.signals import create_groups, GROUPS
 
 
 class SignalTestCase(TestCase):
-    """
-    Test cases for Signals.
-    """
+    """ Test cases for Signals. """
     def test_create_groups_signal(self):
-        """Test that the required groups are created after migrations."""
+        """ Test that the required groups are created after migrations. """
         # Check that the groups were created
         self.assertEqual(Group.objects.count(), 2)  # Expecting 2 groups
 

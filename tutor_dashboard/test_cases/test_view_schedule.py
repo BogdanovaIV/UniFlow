@@ -27,9 +27,7 @@ class ScheduleBaseViewTests(TestCase):
     """
     @classmethod
     def setUpTestData(cls):
-        """
-        Sets up initial test data for testing purposes.
-        """
+        """ Sets up initial test data for testing purposes. """
         cls.study_group = StudyGroup.objects.create(
             name="Group A",
             active=True
@@ -146,9 +144,7 @@ class ScheduleViewTests(TestCase):
     """
     @classmethod
     def setUpTestData(cls):
-        """
-        Sets up initial test data for study groups, and subjects.
-        """
+        """ Sets up initial test data for study groups, and subjects. """
 
         cls.study_group = StudyGroup.objects.create(
             name="Group A",
@@ -187,9 +183,7 @@ class ScheduleViewTests(TestCase):
         )
 
     def setUp(self):
-        """
-        Sets up a test client and the URL for the 'schedule' view.
-        """
+        """ Sets up a test client and the URL for the 'schedule' view. """
         self.client = Client()
         self.url = reverse('tutor:schedule')
 
@@ -229,9 +223,7 @@ class ScheduleViewTests(TestCase):
         self.assertFalse(response.context['table_empty'])
 
     def test_student_view_schedule(self):
-        """
-        Test that a student can view schedule.
-        """
+        """ Test that a student can view schedule. """
         self.client.login(username="student", password="password")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -389,15 +381,11 @@ class ScheduleViewTests(TestCase):
 
 
 class EditScheduleViewTests(TestCase):
-    """
-    Test suite for EditScheduleView.
-    """
+    """ Test suite for EditScheduleView. """
 
     @classmethod
     def setUpTestData(cls):
-        """
-        Set up initial data for testing.
-        """
+        """ Set up initial data for testing. """
 
         cls.study_group = StudyGroup.objects.create(
             name="Group A",
@@ -427,9 +415,7 @@ class EditScheduleViewTests(TestCase):
         cls.student_user.groups.add(student_group)
 
     def setUp(self):
-        """
-        Set up client and URL for the view under test.
-        """
+        """ Set up client and URL for the view under test. """
         self.client = Client()
         self.url = reverse(
             'tutor:edit_schedule',
@@ -437,9 +423,7 @@ class EditScheduleViewTests(TestCase):
         )
 
     def test_get_request_renders_form_with_instance_data(self):
-        """
-        Test that a GET request renders the form with instance data.
-        """
+        """ Test that a GET request renders the form with instance data. """
         self.client.login(username="tutor", password="password")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -453,9 +437,7 @@ class EditScheduleViewTests(TestCase):
         self.assertEqual(form.instance, self.schedule)
 
     def test_student_cannot_edit_schedule(self):
-        """
-        Test that a student cannot edit schedule.
-        """
+        """ Test that a student cannot edit schedule. """
         self.client.login(username="student", password="password")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 403)
@@ -526,8 +508,10 @@ class EditScheduleViewTests(TestCase):
 
 
 class AddScheduleViewTests(TestCase):
-    """Test suite for the AddScheduleView functionality, verifying access,
-    data handling, permissions, and messages."""
+    """
+    Test suite for the AddScheduleView functionality, verifying access,
+    data handling, permissions, and messages.
+    """
 
     @classmethod
     def setUpTestData(cls):
@@ -555,14 +539,12 @@ class AddScheduleViewTests(TestCase):
         cls.student_user.groups.add(student_group)
 
     def setUp(self):
-        """
-        Set up client and URL for the view under test.
-        """
+        """ Set up client and URL for the view under test. """
         self.client = Client()
         self.url = reverse('tutor:add_schedule')
 
     def test_get_add_schedule_template_view(self):
-        """Test the GET method renders the form with initial data."""
+        """ Test the GET method renders the form with initial data. """
         self.client.login(username="tutor", password="password")
         response = self.client.get(
             self.url,
@@ -588,9 +570,7 @@ class AddScheduleViewTests(TestCase):
         )
 
     def test_get_student_cannot_add_schedule(self):
-        """
-        Test that a student cannot call GET method.
-        """
+        """ Test that a student cannot call GET method. """
         self.client.login(username="student", password="password")
         response = self.client.get(
             self.url,
@@ -603,7 +583,7 @@ class AddScheduleViewTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_post_add_schedule_view_success(self):
-        """Test the POST method successfully adds a Schedule."""
+        """ Test the POST method successfully adds a Schedule. """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
             'date': date(2024, 9, 3),
@@ -628,9 +608,7 @@ class AddScheduleViewTests(TestCase):
         )
 
     def test_get_student_cannot_add_schedule(self):
-        """
-        Test that a student cannot call POST method.
-        """
+        """ Test that a student cannot call POST method. """
         self.client.login(username="student", password="password")
         response = self.client.post(self.url, {
             'date': date(2024, 9, 3),
@@ -641,7 +619,7 @@ class AddScheduleViewTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_post_add_schedule_view_failure(self):
-        """Test the POST method fails when form data is invalid."""
+        """ Test the POST method fails when form data is invalid. """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url, {
             'date': date(2024, 9, 3),
@@ -668,11 +646,14 @@ class AddScheduleViewTests(TestCase):
 
 
 class DeleteScheduleViewTests(TestCase):
+    """
+    Test suite for the DeleteScheduleView functionality, verifying access,
+    data handling, permissions, and messages.
+    """
+
     @classmethod
     def setUpTestData(cls):
-        """
-        Sets up initial test data for study groups, and subjects.
-        """
+        """ Sets up initial test data for study groups, and subjects. """
 
         cls.study_group = StudyGroup.objects.create(
             name="Group A",
@@ -694,7 +675,7 @@ class DeleteScheduleViewTests(TestCase):
         cls.student_user.groups.add(student_group)
 
     def setUp(self):
-        # Create schedule templates
+        """ Set up client, URL and schedule for the view under test. """
         self.schedule = Schedule.objects.create(
             date=date(2024, 9, 3),
             study_group=self.study_group,
@@ -708,9 +689,7 @@ class DeleteScheduleViewTests(TestCase):
         )
 
     def test_delete_schedule_success(self):
-        """
-        Test that a schedule can be successfully deleted.
-        """
+        """ Test that a schedule can be successfully deleted. """
         self.client.login(username="tutor", password="password")
         response = self.client.post(self.url)
 
@@ -729,9 +708,7 @@ class DeleteScheduleViewTests(TestCase):
         self.assertRedirects(response, expected_url)
 
     def test_delete_schedule_permission_denied(self):
-        """
-        Test that a user without permission cannot delete a schedule.
-        """
+        """ Test that a user without permission cannot delete a schedule. """
         self.client.login(username="student", password="password")
 
         response = self.client.post(self.url)
@@ -743,9 +720,7 @@ class DeleteScheduleViewTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_delete_schedule_not_found(self):
-        """
-        Test that a 404 is returned if the schedule does not exist.
-        """
+        """ Test that a 404 is returned if the schedule does not exist. """
         self.client.login(username="tutor", password="password")
 
         # Attempt to delete a non-existing schedule
@@ -757,9 +732,10 @@ class DeleteScheduleViewTests(TestCase):
 
 
 class FillScheduleViewTests(TestCase):
-    """Test suite for AddScheduleView."""
+    """ Test suite for AddScheduleView. """
+
     def setUp(self):
-        """Set up the test environment."""
+        """ Set up the test environment. """
         self.study_group = StudyGroup.objects.create(
             name="Group A", active=True
             )
@@ -803,7 +779,7 @@ class FillScheduleViewTests(TestCase):
         self.url = reverse('tutor:fill_schedule')
 
     def test_post_successful_fill_schedule(self):
-        """Test successful schedule filling."""
+        """ Test successful schedule filling. """
         self.client.login(username='tutor', password='password')
         response = self.client.post(self.url, {
             'study_group': self.study_group.id,
@@ -818,7 +794,7 @@ class FillScheduleViewTests(TestCase):
         self.assertIn('Schedule filled successfully from template.', messages)
 
     def test_post_schedule_exists(self):
-        """Test when schedule entries already exist."""
+        """ Test when schedule entries already exist. """
         self.client.login(username='tutor', password='password')
         Schedule.objects.create(
             date=date(2024, 10, 15),
@@ -840,7 +816,7 @@ class FillScheduleViewTests(TestCase):
             messages)
 
     def test_post_no_active_terms(self):
-        """Test when no active terms are found."""
+        """ Test when no active terms are found. """
         self.client.login(username='tutor', password='password')
         Term.objects.all().delete()
         response = self.client.post(self.url, {
@@ -856,7 +832,7 @@ class FillScheduleViewTests(TestCase):
             )
 
     def test_post_no_template_found(self):
-        """Test when no schedule templates are found."""
+        """ Test when no schedule templates are found. """
         self.client.login(username='tutor', password='password')
         ScheduleTemplate.objects.all().delete()
 
@@ -873,7 +849,7 @@ class FillScheduleViewTests(TestCase):
             )
 
     def test_post_invalid_data(self):
-        """Test when study group and date are not specified."""
+        """ Test when study group and date are not specified. """
         self.client.login(username='tutor', password='password')
         response = self.client.post(self.url, {
             'study_group': '',
@@ -885,9 +861,7 @@ class FillScheduleViewTests(TestCase):
         self.assertIn('Study group and date are not specified.', messages)
 
     def test_get_student_cannot_fill_schedule(self):
-        """
-        Test that a student cannot call POST method.
-        """
+        """ Test that a student cannot call POST method. """
         self.client.login(username="student", password="password")
         response = self.client.post(self.url, {
             'study_group': self.study_group.id,

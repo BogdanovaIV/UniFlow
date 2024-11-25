@@ -147,9 +147,7 @@ class AdminTests(TestCase):
         self.assertContains(response, "Group A")
 
     def test_admin_filter_functionality(self):
-        """
-        Test that the admin filter functionality works correctly.
-        """
+        """ Test that the admin filter functionality works correctly. """
         url = (
             reverse('admin:dictionaries_scheduletemplate_changelist') +
             "?study_group=" + str(self.study_group.id)
@@ -170,9 +168,7 @@ class AdminTests(TestCase):
         self.assertContains(response_with_term, "Group A")
 
     def test_admin_create_update_delete(self):
-        """
-        Test the creation, updating, and deletion of admin objects.
-        """
+        """ Test the creation, updating, and deletion of admin objects. """
         # The admin user logs in
         self.client.login(username='admin', password='password')
 
@@ -222,9 +218,7 @@ class AdminTests(TestCase):
         )
 
     def test_admin_permissions(self):
-        """
-        Test that only admins have access to the admin panel.
-        """
+        """ Test that only admins have access to the admin panel. """
         non_admin_user = User.objects.create_user(
             username='user',
             email='user@example.com',

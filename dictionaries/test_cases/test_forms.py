@@ -147,7 +147,7 @@ class ScheduleTemplateFormTests(TestCase):
         self.assertNotIn(self.inactive_subject, subjects_queryset)
 
     def test_form_valid_with_all_fields(self):
-        """Test form validation for valid data."""
+        """ Test form validation for valid data. """
         form_data = {
             'term': self.term.id,
             'study_group': self.study_group.id,
@@ -160,7 +160,7 @@ class ScheduleTemplateFormTests(TestCase):
         self.assertTrue(form.is_valid(), msg=f"Form errors: {form.errors}")
 
     def test_form_invalid_without_required_fields(self):
-        """Test form validation fails when required fields are missing."""
+        """ Test form validation fails when required fields are missing. """
         form_data = {
             'order_number': 1,
             'subject': ''
@@ -314,7 +314,7 @@ class ScheduleFormTests(TestCase):
         self.assertNotIn(self.inactive_subject, subjects_queryset)
 
     def test_form_valid_with_all_fields(self):
-        """Test form validation for valid data."""
+        """ Test form validation for valid data. """
         form_data = {
             'date': date(2024, 9, 2),
             'study_group': self.study_group.id,
@@ -326,7 +326,7 @@ class ScheduleFormTests(TestCase):
         self.assertTrue(form.is_valid(), msg=f"Form errors: {form.errors}")
 
     def test_form_invalid_without_required_fields(self):
-        """Test form validation fails when required fields are missing."""
+        """ Test form validation fails when required fields are missing. """
         form_data = {
             'order_number': 1,
             'subject': ''
@@ -341,13 +341,18 @@ class ScheduleFormTests(TestCase):
 
 
 class StudentMarkFormTest(TestCase):
+    """
+    Unit tests for the StudentMarkForm.
+    This test suite verifies the behavior of the StudentMarkForm, ensuring
+    that it validates and handles data correctly under various scenarios.
+    """
     def setUp(self):
-        # Set up a test user to be used as a 'student'
+        """ Sets up a test user to be used as a 'student' for the form. """
         self.student = User.objects.create_user(
             username='student', password='password')
 
     def test_form_valid_data(self):
-        # Test form with valid data
+        """ Tests that the form is valid when provided with correct data. """
         form_data = {
             'student': self.student.id,
             'mark': 85
@@ -359,7 +364,10 @@ class StudentMarkFormTest(TestCase):
         )
 
     def test_form_invalid_empty_student(self):
-        # Test form with an empty 'student' field
+        """
+        Tests that the form is invalid when the 'student' field is empty and
+        checks for the presence of an error message.
+        """
         form_data = {
             'student': None,
             'mark': 85
@@ -376,7 +384,10 @@ class StudentMarkFormTest(TestCase):
         )
 
     def test_form_invalid_empty_mark(self):
-        # Test form with an empty 'mark' field
+        """
+        Tests that the form is invalid when the 'mark' field is empty and
+        checks for the presence of an error message.
+        """
         form_data = {
             'student': self.student.id,
             'mark': None
