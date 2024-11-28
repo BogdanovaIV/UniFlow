@@ -1,10 +1,41 @@
 # MEDICAL UNIVERSITY
 
-Medical University is a website that describes the university's general information and allows tutors and students to store a schedule and students' marks. Tutors can add, edit, and delete the class schedule, homework and students' marks. Students can see the class schedule and their marks.
+Medical University's website describes the university's general information and allows tutors and students to store a schedule and students' marks. Tutors can add, edit, and delete the class schedule, homework, and students' marks. Students can see the class schedule and their marks.
 
 The website can be accessed by this [link](https://uni-flow-323277c94698.herokuapp.com/)
 The repository can be accessed by this [link](https://github.com/BogdanovaIV/UniFlow)
 ![The Home page](documentation/features/home.png)
+
+Target Audience
+The Medical University website is designed to serve various stakeholders, each with distinct needs and expectations. The target audience includes the following:
+
+1. Prospective Students and Parents
+  - Objective: To explore the university's offerings, contact details, and location.
+  - Needs:
+    - Clear and engaging information about the university.
+    - Easy navigation to contact and location details.
+    - Access to Google Maps for convenient planning.
+2. Enrolled Students
+  - Objective: To manage their academic activities and track progress.
+  - Needs:
+    - View their weekly schedule, including subjects and assigned homework.
+    - Access grades for each subject to monitor performance.
+    - Stay updated with any changes in their schedule or academic tasks.
+3. Tutors
+  - Objective: To efficiently manage class schedules and students’ performance records.
+  - Needs:
+    - Tools to create, view, and manage schedules.
+    - A user-friendly interface to assign homework and grades.
+    - Validation mechanisms to prevent errors, such as overlapping schedules or invalid marks.
+4. Administrators
+  - Objective: To manage the backend data and user access.
+  - Needs:
+    - Ability to manage user accounts, study groups, and terms.
+    - Configure permissions for Tutors and Students.
+    - Oversee the integrity of data such as terms, schedules, and grades.
+    - Generate and analyze reports on students' performance.
+
+By addressing the unique needs of each audience, the website facilitates seamless collaboration between students, tutors, and administrators, fostering a productive educational environment.
 
 ## User Stories
 ### First Time Visitors
@@ -28,7 +59,7 @@ The repository can be accessed by this [link](https://github.com/BogdanovaIV/Uni
 |-|-|-|
 | [9](https://github.com/BogdanovaIV/UniFlow/issues/9) | As a Tutor, I want to view the schedule for a selected week, including subjects, homework availability, and the number of grades given, so that I can plan my teaching tasks. | AC1: Tutors can choose a week to view the schedule. <br> AC2: Schedule shows subjects, homework status, and grade count. |
 | [10](https://github.com/BogdanovaIV/UniFlow/issues/10) | As a Tutor, I want to fill out the weekly schedule based on schedule templates and edit it by adding, updating, and deleting rows. | AC1: Tutors can fill the schedule using the template. <br> AC2: Tutors can add, update, or delete rows in the schedule. |
-| [11](https://github.com/BogdanovaIV/UniFlow/issues/11) | As a Tutor, I want to assign marks to students by subject and date, and I can create, read, update, and delete marks. | AC1: Tutors can create student marks. <br> AC2: Tutors can read student marks. <br> AC3: Tutors can update student marks. <br> AC4: Tutors can delete student marks. |
+| [11](https://github.com/BogdanovaIV/UniFlow/issues/11) | As a Tutor, I want to assign marks to students by subject and date, and I can create, read, update, and delete marks. | AC1: Tutors can create students' marks. <br> AC2: Tutors can read students' marks. <br> AC3: Tutors can update students' marks. <br> AC4: Tutors can delete students' marks. |
 | [16](https://github.com/BogdanovaIV/UniFlow/issues/16) | As a Tutor, I want to view the schedule template for a selected term and study group. | AC1: Tutors can choose a term and study group to view the schedule template. <br> AC2: The template shows subjects by weekdays. |
 | [17](https://github.com/BogdanovaIV/UniFlow/issues/17) | As a Tutor, I want to edit schedule templates by adding, updating, and deleting rows. | AC1: Tutors can create new rows, update existing rows, and delete rows in the template. |
 
@@ -47,7 +78,7 @@ The repository can be accessed by this [link](https://github.com/BogdanovaIV/Uni
 | [5](https://github.com/BogdanovaIV/UniFlow/issues/5) | As a Site Admin, I can assign a study group to a user and set their checked status. | AC1: Admins can assign groups to users and set their checked status. |
 | [6](https://github.com/BogdanovaIV/UniFlow/issues/6) | As a Site Admin, I can create, read, update, and delete schedule templates that tutors use as default schedules. | AC1: Admins can create a schedule template. <br> AC2: Admins can read a schedule template. <br> AC3: Admins can update a schedule template. <br> AC4: Admins can delete a schedule template. |
 | [7](https://github.com/BogdanovaIV/UniFlow/issues/7) | As a Site Admin, I can create, read, update, and delete schedules. | AC1: Admins can create a schedule. <br> AC2: Admins can read a schedule. <br> AC3: Admins can update a schedule. <br> AC4: Admins can delete a schedule. <br> Requirement: No duplicate subjects should appear on the same date. |
-| [8](https://github.com/BogdanovaIV/UniFlow/issues/8) | As a Site Admin, I can create, read, update, and delete student marks. | AC1: Admins can create a student mark. <br> AC2: Admins can read a student mark. <br> AC3: Admins can update a student mark. <br> AC4: Admins can delete a student mark. <br> Restriction: One score per subject per student per date. |
+| [8](https://github.com/BogdanovaIV/UniFlow/issues/8) | As a Site Admin, I can create, read, update, and delete student marks. | AC1: Admins can create a student's mark. <br> AC2: Admins can read a student's mark. <br> AC3: Admins can update a student's mark. <br> AC4: Admins can delete a student's mark. <br> Restriction: One score per subject per student per date. |
 | [14](https://github.com/BogdanovaIV/UniFlow/issues/14) | As a Site Admin, I want to create predefined user groups, so that I can easily manage user roles and permissions within the application. | AC1: Groups are created automatically during migrations. <br> AC2: The system avoids duplicate group creation. |
 | [15](https://github.com/BogdanovaIV/UniFlow/issues/15) | As a Site Admin, I can create, read, update, and delete subjects. | AC1: Admins can create a subject. <br> AC2: Admins can read a subject. <br> AC3: Admins can update a subject. <br> AC4: Admins can delete a subject. |
 
@@ -79,7 +110,7 @@ __Navigation Bar__
 
 __The Footer__
 
- - The footer section includes links to the relevant social media sites for Medocal University. The links will open in a new tab to allow easy navigation for the user.
+ - The footer section includes links to the relevant social media sites for Medical University. The links will open in a new tab to allow easy navigation for the user.
   
   ![The Footer](documentation/features/footer.png)
 
@@ -161,25 +192,25 @@ __The Dashboard Page (Tutor)__
 
   ![Hover effect of cells](documentation/features/tutor-schedule-template-hover.png)
 
- - When the user clicks on an empty cell, the system opens the "Add schedule template" page. The user has to fill in a subject and click the "Save" button to add a new item. If the user changes their decision, they can click on the "Cancel" button not to add anything.
+ - When the user clicks on an empty cell, the system opens the "Add Schedule template" page. The user has to fill in a subject and click the "Save" button to add a new item. If the user changes their decision, they can click on the "Cancel" button not to add anything.
 
-  ![the "Add schedule template" page](documentation/features/tutor-schedule-template-add-new.png)
+  ![the "Add Schedule template" page](documentation/features/tutor-schedule-template-add-new.png)
 
-- the "Add schedule template" page has the "Instruction" button that, when pressed, opens a instruction window.
+- the "Add Schedule template" page has the "Instruction" button that, when pressed, opens an instruction window.
 
-  ![the "Add schedule template" page - instruction](documentation/features/tutor-schedule-template-add-new-instruction.png)
+  ![the "Add Schedule Template" page - instruction](documentation/features/tutor-schedule-template-add-new-instruction.png)
 
-- When the user clicks on a filled cell, the system opens the "Edit schedule template" page. The user has to change a subject and click the "Save" button to edit this item. If the user changes a decision, they can click on the "Cancel" button not to edit anything. Also, this form has the "Delete" button which deletes the current item. When the user clicks on it, the system displays a confirmation form.
+- When the user clicks on a filled cell, the system opens the "Edit Schedule Template" page. The user has to change a subject and click the "Save" button to edit this item. If the user changes a decision, they can click on the "Cancel" button not to edit anything. Also, this form has the "Delete" button which deletes the current item. When the user clicks on it, the system displays a confirmation form.
 
-  ![the "Add schedule template" page](documentation/features/tutor-schedule-template-add-new.png)
+  ![the "Add Schedule Template" page](documentation/features/tutor-schedule-template-add-new.png)
   ![Delete confirmation](documentation/features/tutor-schedule-template-delete.png)
 
-- the "Edit schedule template" page has the "Instruction" button that, when pressed, opens a instruction window.
+- the "Edit Schedule Template" page has the "Instruction" button that, when pressed, opens an instruction window.
 
-  ![the "Edit schedule template" page - instruction](documentation/features/tutor-schedule-template-edit-instruction.png)
+  ![the "Edit Schedule Template" page - instruction](documentation/features/tutor-schedule-template-edit-instruction.png)
 
 **Schedule**
- Schedule contains the weekly schedule with subjects, homeworks, numbers of students' marks and four buttons: Instruction, Update, Fill and Selection.
+ The schedule contains the weekly schedule with subjects, homework, numbers of students' marks, and four buttons: Instruction, Update, Fill, and Selection.
 
   ![Schedule](documentation/features/tutor-schedule.png)
 
@@ -200,24 +231,24 @@ __The Dashboard Page (Tutor)__
 
   ![Hover effect of cells](documentation/features/tutor-schedule-hover.png)
 
- - When the user clicks on an empty cell, the system opens the "Add schedule" page. The user has to fill in a subject, a homework (optional), and click the "Save" button to add a new item. If the user changes their decision, they can click on the "Cancel" button not to add anything. After saving the system opens the "Edit schedule" form which allows to fill in students' marks.
+ - When the user clicks on an empty cell, the system opens the "Add Schedule" page. The user has to fill in a subject, a homework (optional), and click the "Save" button to add a new item. If the user changes their decision, they can click on the "Cancel" button not to add anything. After saving the system opens the "Edit Schedule" form which allows to fill in students' marks.
 
-  ![the "Add schedule" page](documentation/features/tutor-schedule-add-new.png)
+  ![the "Add Schedule" page](documentation/features/tutor-schedule-add-new.png)
 
- - the "Add schedule" page has the "Instruction" button that, when pressed, opens a instruction window.
+ - the "Add Schedule" page has the "Instruction" button that, when pressed, opens an instruction window.
 
-  ![the "Add schedule" page - instruction](documentation/features/tutor-schedule-add-new-instruction.png)
+  ![the "Add Schedule" page - instruction](documentation/features/tutor-schedule-add-new-instruction.png)
 
- - When the user clicks on a filled cell, the system opens the "Edit schedule" page. The user has to change a subject (optional), a homework (optional)  and click the "Save" button to edit this item. If the user changes a decision, they can click on the "Cancel" button not to edit anything. Also, this form has the "Delete" button which deletes the current item. When the user clicks on it, the system displays a confirmation form.
+ - When the user clicks on a filled cell, the system opens the "Edit Schedule" page. The user has to change a subject (optional) or homework (optional)  and click the "Save" button to edit this item. If the user changes a decision, they can click on the "Cancel" button not to edit anything. Also, this form has the "Delete" button which deletes the current item. When the user clicks on it, the system displays a confirmation form.
 
-  ![the "Edit schedule" page](documentation/features/tutor-schedule-add-new.png)
+  ![the "Edit Schedule" page](documentation/features/tutor-schedule-add-new.png)
   ![Delete confirmation](documentation/features/tutor-schedule-delete.png)
 
- - the "Edit schedule" page has the "Instruction" button that, when pressed, opens a instruction window.
+ - the "Edit Schedule" page has the "Instruction" button that, when pressed, opens an instruction window.
 
-  ![the "Edit schedule" page - instruction](documentation/features/tutor-schedule-edit-instruction.png)
+  ![the "Edit Schedule" page - instruction](documentation/features/tutor-schedule-edit-instruction.png)
 
- - To add, edit, or delete students' marks, the user has to open the "Edit schedule" page. It displays a students' marks table.
+ - To add, edit, or delete students' marks, the user has to open the "Edit Schedule" page. It displays a table of students' marks.
  - To add a new mark, the user has to click the "Add" button and fill in a student and their mark.
 
   ![the "Add mark" page](documentation/features/tutor-schedule-add-mark.png)
@@ -226,18 +257,18 @@ __The Dashboard Page (Tutor)__
 
   ![the "Edit mark" page](documentation/features/tutor-schedule-edit-mark.png)
 
- - To delete the mark, the user has to click the "Delete" button and confirm action.
+ - To delete the mark, the user has to click the "Delete" button and confirm the action.
 
   ![the "Edit mark" page](documentation/features/tutor-schedule-delete-mark.png)
 
 __The Admin page__
-This page allows supper-users to administrate a database and add, edit, and delete information in dictionaries which they are responsible  for.
+This page allows supper-users to administrate a database and add, edit, and delete information in dictionaries for which they are responsible.
  - **Users** contains information about all users. The supper-user can set permissions for users and ban if it is necessary (uncheck active). The system has two group permissions: Tutor and Student which give the appropriate access rights.
 
   ![the "Users" page](documentation/features/users-page.png)
   ![the "Users" page - permissions](documentation/features/users-permissions.png)
 
- - **User profiles** contains information about the student's study group and has the "checked" checkbox which allows students to see their schedules. If  the "checked" checkbox is not selected, the user sees messages that their accounts are under inspection.
+ - **User profiles** contains information about the student's study group and has the "checked" checkbox which allows students to see their schedules. If the "checked" checkbox is not selected, the user sees messages that their accounts are under inspection.
 
   ![the "User profile" page](documentation/features/user-profile.png)
   ![The student's account is under inspection](documentation/features/student-under-inspection.png)
@@ -274,30 +305,29 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica N
 ```
 ## Technologies Used
 
-### Backend
+### Languages and Frameworks
 - [Python 3.12.2](https://www.python.org/downloads/release/python-3122/): A versatile and widely-used programming language known for its readability and extensive libraries. This project is primarily built using Python due to its powerful data manipulation capabilities and ease of integration with other technologies.
 - [Django 4.2.16](https://www.djangoproject.com/): A high-level Python web framework that encourages rapid development and clean design. Django is used to manage the core application logic, database interactions, and routing, enabling efficient handling of complex backend functionalities.
-
-### Frontend
-- [HTML & CSS](https://developer.mozilla.org/en-US/docs/Web): Used to structure the web pages and style them to ensure a visually appealing and user-friendly interface. Semantic HTML5 tags provide a solid foundation, while CSS3 enables responsive and consistent styling.
+- [HTML & CSS](https://developer.mozilla.org/en-US/docs/Web): Used to structure the web pages and style them to ensure a visually appealing and user-friendly interface.
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript): Enables client-side scripting to add interactivity and dynamic elements on the website. JavaScript is used for real-time form validations, UI animations, and responsive features across devices.
 - [Bootstrap 5.3.3](https://getbootstrap.com/): A popular CSS framework that accelerates frontend development. Bootstrap provides pre-styled components and responsive grid systems, ensuring consistent and mobile-friendly UI elements.
-- [Google Maps JavaScript API](https://developers.google.com/maps): Google Maps is integrated to provide interactive maps that enhance the application's user experience, such as displaying the university’s location or directions. By utilizing the JavaScript API, the project can dynamically load maps and customize the map view based on user interaction and location data, making it a valuable addition for location-based features.
+- [Google Maps JavaScript API](https://developers.google.com/maps): Google Maps is integrated to provide interactive maps that enhance the application's user experience, such as displaying the university’s location or directions. By utilizing the JavaScript API, the project can dynamically load maps and customize the map view based on user interaction and location data, making it a valuable addition to location-based features.
 
 ### Database
 - [PostgreSQL](https://www.postgresql.org/): An advanced, open-source relational database system chosen for its scalability and SQL compliance. PostgreSQL is used to store and manage all user, schedule, and resource data, with Django ORM handling queries and migrations.
+- [SQLite](https://www.sqlite.org/): A lightweight, serverless, and self-contained relational database system. SQLite is ideal for development and testing due to its simplicity and zero-configuration setup
 
 ### Authentication & Authorization
 - [Django-Allauth](https://django-allauth.readthedocs.io/en/latest/): A comprehensive library used for managing user authentication, registration, and account management. Django-Allauth is utilized to streamline the process of user sign-up, login, and role-based access control.
 - [Django Permissions](https://docs.djangoproject.com/en/5.1/topics/auth/default/#permissions): The project utilizes Django’s built-in permissions system to control access to specific views and actions within the application. PermissionRequiredMixin from django.contrib.auth.mixins is used to restrict access to certain views, allowing only users with the necessary permissions to proceed.
 
 ### Testing
-- [Django Test Framework](https://docs.djangoproject.com/en/5.1/topics/testing/): For automated testing, python3 manage.py test is used to run tests built with Django's built-in test framework. This framework, based on Python’s unittest, helps verify that all application components work as expected and provides a solid foundation for maintaining reliable code as the project evolves.
+- [Django Test Framework](https://docs.djangoproject.com/en/5.1/topics/testing/): For automated testing, python3 manage.py test is used to run tests built with Django's built-in test framework. This framework, based on Python’s unit test, helps verify that all application components work as expected and provides a solid foundation for maintaining reliable code as the project evolves.
   - **SQLite for Testing**:  
     By default, Django uses an SQLite database when running tests. This lightweight database ensures fast test execution and simplifies the setup process.  
 - [Jest](https://jestjs.io/): A JavaScript testing framework used to test frontend components, especially those involving DOM manipulation and user interactions. Jest is essential in ensuring that UI behaviors function as expected across various user scenarios.
 
-### Deploiment
+### Deployment
 - [Heroku](https://dashboard.heroku.com/): A cloud platform used for deploying, managing, and scaling the application. Heroku simplifies the deployment process, enabling continuous delivery and scaling the app as needed without complex infrastructure.
 - [GitHub](https://github.com/): A version control and collaboration platform that hosts the codebase, tracks changes, and allows collaboration through pull requests and issue tracking.
 
@@ -401,7 +431,7 @@ Represents a student's performance in a schedule.
 
 - **Meta:**
   - **Ordering:** By `schedule`, `student`.
-  - **Constraints:** Unique combination of `schedule`, `student`.
+  - **Constraints:** Unique combination of `schedule` and `student`.
 
 ---
 
@@ -456,7 +486,7 @@ The steps to deploy are as follows:
       ![Heroku - config var](documentation/heroku/heroku-config-var.png)
 - 4. Buildpacks
      - Click "Add buildpack"
-     - Chose python and nodejs
+     - Chose Python and Nodejs
      ![Heroku - buildpacks](documentation/heroku/heroku-buildpacks.png)
 - 5. Connect to GitHub
      - In the "Deploy" tab, go to the "Deployment method" section.
@@ -483,41 +513,44 @@ Before running the application locally, ensure you have the following installed:
 ### Steps to Deploy Locally
 Clone the Repository
 ```
-     git clone https://github.com/BogdanovaIV/UniFlow.git
-     cd UniFlow
+    git clone https://github.com/BogdanovaIV/UniFlow.git
+    cd UniFlow
 ```
 - Set Up Environment Variables. Ensure you have the necessary API keys and other environment variables defined in the env.py file. For example, your env.py might look like this:
 ```
-     import os
+    import os
 
-     os.environ.setdefault(
-         "GOOGLE_MAPS_API_KEY", "your-google-api-key")
+    os.environ.setdefault(
+        "GOOGLE_MAPS_API_KEY", "your-google-api-key")
 
-     os.environ.setdefault(
-         "DATABASE_URL",
-         "postgres://your_databese"
-     )
+    os.environ.setdefault(
+        "DATABASE_URL",
+        "postgres://your_databese"
+    )
 ```
 - Install Dependencies. Install the required packages listed in the requirements.txt file:
 ```
-     pip install -r requirements.txt
+    pip install -r requirements.txt
 ```
 - Before running the server, ensure your database is set up and migrations have been applied:
 ```
-     python3 manage.py migrate
+    python3 manage.py migrate
+```
+- Create a Superuser. Create an administrative user to access the Django admin interface:
+```
+    python3 manage.py createsuperuser
 ```
 - Run the Application. Run your main application script.
 ```
-     python3 manage.py runserver
+    python3 manage.py runserver
 ```
 
 ## Future Improvements
 
-- Send e-mail when the user creates an account, edits a password or the administrator changes information about the user.
-- Create a report of students' marks and average marks for students and tutors.
-- Add time and the ability to use an additional dictionary where the user can save events, meals, etc. in schedules
-- Limit the ability to change past data. Create a separate permission for it.
-- Improve user-friendly experience.
+- [18](https://github.com/BogdanovaIV/UniFlow/issues/18) Send Notification Emails for User Account Changes.
+- [19](https://github.com/BogdanovaIV/UniFlow/issues/19) Generate Reports for Students' Marks and Averages.
+- [20](https://github.com/BogdanovaIV/UniFlow/issues/20) Enhance Schedules with Time and Customizable Dictionaries.
+- [21](https://github.com/BogdanovaIV/UniFlow/issues/21) Restrict Editing of Past Data for Tutors.
 
 ## Credits 
 - [Github](https://github.com/) provided free access to a versioning system.
