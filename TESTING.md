@@ -49,49 +49,49 @@ Functional testing ensures that all features and functionalities of the applicat
 | The Register page | | | | | |
 | The Register link | Navigate to the Register page | The Register link appears in bold font | Yes | Yes | - |
 | The content | Access the Register page | Includes a 'Sign in' link, a 'Sign up' button, and fields for 'Email', 'First name', 'Last name', 'Password', and 'Password (again)'. | Yes | Yes | - |
-| Register process | Create a new user account | The user fills in all required fields and clicks the 'Sign up' button. If successful, the system creates a user with "Student" permissions and redirects them to the "Dashboard" page. If there are errors, the system displays detailed error messages.\. | Yes | Yes | - |
+| Register process | Create a new user account | The user fills in all required fields and clicks the 'Sign up' button. If successful, the system creates a user with "Student" permissions and redirects them to the "Dashboard" page. If there are errors, the system displays detailed error messages. | Yes | Yes | - |
 | The Logout page | | | | | |
 | The Logout link | Navigate to the Logout page | The Logout link appears in bold font | Yes | Yes | - |
 | The content | Go to the Logout page | The content has confirmation to sign out and an appropriate button. | Yes | Yes | - |
 | The Sign-out button | Click the Sign-out button | The Sign-out button logs out. | Yes | Yes | - |
 | The Dashboard page for students | | Displays schedule information and selection options | | | |
 | The Dashboard link | Navigate to the Dashboard page | The Dashboard link has bold font | Yes | Yes | - |
-| The content |  | The Dashboard displays an "Update" button, a "Selection" button, a "Instruction" button, cards with detailed schedule information, and an info-line about the applied selection. | Yes | Yes | - |
-| Actions of the Selection button | Click the Selection button, fill in the fields, and click the Apply button. | The "Selection" button expands to reveal a form with "Date" and "Study group" fields. The "Study group" field is read-only and automatically set to the student's study group (from UserProfile). The "Date" field defaults to the current date. If the "Date" field is empty, the system prompts with "Please fill out the field." Upon valid submission, the schedule for the selected "Date" and "Study group" is displayed, with the info-line showing the applied selection. | Yes | Yes | - |
+| The content |  | The Dashboard displays an "Update" button, a "Selection" button, an "Instruction" button, cards with detailed schedule information, and an info line about the applied selection. | Yes | Yes | - |
+| Actions of the Selection button | Click the Selection button, fill in the fields, and click the Apply button. | The "Selection" button expands to reveal a form with "Date" and "Study group" fields. The "Study group" field is read-only and automatically set to the student's study group (from UserProfile). The "Date" field defaults to the current date. If the "Date" field is empty, the system prompts with "Please fill out the field." Upon valid submission, the schedule for the selected "Date" and "Study group" is displayed, with the info line showing the applied selection. | Yes | Yes | - |
 | Displaying schedule | Apply the 'Selection' form | The schedule correctly displays subjects, homework, and student marks in order of occurrence and date. Homework entries include an arrow icon and a hover effect. Clicking expands the homework details. Marks are displayed as badges with accurate values. | | | |
 | The Update button | Click the Update button | Refreshes the schedule information with the latest data for the current selection. | Yes | Yes | - |
 | The Instruction button | Click the Instruction button | Opens a modal with detailed instructions on how to use the form, including steps to select a schedule and view its details. | Yes | Yes | - |
 | The Dashboard page for tutors | | | | | |
 | The content | Go to the Dashboard page | The page contains a navigation bar with the following tabs: 'Schedule', 'Schedule Template', and an 'Instruction' button. | Yes | Yes | - |
 | The Dashboard link | Click the Dashboard link | The Dashboard link has bold font | Yes | Yes | - |
-| Schedule Tab | Click the 'Schedule' tab | the 'Schedule' tab changes the background color and loads its associated content. | Yes | Yes | - |
-| Schedule Template tab | Click the 'Schedule Template' tab | the 'Schedule Template' tab changes the background color and loads its associated content. | Yes | Yes | - |
+| Schedule Tab | Click the 'Schedule' tab | The 'Schedule' tab changes the background color and loads its associated content. | Yes | Yes | - |
+| Schedule Template tab | Click the 'Schedule Template' tab | The 'Schedule Template' tab changes the background color and loads its associated content. | Yes | Yes | - |
 | The Instruction button | Click the Instruction button | Displays a modal providing instructions for navigating and using the currently active tab. | Yes | Yes | - |
 | Schedule Template tab | | | | | |
-| Schedule Template Content | Go to the Schedule Template tab | Displays an "Update" button, a "Selection" button, a "Instruction" button, cards with detailed schedule information, and an info-line about the applied selection. | Yes | Yes | - |
-| Actions of the Selection button | Click the Selection button, fill in the fields, and click the Apply button. | The "Selection" button expands to reveal a form with "Term" and "Study group" fields. If the "Term" or "Study group" field is empty, the system prompts with "Please fill out the field." Upon valid submission, the schedule template for the selected "Term" and "Study group" is displayed, with the info-line showing the applied selection. | Yes | Yes | - |
+| Schedule Template Content | Go to the Schedule Template tab | Displays an "Update" button, a "Selection" button, a "Instruction" button, cards with detailed schedule information, and an info line about the applied selection. | Yes | Yes | - |
+| Actions of the Selection button | Click the Selection button, fill in the fields, and click the Apply button. | The "Selection" button expands to reveal a form with "Term" and "Study group" fields. If the "Term" or "Study group" field is empty, the system prompts with "Please fill out the field." Upon valid submission, the schedule template for the selected "Term" and "Study group" is displayed, with the info line showing the applied selection. | Yes | Yes | - |
 | Displaying schedule template | Apply the 'Selection' form | Correctly renders subjects in the specified order for the selected weekday. Subjects have a hover effect that changes the background color. Clicking a subject opens the 'Add Schedule Template' page for empty entries and the 'Edit Schedule Template' page for existing entries. | | | |
 | The Update button | Click the Update button | Refreshes the schedule templae information with the latest data for the current selection. | Yes | Yes | - |
-| The 'Add schedule template' page | | | | | |
-| The content | Go to the 'Add schedule template' page | The page displays the following elements: 'Save' button, 'Cancel' button, 'Subject' field, and the following info fields: 'Term', 'Study Group', 'Weekday', 'Order Number'. All info fields show correct values. | Yes | Yes | - |
+| The 'Add Schedule Template' page | | | | | |
+| The content | Go to the 'Add Schedule Template' page | The page displays the following elements: 'Save' button, 'Cancel' button, 'Subject' field, and the following info fields: 'Term', 'Study Group', 'Weekday', 'Order Number'. All info fields show correct values. | Yes | Yes | - |
 | The Save button | Click the Save button | The system checks that the 'Subject' field is filled, saves the new object to the database, and redirects to the 'Schedule Template' page. | Yes | Yes | - |
 | The Cancel button | Click the Cancel button | The system redirects to the 'Schedule Template' page without making any changes. | Yes | Yes | - |
-| The 'Edit schedule template' page | | | | | |
-| The content | Go to the 'Edit schedule template' page | The page displays the following elements: 'Save' button, 'Cancel' button, 'Delete' button, 'Subject' field, and the info fields: 'Term', 'Study Group', 'Weekday', 'Order Number'. The info fields display the correct values, and 'Subject' is pre-filled with the current value. | Yes | Yes | - |
+| The 'Edit Schedule Template' page | | | | | |
+| The content | Go to the 'Edit Schedule Template' page | The page displays the following elements: 'Save' button, 'Cancel' button, 'Delete' button, 'Subject' field, and the info fields: 'Term', 'Study Group', 'Weekday', 'Order Number'. The info fields display the correct values, and 'Subject' is pre-filled with the current value. | Yes | Yes | - |
 | The Save button | Click the Save button | The system checks that the 'Subject' field is filled, updates the current object in the database, and redirects to the 'Schedule Template' page. | Yes | Yes | - |
 | The Cancel button | Click the Cancel button | The system redirects to the 'Schedule Template' page without making any changes. | Yes | Yes | - |
 | The Delete button | Click the Delete button | The system prompts the user with a confirmation modal. If confirmed, the current object is deleted and the system redirects to the 'Schedule Template' page. | Yes | Yes | - |
 | Schedule tab | | | | | |
-| The content | Go to the Schedule bookmark | Displays an "Update" button, a "Selection" button, a "Fill" button, a "Instruction" button, cards with detailed schedule information, and an info-line about the applied selection. | Yes | Yes | - |
-| Actions of the Selection button | Click the Selection button, fill in the fields, and click the Apply button. | The "Selection" button expands to reveal a form with "Date" and "Study group" fields. The "Date" field defaults to the current date. If the "Date" field is empty, the system prompts with "Please fill out the field." Upon valid submission, the schedule for the selected "Date" and "Study group" is displayed, with the info-line showing the applied selection. | Yes | Yes | - |
+| The content | Go to the Schedule bookmark | Displays an "Update" button, a "Selection" button, a "Fill" button, a "Instruction" button, cards with detailed schedule information, and an info line about the applied selection. | Yes | Yes | - |
+| Actions of the Selection button | Click the Selection button, fill in the fields, and click the Apply button. | The "Selection" button expands to reveal a form with "Date" and "Study group" fields. The "Date" field defaults to the current date. If the "Date" field is empty, the system prompts with "Please fill out the field." Upon valid submission, the schedule for the selected "Date" and "Study group" is displayed, with the info line showing the applied selection. | Yes | Yes | - |
 | Displaying schedule | Apply the 'Selection' form | The schedule displays subjects, homework, and a badge showing the number of student marks in the correct order and date. The subject and homework cells have a hover effect, changing the background color. When the user clicks on a subject or homework, the system checks if the selection is valid. If valid, it opens the 'Add Schedule' page for empty fields and the 'Edit Schedule' page for filled fields. | Yes | Yes | |
 | The Update button | Click the Update button | Refreshes the schedule information with the latest data for the current selection. | Yes | Yes | - |
 | The Fill button | Click the Fill button | The Fill button appears only if the schedule is empty. When clicked, it automatically fills the schedule according to the schedule template based on the selected date and study group. | Yes | Yes | - |
-| The 'Add schedule' page | | | | | |
-| The content | Go to the 'Add schedule' page | Displays the 'Save' and 'Cancel' buttons, the 'Subject' and 'Homework' fields, and information fields: 'Term', 'Study group', 'Weekday', and 'Order number'. The information fields contain correct values. | Yes | Yes | - |
+| The 'Add Schedule' page | | | | | |
+| The content | Go to the 'Add Schedule' page | Displays the 'Save' and 'Cancel' buttons, the 'Subject' and 'Homework' fields, and information fields: 'Term', 'Study group', 'Weekday', and 'Order number'. The information fields contain correct values. | Yes | Yes | - |
 | The Save button | Click the Save button | The system verifies that the 'Subject' field is filled, saves a new object in the database, and redirects to the 'Edit Schedule' page. | Yes | Yes | - |
 | The Cancel button | Click the Cancel button |The system redirects to the 'Schedule' page without making any changes. | Yes | Yes | - |
-| The 'Edit schedule' page | | | | | |
+| The 'Edit Schedule' page | | | | | |
 | The content | Go to the Dashboard page | Displays the 'Save', 'Cancel', and 'Delete' buttons, the 'Subject' field, and information fields: 'Term', 'Study group', 'Weekday', and 'Order number'. The 'Subject' field matches the current value.| Yes | Yes | - |
 | The Save button | Click the Save button | The system verifies that the 'Subject' field is filled, updates the current object in the database, and redirects to the 'Schedule' page. | Yes | Yes | - |
 | The Cancel button | Click the Cancel button | The system redirects to the 'Schedule' page without making any changes. | Yes | Yes | - |
@@ -108,24 +108,24 @@ Admin panel testing ensures that the admin interface works as expected and provi
 
 | feature | action  | expected result  | tested | passed | comments |
 |---|---|---|----|---|---|
-| Admin login | Log in using admin credentials | Successfully logs into the admin panel. | Yes | Yes | - |
+| Admin login | Log in using admin credentials | Successfully log into the admin panel. | Yes | Yes | - |
 | Add StudyGroup | Navigate to the StudyGroup section and click 'Add' | The 'StudyGroup' creation form opens with fields for 'name' and 'active' status. | Yes | Yes | - |
-| Add StudyGroup (form submit) | Fill the form and click 'Save' | The system saves the new 'StudyGroup' and redirects to the list view of study groups. | Yes | Yes | - |
+| Add StudyGroup (form submit) | Fill out the form and click 'Save' | The system saves the new 'StudyGroup' and redirects to the list view of study groups. | Yes | Yes | - |
 | Edit StudyGroup | Click the 'Edit' button for an existing StudyGroup | The 'StudyGroup' edit form opens with the current values pre-filled. | Yes | Yes | - |
 | Edit StudyGroup (form submit)  | Modify the fields and click 'Save' | The system updates the 'StudyGroup' and redirects to the list view with the updated information. | Yes | Yes | - |
 | Delete StudyGroup | Click the 'Delete' button for an existing StudyGroup | The system asks for confirmation to delete the 'StudyGroup'. Upon confirmation, the 'StudyGroup' is deleted. | Yes | Yes | - |
 | Add Term | Navigate to the Term section and click 'Add' | The 'Term' creation form opens with fields for 'name', 'date_from', 'date_to', and 'active' status. | Yes | Yes | - |
-| Add Term (form submit)  | Fill the form and click 'Save' | The system saves the new 'Term' and redirects to the list view of terms. | Yes | Yes | - |
+| Add Term (form submit)  | Fill out the form and click 'Save' | The system saves the new 'Term' and redirects to the list view of terms. | Yes | Yes | - |
 | Edit Term | Click the 'Edit' button for an existing Term | The 'Term' edit form opens with the current values pre-filled. | Yes | Yes | - |
 | Edit Term (form submit) | Modify the fields and click 'Save' | The system updates the 'Term' and redirects to the list view with the updated information. | Yes | Yes | - |
 | Delete Term  | Click the 'Delete' button for an existing Term | The system asks for confirmation to delete the 'Term'. Upon confirmation, the 'Term' is deleted. | Yes | Yes | - |
 | Add Subject | Navigate to the Subject section and click 'Add' | The 'Subject' creation form opens with fields for 'name' and 'active' status. | Yes | Yes | - |
-| Add Subject (form submit) | Fill the form and click 'Save' | The system saves the new 'Subject' and redirects to the list view of subjects. | Yes | Yes | - |
+| Add Subject (form submit) | Fill out the form and click 'Save' | The system saves the new 'Subject' and redirects to the list view of subjects. | Yes | Yes | - |
 | Edit Subject | Click the 'Edit' button for an existing Subject | The 'Subject' edit form opens with the current values pre-filled. | Yes | Yes | - |
 | Edit Subject (form submit) | Modify the fields and click 'Save' | The system updates the 'Subject' and redirects to the list view with the updated information. | Yes | Yes | - |
 | Delete Subject | Click the 'Delete' button for an existing Subject | The system asks for confirmation to delete the 'Subject'. Upon confirmation, the 'Subject' is deleted. | Yes | Yes | - |
 | Add ScheduleTemplate | Navigate to the ScheduleTemplate section and click 'Add' | The 'ScheduleTemplate' creation form opens with fields for 'term', 'study_group', 'weekday', 'order_number', and 'subject'. | Yes | Yes | - |
-| Add ScheduleTemplate (form submit) | Fill the form and click 'Save' | The system saves the new 'ScheduleTemplate' and redirects to the list view of schedule templates. | Yes | Yes | - |
+| Add ScheduleTemplate (form submit) | Fill out the form and click 'Save' | The system saves the new 'ScheduleTemplate' and redirects to the list view of schedule templates. | Yes | Yes | - |
 | Edit ScheduleTemplate | Click the 'Edit' button for an existing ScheduleTemplate | The 'ScheduleTemplate' edit form opens with the current values pre-filled. | Yes | Yes | - |
 | Edit ScheduleTemplate (form submit) | Modify the fields and click 'Save' | The system updates the 'ScheduleTemplate' and redirects to the list view with the updated information. | Yes | Yes | - |
 | Delete ScheduleTemplate | Click the 'Delete' button for an existing ScheduleTemplate | The system asks for confirmation to delete the 'ScheduleTemplate'. Upon confirmation, the 'ScheduleTemplate' is deleted. | Yes | Yes | - |
@@ -136,6 +136,53 @@ Admin panel testing ensures that the admin interface works as expected and provi
 |---|---|---|---|---|---|
 | Admin login without permissions | Log in as a non-admin user | The system prevents access to the admin panel and redirects to the home page or appropriate page. | Yes | Yes | - |
 | Access control on models | Log in as an admin user and navigate to various models (StudyGroup, Term, Subject, ScheduleTemplate) | The admin user has access to all models, can add/edit/delete data, and access restricted functionalities. | Yes | Yes | - |
+
+## Testing User Stories
+
+### First Time Visitors
+
+| **ID** | **Test Case** | **Expected Outcome** |
+|-|-|-|
+| [1](https://github.com/BogdanovaIV/UniFlow/issues/1) | Test by clicking the "Home" link. | The "Home" link displays information about the university. |
+| [2](https://github.com/BogdanovaIV/UniFlow/issues/2) | Test by clicking the "Contact" link and viewing the map. | The "Contact" link displays contact details and the map shows the correct coordinates. |
+| [13](https://github.com/BogdanovaIV/UniFlow/issues/13) | Test account creation, login, and verification messaging. | Unverified accounts display a pending message. Verified accounts grant access. |
+
+### Returning or Regular Visitors
+
+| **ID** | **Test Case** | **Expected Outcome** |
+|-|-|-|
+| [1](https://github.com/BogdanovaIV/UniFlow/issues/1) | Test by clicking the "Home" link. | The "Home" link displays information about the university. |
+| [2](https://github.com/BogdanovaIV/UniFlow/issues/2) | Test by clicking the "Contact" link and viewing the map. | The "Contact" link displays contact details and the map shows the correct coordinates. |
+
+### Tutor
+
+| **ID** | **Test Case** | **Expected Outcome** |
+|-|-|-|
+| [9](https://github.com/BogdanovaIV/UniFlow/issues/9) | Test viewing the weekly schedule for a selected week. | Schedule shows subjects, homework availability, and grade counts. |
+| [10](https://github.com/BogdanovaIV/UniFlow/issues/10) | Test filling and editing the weekly schedule. | Tutors can use templates to add, update, and delete schedule rows. |
+| [11](https://github.com/BogdanovaIV/UniFlow/issues/11) | Test assigning and managing student marks. | Tutors can create, read, update, and delete student marks. |
+| [16](https://github.com/BogdanovaIV/UniFlow/issues/16) | Test viewing the schedule template by term and study group. | The schedule template displays subjects organized by weekdays. |
+| [17](https://github.com/BogdanovaIV/UniFlow/issues/17) | Test editing schedule templates. | Tutors can add, update, and delete rows in the template. |
+
+### Student
+
+| **ID** | **Test Case** | **Expected Outcome** |
+|-|-|-|
+| [12](https://github.com/BogdanovaIV/UniFlow/issues/12) | Test viewing schedules, marks, and homework. | Students can view schedules, marks, and homework assignments. |
+
+### Administrator
+
+| **ID** | **Test Case** | **Expected Outcome** |
+|-|-|-|
+| [3](https://github.com/BogdanovaIV/UniFlow/issues/3) | Test managing terms. | Admins can create, read, update, delete terms, and receive validation for invalid date ranges or overlaps. |
+| [4](https://github.com/BogdanovaIV/UniFlow/issues/4) | Test managing study groups. | Admins can create, read, update, and delete study groups. |
+| [5](https://github.com/BogdanovaIV/UniFlow/issues/5) | Test assigning study groups to users and verifying accounts. | Admins can assign study groups and set the checked status for users. |
+| [6](https://github.com/BogdanovaIV/UniFlow/issues/6) | Test managing schedule templates. | Admins can create, read, update, and delete schedule templates. |
+| [7](https://github.com/BogdanovaIV/UniFlow/issues/7) | Test managing schedules. | Admins can create, read, update, and delete schedules. Duplicate subjects are not allowed on the same date. |
+| [8](https://github.com/BogdanovaIV/UniFlow/issues/8) | Test managing student marks. | Admins can create, read, update, and delete student marks. One score per subject per student per date is enforced. |
+| [14](https://github.com/BogdanovaIV/UniFlow/issues/14) | Test automatic group creation. | Predefined groups are created during migrations without duplication. |
+| [15](https://github.com/BogdanovaIV/UniFlow/issues/15) | Test managing subjects. | Admins can create, read, update, and delete subjects. |
+
 
 ## Performance Testing
 To ensure the application is optimized and performs efficiently, we use **[Lighthouse](https://developers.google.com/web/tools/lighthouse)** for performance testing. 
@@ -161,15 +208,15 @@ Lighthouse is an open-source, automated tool for improving the quality of web pa
   ![Lighthouse - the 'Dashboard' page for students](documentation/light-house/student-dashboard.png)
 - the 'Dashboard' page for tutors - button 'Schedule'
   ![Lighthouse - the 'Dashboard' page for tutors - button 'Schedule'](documentation/light-house/tutor-dashboard-shedule.png)
-- the 'Add shedule' page
+- the 'Add Shedule' page
   ![Lighthouse - the 'Dashboard' page for tutors - button 'Schedule'](documentation/light-house/add-schedule.png)
-- the 'Edit shedule' page
+- the 'Edit Shedule' page
   ![Lighthouse - the 'Dashboard' page for tutors - button 'Schedule'](documentation/light-house/edit-schedule.png)
 - the 'Dashboard' page for tutors - button 'Schedule template'
   ![Lighthouse - the 'Dashboard' page for tutors - button 'Schedule'](documentation/light-house/tutor-schedule-template.png)
-- the 'Add shedule template' page
+- the 'Add Shedule Template' page
   ![Lighthouse - the 'Dashboard' page for tutors - button 'Schedule'](documentation/light-house/add-shedule-template.png)
-- the 'Edit shedule template' page
+- the 'Edit Shedule Template' page
   ![Lighthouse - the 'Dashboard' page for tutors - button 'Schedule'](documentation/light-house/edit-schedule-template.png)
 - the '403-error' page
   ![Lighthouse - the '403-error' page](documentation/light-house/403.png)
@@ -199,15 +246,15 @@ The application was tested on various screen sizes and devices to ensure respons
   ![Responsiveness - the 'Dashboard' page for students](documentation/responsiveness/student-dashboard.png)
 - the 'Dashboard' page for tutors - button 'Schedule'
   ![Responsiveness - the 'Dashboard' page for tutors - button 'Schedule'](documentation/responsiveness/tutor-schedule.png)
-- the 'Add shedule' page
+- the 'Add Shedule' page
   ![Responsiveness - the 'Dashboard' page for tutors - button 'Schedule'](documentation/responsiveness/add-schedule.png)
-- the 'Edit shedule' page
+- the 'Edit Shedule' page
   ![Responsiveness - the 'Dashboard' page for tutors - button 'Schedule'](documentation/responsiveness/edit-schedule.png)
 - the 'Dashboard' page for tutors - button 'Schedule template'
   ![Responsiveness - the 'Dashboard' page for tutors - button 'Schedule'](documentation/responsiveness/tutor-schedule-template.png)
-- the 'Add shedule template' page
+- the 'Add Shedule Template' page
   ![Responsiveness - the 'Dashboard' page for tutors - button 'Schedule'](documentation/responsiveness/add-schedule-template.png)
-- the 'Edit shedule template' page
+- the 'Edit Shedule Template' page
   ![Responsiveness - the 'Dashboard' page for tutors - button 'Schedule'](documentation/responsiveness/edit-schedule-template.png)
 - the '403-error' page
   ![Responsiveness - the '403-error' page](documentation/responsiveness/403.png)
@@ -231,15 +278,15 @@ The following browsers are commonly tested to ensure broad compatibility:
   ![Google Chrome - the 'Dashboard' page for students](documentation/google/student-dashboard.png)
 - the 'Dashboard' page for tutors - button 'Schedule'
   ![Google Chrome - the 'Dashboard' page for tutors - button 'Schedule'](documentation/google/tutor-schedule.png)
-- the 'Add shedule' page
+- the 'Add Shedule' page
   ![Google Chrome - the 'Dashboard' page for tutors - button 'Schedule'](documentation/google/add-schedule.png)
-- the 'Edit shedule' page
+- the 'Edit Shedule' page
   ![Google Chrome - the 'Dashboard' page for tutors - button 'Schedule'](documentation/google/edit-schedule.png)
 - the 'Dashboard' page for tutors - button 'Schedule template'
   ![Google Chrome - the 'Dashboard' page for tutors - button 'Schedule'](documentation/google/tutor-schedule-template.png)
-- the 'Add shedule template' page
+- the 'Add Shedule Template' page
   ![Google Chrome - the 'Dashboard' page for tutors - button 'Schedule'](documentation/google/add-schedule-template.png)
-- the 'Edit shedule template' page
+- the 'Edit Shedule Template' page
   ![Google Chrome - the 'Dashboard' page for tutors - button 'Schedule'](documentation/google/edit-schedule-template.png)
 - the '403-error' page
   ![Google Chrome - the '403-error' page](documentation/google/403.png)
@@ -261,15 +308,15 @@ The following browsers are commonly tested to ensure broad compatibility:
   ![Mozilla Firefox - the 'Dashboard' page for students](documentation/firefox/student-dashboard.png)
 - the 'Dashboard' page for tutors - button 'Schedule'
   ![Mozilla Firefox - the 'Dashboard' page for tutors - button 'Schedule'](documentation/firefox/tutor-schedule.png)
-- the 'Add shedule' page
+- the 'Add Shedule' page
   ![Mozilla Firefox - the 'Dashboard' page for tutors - button 'Schedule'](documentation/firefox/add-schedule.png)
-- the 'Edit shedule' page
+- the 'Edit Shedule' page
   ![Mozilla Firefox - the 'Dashboard' page for tutors - button 'Schedule'](documentation/firefox/edit-schedule.png)
 - the 'Dashboard' page for tutors - button 'Schedule template'
   ![Mozilla Firefox - the 'Dashboard' page for tutors - button 'Schedule'](documentation/firefox/tutor-schedule-template.png)
-- the 'Add shedule template' page
+- the 'Add Shedule Template' page
   ![Mozilla Firefox - the 'Dashboard' page for tutors - button 'Schedule'](documentation/firefox/add-schedule-template.png)
-- the 'Edit shedule template' page
+- the 'Edit Shedule Template' page
   ![Mozilla Firefox - the 'Dashboard' page for tutors - button 'Schedule'](documentation/firefox/edit-schedule-template.png)
 - the '403-error' page
   ![Mozilla Firefox - the '403-error' page](documentation/firefox/403.png)
@@ -288,18 +335,18 @@ The following browsers are commonly tested to ensure broad compatibility:
 - the 'Logout' page
   ![Microsoft Edge - the 'Logout' page](documentation/edge/logout.png)
 - the 'Dashboard' page for students
-  ![Microsoft Edge - the 'Dashboard' page for students](documentation/edge/student-dashboard.png)
+  ![Microsoft Edge - the 'Dashboard' page for students](documentation/edge/student-dashdoard.png)
 - the 'Dashboard' page for tutors - button 'Schedule'
   ![Microsoft Edge - the 'Dashboard' page for tutors - button 'Schedule'](documentation/edge/tutor-schedule.png)
-- the 'Add shedule' page
+- the 'Add Shedule' page
   ![Microsoft Edge - the 'Dashboard' page for tutors - button 'Schedule'](documentation/edge/add-schedule.png)
-- the 'Edit shedule' page
+- the 'Edit Shedule' page
   ![Microsoft Edge - the 'Dashboard' page for tutors - button 'Schedule'](documentation/edge/edit-schedule.png)
 - the 'Dashboard' page for tutors - button 'Schedule template'
   ![Microsoft Edge - the 'Dashboard' page for tutors - button 'Schedule'](documentation/edge/tutor-schedule-template.png)
-- the 'Add shedule template' page
+- the 'Add Shedule Template' page
   ![Microsoft Edge - the 'Dashboard' page for tutors - button 'Schedule'](documentation/edge/add-schedule-template.png)
-- the 'Edit shedule template' page
+- the 'Edit Shedule Template' page
   ![Microsoft Edge - the 'Dashboard' page for tutors - button 'Schedule'](documentation/edge/edit-schedule-template.png)
 - the '403-error' page
   ![Microsoft Edge - the '403-error' page](documentation/edge/403.png)
@@ -450,7 +497,7 @@ These warnings do not indicate issues that would degrade the user experience or 
 
   ![validator - the 'Dashboard' page for tutors - button 'Schedule'](documentation/tutor-dashboard/html/dashboard-schedule.png)
 
-- the 'Add shedule' page
+- the 'Add Shedule' page
   **Warnings**
   1. Possible misuse of `aria-label`
      `Location: Line 94`
@@ -461,7 +508,7 @@ These warnings do not indicate issues that would degrade the user experience or 
 
   ![validator - the 'Dashboard' page for tutors - button 'Schedule'](documentation/tutor-dashboard/html/add-schedule.png)
 
-- the 'Edit shedule' page
+- the 'Edit Shedule' page
   **Warnings**
   1. Possible misuse of `aria-label`
      `Location: Line 94`
@@ -482,7 +529,7 @@ These warnings do not indicate issues that would degrade the user experience or 
       This warning is triggered because the `aria-label` duplicates the information provided by `data-bs-original-title`. However, the use of aria-label here is intentional to ensure accessibility for users relying on assistive technologies, as some screen readers may not fully interpret Bootstrap tooltips.
   ![validator - the 'Dashboard' page for tutors - button 'Schedule'](documentation/tutor-dashboard/html/dashboard-schedule-template.png)
 
-- the 'Add shedule template' page
+- the 'Add Shedule Template' page
   **Warnings**
   1. Possible misuse of `aria-label`
      `Location: Line 94`
@@ -492,7 +539,7 @@ These warnings do not indicate issues that would degrade the user experience or 
       This warning is triggered because the `aria-label` duplicates the information provided by `data-bs-original-title`. However, the use of aria-label here is intentional to ensure accessibility for users relying on assistive technologies, as some screen readers may not fully interpret Bootstrap tooltips.
   ![validator - the 'Dashboard' page for tutors - button 'Schedule'](documentation/tutor-dashboard/html/dashboard-schedule-template.png)
   
-- the 'Edit shedule template' page
+- the 'Edit Shedule Template' page
   **Warnings**
   1. Possible misuse of `aria-label`
      `Location: Line 94`
@@ -521,12 +568,92 @@ All files were checked and did not have errors or warnings.
 Quality checking was tested by [JS Hint](https://jshint.com/).
 All files were checked and did not have errors or warnings.
 - dashboard.js
+  1. Undefined Variable: `bootstrap`
+
+     `Locations: Line 8, Line 15`
+
+      The `bootstrap` object is part of the Bootstrap JavaScript library, which is globally available in the system where this code runs. The warning is a result of the static analysis tool (`jshint`) not recognizing globally available libraries. This does not cause runtime issues because the library is properly loaded in the HTML.
+  2. Undefined Variable: `selectionDescription`
+
+      `Locations: Line 25, Line 57`
+
+      The `selectionDescription` variable is expected to be a DOM element present in the HTML structure. The warning is triggered because static analysis tools cannot confirm its existence in the file. As long as the corresponding element is included in the HTML, this will not lead to runtime errors.
+  3. Undefined Variable: `module`
+
+      `Locations: Line 96, Line 97`
+
+      The `module` variable is used to support `module` exports in environments like Node.js. For web browsers, this variable is typically undefined but does not cause issues because the code includes a conditional check (`typeof module !== 'undefined'`), ensuring compatibility across environments.
+  4. Unused Variable: `tooltipList`
+
+      `Location: Line 14`
+
+      The `tooltipList` variable is created to store instances of Bootstrap tooltips. While not explicitly used later in the code, initializing the tooltips ensures they function correctly on the page. The variable remains harmlessly unused and does not impact the system's behavior.
+
   ![validator - dashboard.js](documentation/jshint/dashboard.png)
+
 - google-map-module.js
+  1. Undefined Variable: `google`
+
+     `Locations: Line 9, Line 18`
+
+      The `google` variable is part of the Google Maps JavaScript API, which is loaded globally through a script tag in the HTML file. The static analysis tool (`jshint`) flags it as undefined because it cannot verify the inclusion of external libraries. This does not cause runtime errors because the `google` object is available when the script is run in the appropriate environment with the Google Maps API loaded.
+  2. Undefined Variable: `module`
+
+      `Locations: Line 26, Line 27`
+
+      The `module` variable is used to support `module` exports in environments like Node.js. For web browsers, this variable is typically undefined but does not cause issues because the code includes a conditional check (`typeof module !== 'undefined'`), ensuring compatibility across environments.
+  3. Unused Variable: `marker`
+
+      `Location: Line 18`
+
+      The `marker` variable is created to define a map `marker` at the specified position. While the variable itself is not reused, it is necessary to initialize the `marker`, ensuring it is displayed on the map. The lack of reuse does not impact functionality, as the `marker` remains visible and serves its intended purpose.
+
   ![validator - google-map-module.js](documentation/jshint/google-map-module.png)
+
 - tests/dashboard-test.js
+  1. Undefined Variable: `require`
+
+     `Location: Line 6`
+
+      The `require` function is flagged as undefined because it is specific to Node.js environments and not natively available in browsers. This does not impact the system as the script is explicitly designed to run in a Node.js environment for testing, where `require` is available.
+  2. Undefined Variables: `describe`, `beforeEach`, `test`, `expect`
+
+      Locations:
+        - `describe`: Lines 38, 96
+        - `beforeEach`: Lines 41, 99
+        - `test`: Lines 50, 71, 83, 110, 131, 143
+        - `expect`: Lines 56, 58, 63, 65, 79, 91, 116, 118, 123, 125, 139, 151
+
+      These variables are part of the Jest testing framework, which provides a global environment for testing JavaScript code. They are not explicitly defined in the script because Jest automatically includes them in its runtime environment. The warnings do not affect the system's behavior during tests as Jest correctly handles these variables.
+
   ![validator - tests/dashboard-test.js](documentation/jshint/dashboard-test.png)
+
 - tests/google-map-module.js
+  1. Undefined Variable: `require`
+
+     `Location: Line 6`
+
+      The `require` function is flagged as undefined because it is specific to Node.js environments and not natively available in browsers. This does not impact the system as the script is explicitly designed to run in a Node.js environment for testing, where `require` is available.
+  2. Undefined Variables: `beforeAll`, `describe`, `test`, `expect`
+
+      Locations:
+        - `beforeAll`: Lines 8
+        - `describe`: Lines 42
+        - `test`: Line 43
+        - `expect`: Lines 48, 49
+
+      These variables are part of the Jest testing framework, which provides a global environment for testing JavaScript code. They are not explicitly defined in the script because Jest automatically includes them in its runtime environment. The warnings do not affect the system's behavior during tests as Jest correctly handles these variables.
+  3. Undefined Variable: `global`
+
+     `Locations: Lines 12, 34, 48, 49`
+
+      The `global` object is part of Node.js and represents the global scope. It is used here to mock the `google` object for testing purposes. The `global` object is available in the Node.js environment and does not require explicit declaration.
+  4. Undefined Variable: `jest`
+
+     `Locations: Lines 14, 21, 30`
+
+      The `jest` object is a core part of the Jest framework and is used for mocking functions like `jest.fn`. It is automatically available in Jest environments, so the warnings are irrelevant.
+
   ![validator - tests/google-map-module-test.js](documentation/jshint/google-map-module-test.png)
 
 ### Validator PEP8 (Python)
