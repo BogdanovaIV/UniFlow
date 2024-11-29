@@ -95,6 +95,12 @@ Throughout the entire adding, editing, and deleting stage the system informs the
 
 ![Message](documentation/features/messages.png)
 
+**⚠️Warning: The `Active` property in StudyGroup, Term, and Subject determines their availability in selection fields. Objects with `Active` set to False are hidden from user selection.**
+
+⚠️ **Warning**:  
+1. **Student Registration**: When a user registers, the system automatically assigns them the *Student* permission. However, the administrator must manually approve their access by creating a corresponding `UserProfile` entry, setting the `Checked` checkbox, and assigning them to a study group.  
+2. **Tutor Assignment**: For tutors, the administrator must manually grant the *Tutor* permission to the user.
+
 __Navigation Bar__
  
  - This section is on all pages.
